@@ -5,7 +5,7 @@
 [![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)](LICENSE.md)
 [![npm](https://img.shields.io/npm/dt/vue-draggable-resizable.svg?style=flat-square)](https://www.npmjs.com/package/vue-draggable-resizable)
 
-> Vue2 Component for draggable and resizable elements.
+> Vue3 Component for draggable and resizable elements.
 
 If you are looking for the version 1 of the component, it is available on the [v1 branch](https://github.com/mauricius/vue-draggable-resizable/tree/v1).
 
@@ -110,7 +110,7 @@ export default {
 #### className
 Type: `String`<br>
 Required: `false`<br>
-Default: `vdr`
+Default: `drv`
 
 Used to set the custom `class` of a draggable-resizable component.
 

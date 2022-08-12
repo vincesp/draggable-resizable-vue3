@@ -4,7 +4,7 @@
     :style="style"
     :class="[
       {
-        [classNameActive]: active,
+        [classNameActive]: active || alwaysActive,
         [classNameDragging]: dragging,
         [classNameResizing]: resizing,
         [classNameDraggable]: draggable,
@@ -78,31 +78,31 @@ let eventsFor = events.mouse
 const props = defineProps({
   className: {
     type: String,
-    default: 'vdr',
+    default: 'drv',
   },
   classNameDraggable: {
     type: String,
-    default: 'draggable',
+    default: 'drv-draggable',
   },
   classNameResizable: {
     type: String,
-    default: 'resizable',
+    default: 'drv-resizable',
   },
   classNameDragging: {
     type: String,
-    default: 'dragging',
+    default: 'drv-dragging',
   },
   classNameResizing: {
     type: String,
-    default: 'resizing',
+    default: 'drv-resizing',
   },
   classNameActive: {
     type: String,
-    default: 'active',
+    default: 'drv-active',
   },
   classNameHandle: {
     type: String,
-    default: 'handle',
+    default: 'drv-handle',
   },
   disableUserSelect: {
     type: Boolean,
@@ -120,6 +120,10 @@ const props = defineProps({
     type: Boolean,
     default: false,
   },
+  alwaysActive: {
+    type: Boolean,
+    default: false,
+  },
   draggable: {
     type: Boolean,
     default: true,
@@ -134,7 +138,7 @@ const props = defineProps({
   },
   w: {
     type: [Number, String],
-    default: 200,
+    // default: 200,
     validator: (val) => {
       if (typeof val === 'number') {
         return val > 0
@@ -145,7 +149,7 @@ const props = defineProps({
   },
   h: {
     type: [Number, String],
-    default: 200,
+    // default: 200,
     validator: (val) => {
       if (typeof val === 'number') {
         return val > 0
@@ -215,6 +219,10 @@ const props = defineProps({
     type: Boolean,
     default: false,
   },
+  parentSelector: {
+    type: String,
+    default: null,
+  },
   scale: {
     type: [Number, Array],
     default: 1,
@@ -260,7 +268,7 @@ const emit = defineEmits([
 
 const el = ref(null)
 
-const noProps = ref({ h: 100, w: 100, active: true, x: 0, y: 0 })
+const noProps = ref({ h: 200, w: 200, active: true, x: 0, y: 0 })
 
 const width = computed({
   get() {
@@ -392,11 +400,11 @@ const resizingOnY = computed(() => {
   )
 })
 
-const isCornerHandle = computed(() => {
-  return (
-    Boolean(handle.value) && ['tl', 'tr', 'br', 'bl'].includes(handle.value)
-  )
-})
+// const isCornerHandle = computed(() => {
+//   return (
+//     Boolean(handle.value) && ['tl', 'tr', 'br', 'bl'].includes(handle.value)
+//   )
+// })
 
 // methods
 const resetBoundsAndMouseState = () => {
@@ -422,7 +430,7 @@ const resetBoundsAndMouseState = () => {
 }
 
 const checkParentSize = () => {
-  if (props.parent) {
+  if (props.parent || props.parentSelector) {
     const [newParentWidth, newParentHeight] = getParentSize()
 
     parentWidth.value = newParentWidth
@@ -434,8 +442,11 @@ const checkParentSize = () => {
 }
 
 const getParentSize = () => {
-  if (props.parent) {
-    const style = window.getComputedStyle(el.value.parentNode, null)
+  if (props.parent || props.parentSelector) {
+    const parent = props.parentSelector
+      ? el.value.closest(props.parentSelector)
+      : el.value.parentNode
+    const style = window.getComputedStyle(parent, null)
     return [
       parseInt(style.getPropertyValue('width'), 10),
       parseInt(style.getPropertyValue('height'), 10),

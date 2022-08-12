@@ -1,7 +1,7 @@
 <template>
   <main>
     <div style="background: aqua; width: 771px; height: 500px">
-      <!-- <VueDraggableResizable
+      <VueDraggableResizable
         v-model:x="position.x"
         v-model:y="position.y"
         v-model:h="position.h"
@@ -9,15 +9,15 @@
         v-model:active="position.active"
         :grid="[1, 1]"
         :parent="true"
-      /> -->
-      <VueDraggableResizable />
+      />
+      <VueDraggableResizable> asdsadsad </VueDraggableResizable>
     </div>
   </main>
 </template>
 
 <script setup>
-import VueDraggableResizable from './components/vue3-draggable-resizable-div/vue-draggable-resizable.vue'
-import './components/vue3-draggable-resizable-div/vue-draggable-resizable.css'
+import VueDraggableResizable from './components/draggable-resizable-vue3/draggable-resizable-vue3.vue'
+import './components/draggable-resizable-vue3/draggable-resizable-vue3-no-handles.css'
 import { ref } from 'vue'
 
 const position = ref({ x: 100, y: 100, w: 100, h: 100, active: true })

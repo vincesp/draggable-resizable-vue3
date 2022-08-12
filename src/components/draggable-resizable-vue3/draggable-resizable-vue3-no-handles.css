@@ -1,0 +1,71 @@
+.drv {
+  touch-action: none;
+  position: absolute;
+  box-sizing: border-box;
+  border: 1px dashed black;
+}
+.drv-handle {
+  box-sizing: border-box;
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  background: transparent;
+  border: 1px solid blue;
+}
+.drv-handle-tl {
+  top: -4px;
+  left: -4px;
+  cursor: nw-resize;
+}
+.drv-handle-tm {
+  top: -4px;
+  width: calc(100% - 8px);
+  left: 4px;
+  cursor: n-resize;
+}
+.drv-handle-tr {
+  top: -4px;
+  right: -4px;
+  cursor: ne-resize;
+}
+.drv-handle-ml {
+  height: calc(100% - 8px);
+  top: 4px;
+  left: -4px;
+  cursor: w-resize;
+}
+.drv-handle-mr {
+  height: calc(100% - 8px);
+  top: 4px;
+  right: -4px;
+  cursor: e-resize;
+}
+.drv-handle-bl {
+  bottom: -4px;
+  left: -4px;
+  cursor: sw-resize;
+}
+.drv-handle-bm {
+  bottom: -4px;
+  left: 4px;
+  width: calc(100% - 8px);
+  cursor: s-resize;
+}
+.drv-handle-br {
+  bottom: -4px;
+  right: -4px;
+  cursor: se-resize;
+}
+.drv-active {
+  border: 1px solid #000;
+}
+@media only screen and (max-width: 768px) {
+  [class*="drv-handle-"]:before {
+    content: "";
+    left: -4px;
+    right: -4px;
+    bottom: -4px;
+    top: -4px;
+    position: absolute;
+  }
+}

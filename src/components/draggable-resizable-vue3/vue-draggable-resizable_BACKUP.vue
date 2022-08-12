@@ -77,7 +77,7 @@ export default {
   props: {
     className: {
       type: String,
-      default: 'vdr',
+      default: 'drv',
     },
     classNameDraggable: {
       type: String,
@@ -408,9 +408,9 @@ export default {
 
   created: function () {
     // eslint-disable-next-line
-    if (this.maxWidth && this.minWidth > this.maxWidth) console.warn('[Vdr warn]: Invalid prop: minWidth cannot be greater than maxWidth')
+    if (this.maxWidth && this.minWidth > this.maxWidth) console.warn('[drv warn]: Invalid prop: minWidth cannot be greater than maxWidth')
     // eslint-disable-next-line
-    if (this.maxHeight && this.minHeight > this.maxHeight) console.warn('[Vdr warn]: Invalid prop: minHeight cannot be greater than maxHeight')
+    if (this.maxHeight && this.minHeight > this.maxHeight) console.warn('[drv warn]: Invalid prop: minHeight cannot be greater than maxHeight')
 
     this.resetBoundsAndMouseState()
   },
