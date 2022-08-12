@@ -2,7 +2,7 @@
   touch-action: none;
   position: absolute;
   box-sizing: border-box;
-  border: 1px dashed black;
+  border: 1px dashed gray;
 }
 .drv-handle {
   box-sizing: border-box;
@@ -10,7 +10,7 @@
   width: 10px;
   height: 10px;
   background: #eee;
-  border: 1px solid #333;
+  border: 1px solid gray;
 }
 .drv-handle-tl {
   top: -10px;

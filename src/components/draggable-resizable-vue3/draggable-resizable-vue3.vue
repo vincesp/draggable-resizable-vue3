@@ -215,13 +215,18 @@ const props = defineProps({
     type: Array,
     default: () => [1, 1],
   },
-  parent: {
-    type: Boolean,
+  showGrid: {
+    type: [Boolean, String],
     default: false,
+    validator: (val) => [true, false, 'x', 'y', 'both'].includes(val),
   },
-  parentSelector: {
+  gridColor: {
     type: String,
-    default: null,
+    default: 'rgba(0, 0, 0, 0.1)',
+  },
+  parent: {
+    type: [Boolean, String],
+    default: false,
   },
   scale: {
     type: [Number, Array],
@@ -267,7 +272,7 @@ const emit = defineEmits([
 ])
 
 const el = ref(null)
-
+const parentEl = ref(null)
 const noProps = ref({ h: 200, w: 200, active: true, x: 0, y: 0 })
 
 const width = computed({
@@ -356,6 +361,19 @@ const style = computed(() => {
   }
 })
 
+const parentGridBackgroundStyle = computed(() => {
+  const axisBg = {
+    x: `linear-gradient(-90deg, ${props.gridColor} 1px, transparent 1px) 0px 0px / ${props.grid[0]}px ${props.grid[0]}px`,
+    y: `linear-gradient(0deg, ${props.gridColor} 1px, transparent 1px) 0px 0px / ${props.grid[1]}px ${props.grid[1]}px`,
+  }
+
+  if (props.showGrid === 'x' || props.showGrid === 'y') {
+    return axisBg[props.showGrid]
+  }
+
+  return props.showGrid ? `${axisBg.x}, ${axisBg.y}` : null
+})
+
 const actualHandles = computed(() => {
   if (!props.resizable) return []
 
@@ -430,7 +448,7 @@ const resetBoundsAndMouseState = () => {
 }
 
 const checkParentSize = () => {
-  if (props.parent || props.parentSelector) {
+  if (props.parent) {
     const [newParentWidth, newParentHeight] = getParentSize()
 
     parentWidth.value = newParentWidth
@@ -442,10 +460,12 @@ const checkParentSize = () => {
 }
 
 const getParentSize = () => {
-  if (props.parent || props.parentSelector) {
-    const parent = props.parentSelector
-      ? el.value.closest(props.parentSelector)
-      : el.value.parentNode
+  if (props.parent) {
+    const parent =
+      typeof props.parent === 'string'
+        ? el.value.closest(props.parent)
+        : el.value.parentNode
+    parentEl.value = parent
     const style = window.getComputedStyle(parent, null)
     return [
       parseInt(style.getPropertyValue('width'), 10),
@@ -454,6 +474,20 @@ const getParentSize = () => {
   }
 
   return [null, null]
+}
+
+const showParentGrid = () => {
+  if (props.parent && props.showGrid) {
+    if (!parentEl.value) {
+      const parent =
+        typeof props.parent === 'string'
+          ? el.value.closest(props.parent)
+          : el.value.parentNode
+      parentEl.value = parent
+    }
+
+    parentEl.value.style.background = parentGridBackgroundStyle.value
+  }
 }
 
 const elementTouchDown = (e) => {
@@ -553,8 +587,10 @@ const deselect = (e) => {
   const target = e.target || e.srcElement
 
   const regex = new RegExp(props.className + '-([trmbl]{2})', '')
-
-  if (!el.value.contains(target) && !regex.test(target.className)) {
+  if (
+    !el.value ||
+    (!el.value.contains(target) && !regex.test(target.className))
+  ) {
     if (active.value && !props.preventDeactivation) {
       active.value = false
       emit('deactivated')
@@ -1023,6 +1059,10 @@ onMounted(() => {
     emit('activated')
   }
 
+  if (props.showGrid) {
+    showParentGrid()
+  }
+
   addEvent(document.documentElement, 'mousedown', deselect)
   addEvent(document.documentElement, 'touchend touchcancel', deselect)
   addEvent(window, 'resize', checkParentSize)
@@ -1096,6 +1136,13 @@ watch(
     }
 
     changeHeight(val)
+  },
+)
+
+watch(
+  () => props.showGrid,
+  () => {
+    showParentGrid()
   },
 )
 

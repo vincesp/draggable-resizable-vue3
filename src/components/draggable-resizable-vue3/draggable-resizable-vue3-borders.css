@@ -10,7 +10,7 @@
   width: 8px;
   height: 8px;
   background: transparent;
-  border: 1px solid blue;
+  border: 0px solid transparent;
 }
 .drv-handle-tl {
   top: -4px;
