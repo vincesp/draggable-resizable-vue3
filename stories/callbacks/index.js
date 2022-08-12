@@ -8,8 +8,8 @@ import OnResizeStartNotes from './notes/on-resize-start-callback.md'
 import OnResizeNotes from './notes/on-resize-callback.md'
 
 export default {
-  'onDragStart callback' : [() => new OnDragStart, OnDragStartNotes],
-  'onDrag callback': [() => new OnDrag, OnDragNotes],
-  'onResizeStart callback' : [() => new OnResizeStart, OnResizeStartNotes],
-  'onResize callback' : [() => new OnResize, OnResizeNotes]
+  'onDragStart callback': [() => new OnDragStart(), OnDragStartNotes],
+  'onDrag callback': [() => new OnDrag(), OnDragNotes],
+  'onResizeStart callback': [() => new OnResizeStart(), OnResizeStartNotes],
+  'onResize callback': [() => new OnResize(), OnResizeNotes],
 }

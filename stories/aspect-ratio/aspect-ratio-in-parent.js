@@ -7,5 +7,5 @@ export default () => ({
         <p>Combine aspect ratio and costrain in parent.</p>
       </vue-draggable-resizable>
     </div>
-  `
+  `,
 })

@@ -14,13 +14,13 @@ export default () => ({
   data() {
     return {
       width: 'auto',
-      height: 'auto'
+      height: 'auto',
     }
   },
   methods: {
     onResize(left, top, width, height) {
       this.width = width
       this.height = height
-    }
-  }
+    },
+  },
 })

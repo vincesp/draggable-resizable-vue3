@@ -6,17 +6,17 @@ export default () => ({
       <p v-if="active">The component has been activated.</p>
     </vue-draggable-resizable>
   `,
-  data () {
+  data() {
     return {
-      active: false
+      active: false,
     }
   },
   methods: {
-    onActivated () {
+    onActivated() {
       this.active = true
     },
-    onDeactivated () {
+    onDeactivated() {
       this.active = false
-    }
-  }
+    },
+  },
 })

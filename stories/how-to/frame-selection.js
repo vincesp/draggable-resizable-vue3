@@ -38,12 +38,36 @@ export default () => ({
       prevOffsetX: 0,
       prevOffsetY: 0,
       elements: [
-        {id: 1, x: 10, y: 10, w: 200, h: 200, isSelect: false, text: 'Element 1'},
-        {id: 2, x: 250, y: 200, w: 200, h: 200, isSelect: false, text: 'Element 2'},
-        {id: 3, x: 500, y: 300, w: 200, h: 200, isSelect: false, text: 'Element 3'}
+        {
+          id: 1,
+          x: 10,
+          y: 10,
+          w: 200,
+          h: 200,
+          isSelect: false,
+          text: 'Element 1',
+        },
+        {
+          id: 2,
+          x: 250,
+          y: 200,
+          w: 200,
+          h: 200,
+          isSelect: false,
+          text: 'Element 2',
+        },
+        {
+          id: 3,
+          x: 500,
+          y: 300,
+          w: 200,
+          h: 200,
+          isSelect: false,
+          text: 'Element 3',
+        },
       ],
       //frame selection
-      selectedItemNum:0,
+      selectedItemNum: 0,
       startX: 0, //X of the mouse (begin to move)
       startY: 0,
       initX: 0, //X of the mouse (moving)
@@ -59,124 +83,133 @@ export default () => ({
   },
   methods: {
     dragging(id, left, top) {
-      this.draggingId = id;
+      this.draggingId = id
 
-      const offsetX = left - this.draggingElement.x;
-      const offsetY = top - this.draggingElement.y;
+      const offsetX = left - this.draggingElement.x
+      const offsetY = top - this.draggingElement.y
 
-      const deltaX = this.deltaX(offsetX);
-      const deltaY = this.deltaY(offsetY);
+      const deltaX = this.deltaX(offsetX)
+      const deltaY = this.deltaY(offsetY)
 
       // if the dragging element is not been selected,clear all selected elements
-      if(this.draggingElement.isSelected===false){
-        this.elements.map((el) => { el.isSelected = false; });
-        this.selectedItemNum=0;
-        return;
-      };
-      this.elements.map(el => {
-        if (el.id !== id && el.isSelected===true) {
-          el.x += deltaX;
-          el.y += deltaY;
+      if (this.draggingElement.isSelected === false) {
+        this.elements.map((el) => {
+          el.isSelected = false
+        })
+        this.selectedItemNum = 0
+        return
+      }
+      this.elements.map((el) => {
+        if (el.id !== id && el.isSelected === true) {
+          el.x += deltaX
+          el.y += deltaY
         }
-        return el;
-      });
+        return el
+      })
     },
     dragstop(id, left, top) {
-      this.elements.map(el => {
+      this.elements.map((el) => {
         if (el.id === id) {
-          el.x = left;
-          el.y = top;
+          el.x = left
+          el.y = top
         }
-        return el;
-      });
+        return el
+      })
 
-      this.draggingId = null;
-      this.prevOffsetX = 0;
-      this.prevOffsetY = 0;
+      this.draggingId = null
+      this.prevOffsetX = 0
+      this.prevOffsetY = 0
     },
     deltaX(offsetX) {
-      const ret = offsetX - this.prevOffsetX;
+      const ret = offsetX - this.prevOffsetX
 
-      this.prevOffsetX = offsetX;
+      this.prevOffsetX = offsetX
 
-      return ret;
+      return ret
     },
     deltaY(offsetY) {
-      const ret = offsetY - this.prevOffsetY;
-      this.prevOffsetY = offsetY;
-      return ret;
+      const ret = offsetY - this.prevOffsetY
+      this.prevOffsetY = offsetY
+      return ret
     },
     mouseDown(e) {
       if (e.target.id !== 'components-container') {
-        return;
+        return
       }
       //clear all selected elements
       if (this.selectedItemNum > 0) {
-        this.elements.map((el) => { el.isSelected = false; });
-        this.selectedItemNum=0;
-        return;
+        this.elements.map((el) => {
+          el.isSelected = false
+        })
+        this.selectedItemNum = 0
+        return
       }
-      this.rectSelect = true;//begin to draw the rectangle
-      this.rectWidth =0;
-      this.rectHeight=0;
-      this.startX = e.offsetX;
-      this.startY = e.offsetY;
-      this.scrollX = e.clientX - e.offsetX;
-      this.scrollY = e.clientY - e.offsetY;
+      this.rectSelect = true //begin to draw the rectangle
+      this.rectWidth = 0
+      this.rectHeight = 0
+      this.startX = e.offsetX
+      this.startY = e.offsetY
+      this.scrollX = e.clientX - e.offsetX
+      this.scrollY = e.clientY - e.offsetY
     },
 
     mouseMove(e) {
       if (!this.rectSelect) {
-        return;
+        return
       }
-      this.rectShow = true;
-      this.initX = e.clientX - this.scrollX;
-      this.initY = e.clientY - this.scrollY;
-      this.rectX = Math.min(this.initX, this.startX);
-      this.rectY = Math.min(this.initY, this.startY);
-      this.rectWidth = Math.abs(this.initX - this.startX);
-      this.rectHeight = Math.abs(this.initY - this.startY);
-      this.clearBubble(e);
+      this.rectShow = true
+      this.initX = e.clientX - this.scrollX
+      this.initY = e.clientY - this.scrollY
+      this.rectX = Math.min(this.initX, this.startX)
+      this.rectY = Math.min(this.initY, this.startY)
+      this.rectWidth = Math.abs(this.initX - this.startX)
+      this.rectHeight = Math.abs(this.initY - this.startY)
+      this.clearBubble(e)
     },
     mouseUpfn(e) {
       if (this.rectSelect) {
         if (this.rectWidth > 10 && this.rectHeight > 10) {
-          this.elements.map((el)=>{
-            const elLeft=el.x;
-            const elRight=el.x+el.w;
-            const elTop=el.y;
-            const elBottom=el.y+el.h;
-            if (elLeft > this.rectX && elTop > this.rectY && (elRight < (this.rectX + this.rectWidth)) && (elBottom < (this.rectY + this.rectHeight))) {
-              el.isSelected = true;
-              this.selectedItemNum+=1;
+          this.elements.map((el) => {
+            const elLeft = el.x
+            const elRight = el.x + el.w
+            const elTop = el.y
+            const elBottom = el.y + el.h
+            if (
+              elLeft > this.rectX &&
+              elTop > this.rectY &&
+              elRight < this.rectX + this.rectWidth &&
+              elBottom < this.rectY + this.rectHeight
+            ) {
+              el.isSelected = true
+              this.selectedItemNum += 1
             }
-          });
+          })
         }
-        this.rectShow = false;
-        this.rectSelect = false;
-        this.clearBubble(e);
+        this.rectShow = false
+        this.rectSelect = false
+        this.clearBubble(e)
       }
     },
     clearBubble(e) {
       if (e.stopPropagation) {
-        e.stopPropagation();
+        e.stopPropagation()
       } else {
-        e.cancelBubble = true;
+        e.cancelBubble = true
       }
       if (e.preventDefault) {
-        e.preventDefault();
+        e.preventDefault()
       } else {
-        e.returnValue = false;
+        e.returnValue = false
       }
     },
     selectStyle(isSelected) {
-      return isSelected? "border:1px solid blue !important" :null;
-    }
+      return isSelected ? 'border:1px solid blue !important' : null
+    },
   },
   computed: {
     draggingElement: function () {
-      if (! this.draggingId) return;
-      return this.elements.find(el => el.id === this.draggingId);
+      if (!this.draggingId) return
+      return this.elements.find((el) => el.id === this.draggingId)
     },
-  }
+  },
 })

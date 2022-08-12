@@ -14,7 +14,7 @@ export default () => ({
   data() {
     return {
       prevent: false,
-      clicked: false
+      clicked: false,
     }
   },
   methods: {
@@ -28,6 +28,6 @@ export default () => ({
       setTimeout(() => {
         this.clicked = false
       }, 1000)
-    }
-  }
+    },
+  },
 })

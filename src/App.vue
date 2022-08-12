@@ -1,27 +1,24 @@
 <template>
-  <div id="app">
-    <div style="height: 500px; width: 500px; border: 1px solid red; position: relative;">
-      <vue-draggable-resizable :w="400" :h="400" :parent="true" :min-width="200" :min-height="200">
-        <p>vue-draggable-resizable</p>
-      </vue-draggable-resizable>
+  <main>
+    <div style="background: aqua; width: 771px; height: 500px">
+      <!-- <VueDraggableResizable
+        v-model:x="position.x"
+        v-model:y="position.y"
+        v-model:h="position.h"
+        v-model:w="position.w"
+        v-model:active="position.active"
+        :grid="[1, 1]"
+        :parent="true"
+      /> -->
+      <VueDraggableResizable />
     </div>
-  </div>
+  </main>
 </template>
 
-<script>
-import VueDraggableResizable from './components/vue-draggable-resizable'
-import './components/vue-draggable-resizable.css'
+<script setup>
+import VueDraggableResizable from './components/vue3-draggable-resizable-div/vue-draggable-resizable.vue'
+import './components/vue3-draggable-resizable-div/vue-draggable-resizable.css'
+import { ref } from 'vue'
 
-export default {
-  name: 'app',
-  components: {
-    VueDraggableResizable
-  }
-}
+const position = ref({ x: 100, y: 100, w: 100, h: 100, active: true })
 </script>
-
-<style>
-  .vdr {
-    border: 1px dashed black;
-  }
-</style>

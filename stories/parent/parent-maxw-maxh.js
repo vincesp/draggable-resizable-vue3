@@ -16,13 +16,13 @@ export default () => ({
   data() {
     return {
       width: 200,
-      height: 200
+      height: 200,
     }
   },
   methods: {
     onResizing(x, y, width, height) {
       this.width = width
       this.height = height
-    }
-  }
+    },
+  },
 })

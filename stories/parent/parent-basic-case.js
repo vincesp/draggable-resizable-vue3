@@ -7,5 +7,5 @@ export default () => ({
         <p>You cannot move me or resize me outside my parent element.</p>
       </vue-draggable-resizable>
     </div>
-  `
+  `,
 })

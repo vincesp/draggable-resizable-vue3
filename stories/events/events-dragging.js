@@ -6,11 +6,11 @@ export default () => ({
       <p>{{ dragging ? 'You are dragging me crazy' : 'Standing still' }}<br>X: {{ x }} / Y: {{ y }}</p>
     </vue-draggable-resizable>
   `,
-  data () {
+  data() {
     return {
       dragging: false,
       x: 0,
-      y: 0
+      y: 0,
     }
   },
   beforeDestroy: function () {
@@ -24,6 +24,6 @@ export default () => ({
     },
     onDragStop: function (x, y) {
       this.dragging = false
-    }
-  }
+    },
+  },
 })

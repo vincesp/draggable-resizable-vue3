@@ -14,5 +14,5 @@ export default () => ({
       <div slot="bl">😣</div>
       <div slot="ml">😕</div>
     </vue-draggable-resizable>
-  `
+  `,
 })

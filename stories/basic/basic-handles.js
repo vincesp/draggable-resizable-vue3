@@ -19,20 +19,22 @@ export default () => ({
   data() {
     return {
       handles: {
-        'tl': true,
-        'tm': true,
-        'tr': true,
-        'mr': true,
-        'br': true,
-        'bm': true,
-        'bl': true,
-        'ml': true
-      }
+        tl: true,
+        tm: true,
+        tr: true,
+        mr: true,
+        br: true,
+        bm: true,
+        bl: true,
+        ml: true,
+      },
     }
   },
   computed: {
     enabledHandles() {
-      return Object.keys(this.handles).filter(handle => this.handles[handle] === true)
-    }
-  }
+      return Object.keys(this.handles).filter(
+        (handle) => this.handles[handle] === true,
+      )
+    },
+  },
 })

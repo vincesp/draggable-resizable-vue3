@@ -12,5 +12,5 @@ export default () => ({
         <img src="https://js.cx/clipart/ball.svg" />
       </vue-draggable-resizable>
     </div>
-  `
+  `,
 })

@@ -1,0 +1,1238 @@
+<template>
+  <div
+    ref="el"
+    :style="style"
+    :class="[
+      {
+        [classNameActive]: active,
+        [classNameDragging]: dragging,
+        [classNameResizing]: resizing,
+        [classNameDraggable]: draggable,
+        [classNameResizable]: resizable,
+      },
+      className,
+    ]"
+    @mousedown="elementMouseDown"
+    @touchstart="elementTouchDown"
+  >
+    <div
+      v-for="handleEl in actualHandles"
+      :key="handleEl"
+      :class="[classNameHandle, classNameHandle + '-' + handleEl]"
+      :style="{ display: active ? 'block' : 'none' }"
+      @mousedown.stop.prevent="handleDown(handleEl, $event)"
+      @touchstart.stop.prevent="handleTouchDown(handleEl, $event)"
+    >
+      <slot :name="handle"></slot>
+    </div>
+
+    <slot></slot>
+  </div>
+</template>
+
+<script setup>
+import {
+  matchesSelectorToParentElements,
+  getComputedSize,
+  addEvent,
+  removeEvent,
+} from './utils/dom'
+import {
+  computeWidth,
+  computeHeight,
+  restrictToBounds,
+  snapToGrid,
+} from './utils/fns'
+import { ref, computed, onMounted, watch } from 'vue'
+
+const events = {
+  mouse: {
+    start: 'mousedown',
+    move: 'mousemove',
+    stop: 'mouseup',
+  },
+
+  touch: {
+    start: 'touchstart',
+    move: 'touchmove',
+    stop: 'touchend',
+  },
+}
+
+const userSelectNone = {
+  userSelect: 'none',
+  MozUserSelect: 'none',
+  WebkitUserSelect: 'none',
+  MsUserSelect: 'none',
+}
+
+const userSelectAuto = {
+  userSelect: 'auto',
+  MozUserSelect: 'auto',
+  WebkitUserSelect: 'auto',
+  MsUserSelect: 'auto',
+}
+
+let eventsFor = events.mouse
+
+const props = defineProps({
+  className: {
+    type: String,
+    default: 'vdr',
+  },
+  classNameDraggable: {
+    type: String,
+    default: 'draggable',
+  },
+  classNameResizable: {
+    type: String,
+    default: 'resizable',
+  },
+  classNameDragging: {
+    type: String,
+    default: 'dragging',
+  },
+  classNameResizing: {
+    type: String,
+    default: 'resizing',
+  },
+  classNameActive: {
+    type: String,
+    default: 'active',
+  },
+  classNameHandle: {
+    type: String,
+    default: 'handle',
+  },
+  disableUserSelect: {
+    type: Boolean,
+    default: true,
+  },
+  enableNativeDrag: {
+    type: Boolean,
+    default: false,
+  },
+  preventDeactivation: {
+    type: Boolean,
+    default: false,
+  },
+  active: {
+    type: Boolean,
+    default: false,
+  },
+  draggable: {
+    type: Boolean,
+    default: true,
+  },
+  resizable: {
+    type: Boolean,
+    default: true,
+  },
+  lockAspectRatio: {
+    type: Boolean,
+    default: false,
+  },
+  w: {
+    type: [Number, String],
+    default: 200,
+    validator: (val) => {
+      if (typeof val === 'number') {
+        return val > 0
+      }
+
+      return val === 'auto'
+    },
+  },
+  h: {
+    type: [Number, String],
+    default: 200,
+    validator: (val) => {
+      if (typeof val === 'number') {
+        return val > 0
+      }
+      return val === 'auto'
+    },
+  },
+  minWidth: {
+    type: Number,
+    default: 0,
+    validator: (val) => val >= 0,
+  },
+  minHeight: {
+    type: Number,
+    default: 0,
+    validator: (val) => val >= 0,
+  },
+  maxWidth: {
+    type: Number,
+    default: null,
+    validator: (val) => val >= 0,
+  },
+  maxHeight: {
+    type: Number,
+    default: null,
+    validator: (val) => val >= 0,
+  },
+  x: {
+    type: Number,
+    default: 0,
+  },
+  y: {
+    type: Number,
+    default: 0,
+  },
+  z: {
+    type: [String, Number],
+    default: 'auto',
+    validator: (val) => (typeof val === 'string' ? val === 'auto' : val >= 0),
+  },
+  handles: {
+    type: Array,
+    default: () => ['tl', 'tm', 'tr', 'mr', 'br', 'bm', 'bl', 'ml'],
+    validator: (val) => {
+      const s = new Set(['tl', 'tm', 'tr', 'mr', 'br', 'bm', 'bl', 'ml'])
+      return new Set(val.filter((h) => s.has(h))).size === val.length
+    },
+  },
+  dragHandle: {
+    type: String,
+    default: null,
+  },
+  dragCancel: {
+    type: String,
+    default: null,
+  },
+  axis: {
+    type: String,
+    default: 'both',
+    validator: (val) => ['x', 'y', 'both'].includes(val),
+  },
+  grid: {
+    type: Array,
+    default: () => [1, 1],
+  },
+  parent: {
+    type: Boolean,
+    default: false,
+  },
+  scale: {
+    type: [Number, Array],
+    default: 1,
+    validator: (val) => {
+      if (typeof val === 'number') {
+        return val > 0
+      }
+
+      return val.length === 2 && val[0] > 0 && val[1] > 0
+    },
+  },
+  onDragStart: {
+    type: Function,
+    default: () => true,
+  },
+  onDrag: {
+    type: Function,
+    default: () => true,
+  },
+  onResizeStart: {
+    type: Function,
+    default: () => true,
+  },
+  onResize: {
+    type: Function,
+    default: () => true,
+  },
+})
+
+const emit = defineEmits([
+  'update:x',
+  'update:y',
+  'update:w',
+  'update:h',
+  'update:active',
+  'resizing',
+  'resizestop',
+  'dragging',
+  'dragstop',
+  'activated',
+  'deactivated',
+])
+
+const el = ref(null)
+
+const noProps = ref({ h: 100, w: 100, active: true, x: 0, y: 0 })
+
+const width = computed({
+  get() {
+    return props.w || noProps.value.w
+  },
+  set(value) {
+    emit('update:w', value)
+    noProps.value.w = value
+  },
+})
+
+const height = computed({
+  get() {
+    return props.h || noProps.value.h
+  },
+
+  set(value) {
+    emit('update:h', value)
+    noProps.value.h = value
+  },
+})
+
+const left = computed({
+  get() {
+    return props.x || noProps.value.x
+  },
+
+  set(value) {
+    emit('update:x', value)
+    noProps.value.x = value
+  },
+})
+
+const top = computed({
+  get() {
+    return props.y || noProps.value.y
+  },
+
+  set(value) {
+    emit('update:y', value)
+    noProps.value.y = value
+  },
+})
+
+const right = ref(null)
+const bottom = ref(null)
+
+const active = computed({
+  get() {
+    return props.active || noProps.value.active
+  },
+
+  set(value) {
+    emit('update:active', value)
+    noProps.value.active = value
+  },
+})
+
+const widthTouched = ref(false)
+const heightTouched = ref(false)
+
+const aspectFactor = ref(null)
+
+const parentWidth = ref(null)
+const parentHeight = ref(null)
+
+const handle = ref(null)
+const resizing = ref(false)
+const dragging = ref(false)
+const dragEnable = ref(false)
+const resizeEnable = ref(false)
+const zIndex = ref(props.z)
+const mouseClickPosition = ref(null)
+const bounds = ref(null)
+
+const style = computed(() => {
+  return {
+    transform: `translate(${left.value}px, ${top.value}px)`,
+    width: computedWidth.value,
+    height: computedHeight.value,
+    zIndex: zIndex.value,
+    ...(dragging.value && props.disableUserSelect
+      ? userSelectNone
+      : userSelectAuto),
+  }
+})
+
+const actualHandles = computed(() => {
+  if (!props.resizable) return []
+
+  return props.handles
+})
+
+const computedWidth = computed(() => {
+  if (width.value === 'auto') {
+    if (!widthTouched.value) {
+      return 'auto'
+    }
+  }
+
+  return width.value + 'px'
+})
+
+const computedHeight = computed(() => {
+  if (height.value === 'auto') {
+    if (!heightTouched.value) {
+      return 'auto'
+    }
+  }
+
+  return height.value + 'px'
+})
+const minW = ref(props.minWidth)
+const minH = ref(props.minHeight)
+const maxW = ref(props.maxWidth)
+const maxH = ref(props.maxHeight)
+
+const resizingOnX = computed(() => {
+  return (
+    Boolean(handle.value) &&
+    (handle.value.includes('l') || handle.value.includes('r'))
+  )
+})
+
+const resizingOnY = computed(() => {
+  return (
+    Boolean(handle.value) &&
+    (handle.value.includes('t') || handle.value.includes('b'))
+  )
+})
+
+const isCornerHandle = computed(() => {
+  return (
+    Boolean(handle.value) && ['tl', 'tr', 'br', 'bl'].includes(handle.value)
+  )
+})
+
+// methods
+const resetBoundsAndMouseState = () => {
+  mouseClickPosition.value = {
+    mouseX: 0,
+    mouseY: 0,
+    x: 0,
+    y: 0,
+    w: 0,
+    h: 0,
+  }
+
+  bounds.value = {
+    minLeft: null,
+    maxLeft: null,
+    minRight: null,
+    maxRight: null,
+    minTop: null,
+    maxTop: null,
+    minBottom: null,
+    maxBottom: null,
+  }
+}
+
+const checkParentSize = () => {
+  if (props.parent) {
+    const [newParentWidth, newParentHeight] = getParentSize()
+
+    parentWidth.value = newParentWidth
+    parentHeight.value = newParentHeight
+
+    right.value = parentWidth.value - width.value - left.value
+    bottom.value = parentHeight.value - height.value - top.value
+  }
+}
+
+const getParentSize = () => {
+  if (props.parent) {
+    const style = window.getComputedStyle(el.value.parentNode, null)
+    return [
+      parseInt(style.getPropertyValue('width'), 10),
+      parseInt(style.getPropertyValue('height'), 10),
+    ]
+  }
+
+  return [null, null]
+}
+
+const elementTouchDown = (e) => {
+  eventsFor = events.touch
+  elementDown(e)
+}
+
+const elementMouseDown = (e) => {
+  eventsFor = events.mouse
+  elementDown(e)
+}
+
+const elementDown = (e) => {
+  if (e instanceof MouseEvent && e.which !== 1) {
+    return
+  }
+
+  const target = e.target || e.srcElement
+
+  if (el.value.contains(target)) {
+    if (props.onDragStart(e) === false) {
+      return
+    }
+
+    if (
+      (props.dragHandle &&
+        !matchesSelectorToParentElements(target, props.dragHandle, el.value)) ||
+      (props.dragCancel &&
+        matchesSelectorToParentElements(target, props.dragCancel, el.value))
+    ) {
+      dragging.value = false
+      return
+    }
+
+    if (!active.value) {
+      active.value = true
+      emit('activated')
+      // emit('update:active', true)
+    }
+
+    if (props.draggable) {
+      dragEnable.value = true
+    }
+
+    mouseClickPosition.value.mouseX = e.touches ? e.touches[0].pageX : e.pageX
+    mouseClickPosition.value.mouseY = e.touches ? e.touches[0].pageY : e.pageY
+    mouseClickPosition.value.left = left.value
+    mouseClickPosition.value.right = right.value
+    mouseClickPosition.value.top = top.value
+    mouseClickPosition.value.bottom = bottom.value
+
+    if (props.parent) {
+      bounds.value = calcDragLimits()
+    }
+
+    addEvent(document.documentElement, eventsFor.move, move)
+    addEvent(document.documentElement, eventsFor.stop, handleUp)
+  }
+}
+
+const calcDragLimits = () => {
+  return {
+    minLeft: left.value % props.grid[0],
+    maxLeft:
+      Math.floor(
+        (parentWidth.value - width.value - left.value) / props.grid[0],
+      ) *
+        props.grid[0] +
+      left.value,
+
+    minRight: right.value % props.grid[0],
+    maxRight:
+      Math.floor(
+        (parentWidth.value - width.value - right.value) / props.grid[0],
+      ) *
+        props.grid[0] +
+      right.value,
+
+    minTop: top.value % props.grid[1],
+    maxTop:
+      Math.floor(
+        (parentHeight.value - height.value - top.value) / props.grid[1],
+      ) *
+        props.grid[1] +
+      top.value,
+    minBottom: bottom.value % props.grid[1],
+    maxBottom:
+      Math.floor(
+        (parentHeight.value - height.value - bottom.value) / props.grid[1],
+      ) *
+        props.grid[1] +
+      bottom.value,
+  }
+}
+
+const deselect = (e) => {
+  const target = e.target || e.srcElement
+
+  const regex = new RegExp(props.className + '-([trmbl]{2})', '')
+
+  if (!el.value.contains(target) && !regex.test(target.className)) {
+    if (active.value && !props.preventDeactivation) {
+      active.value = false
+      emit('deactivated')
+      // emit('update:active', false)
+    }
+
+    removeEvent(document.documentElement, eventsFor.move, handleResize)
+  }
+
+  resetBoundsAndMouseState()
+}
+
+const handleTouchDown = (handle, e) => {
+  eventsFor = events.touch
+  handleDown(handle, e)
+}
+
+const handleDown = (handleEl, e) => {
+  if (e instanceof MouseEvent && e.which !== 1) {
+    return
+  }
+
+  if (props.onResizeStart(handleEl, e) === false) {
+    return
+  }
+
+  if (e.stopPropagation) e.stopPropagation()
+
+  // Here we avoid a dangerous recursion by faking
+
+  // corner handles as middle handles
+
+  if (props.lockAspectRatio && !handleEl.includes('m')) {
+    handle.value = 'm' + handleEl.substring(1)
+  } else {
+    handle.value = handleEl
+  }
+
+  resizeEnable.value = true
+
+  mouseClickPosition.value.mouseX = e.touches ? e.touches[0].pageX : e.pageX
+  mouseClickPosition.value.mouseY = e.touches ? e.touches[0].pageY : e.pageY
+  mouseClickPosition.value.left = left.value
+  mouseClickPosition.value.right = right.value
+  mouseClickPosition.value.top = top.value
+  mouseClickPosition.value.bottom = bottom.value
+
+  bounds.value = calcResizeLimits()
+
+  addEvent(document.documentElement, eventsFor.move, handleResize)
+  addEvent(document.documentElement, eventsFor.stop, handleUp)
+}
+
+const calcResizeLimits = () => {
+  const [gridX, gridY] = props.grid
+
+  if (props.lockAspectRatio) {
+    if (minW.value / minH.value > aspectFactor.value) {
+      minH.value = minW.value / aspectFactor.value
+    } else {
+      minW.value = aspectFactor.value * minH.value
+    }
+
+    if (maxW.value && maxH.value) {
+      maxW.value = Math.min(maxW.value, aspectFactor.value * maxH.value)
+      maxH.value = Math.min(maxH.value, maxW.value / aspectFactor.value)
+    } else if (maxW.value) {
+      maxH.value = maxW.value / aspectFactor.value
+    } else if (maxH.value) {
+      maxW.value = aspectFactor.value * maxH.value
+    }
+  }
+
+  maxW.value = maxW.value - (maxW.value % gridX)
+  maxH.value = maxH.value - (maxH.value % gridY)
+
+  const limits = {
+    minLeft: null,
+    maxLeft: null,
+    minTop: null,
+    maxTop: null,
+    minRight: null,
+    maxright: null,
+    minBottom: null,
+    maxbottom: null,
+  }
+
+  if (props.parent) {
+    limits.minLeft = left.value % gridX
+    limits.maxLeft =
+      left.value + Math.floor((width.value - minW.value) / gridX) * gridX
+    limits.minTop = top.value % gridY
+    limits.maxTop =
+      top.value + Math.floor((height.value - minH.value) / gridY) * gridY
+    limits.minRight = right.value % gridX
+    limits.maxright =
+      right.value + Math.floor((width.value - minW.value) / gridX) * gridX
+    limits.minBottom = bottom.value % gridY
+    limits.maxbottom =
+      bottom.value + Math.floor((height.value - minH.value) / gridY) * gridY
+
+    if (maxW.value) {
+      limits.minLeft = Math.max(
+        limits.minLeft,
+        parentwidth.value - right.value - maxW.value,
+      )
+
+      limits.minRight = Math.max(
+        limits.minRight,
+        parentwidth.value - left.value - maxW.value,
+      )
+    }
+
+    if (maxH.value) {
+      limits.minTop = Math.max(
+        limits.minTop,
+        parentheight.value - bottom.value - maxH.value,
+      )
+
+      limits.minBottom = Math.max(
+        limits.minBottom,
+        parentheight.value - top.value - maxH.value,
+      )
+    }
+
+    if (props.lockAspectRatio) {
+      limits.minLeft = Math.max(
+        limits.minLeft,
+        left.value - top.value * aspectFactor.value,
+      )
+      limits.minTop = Math.max(
+        limits.minTop,
+        top.value - left.value / aspectFactor.value,
+      )
+      limits.minRight = Math.max(
+        limits.minRight,
+        right.value - bottom.value * aspectFactor.value,
+      )
+      limits.minBottom = Math.max(
+        limits.minBottom,
+        bottom.value - right.value / aspectFactor.value,
+      )
+    }
+  } else {
+    limits.minLeft = null
+    limits.maxLeft =
+      left.value + Math.floor((width.value - minW.value) / gridX) * gridX
+    limits.minTop = null
+    limits.maxTop =
+      top.value + Math.floor((height.value - minH.value) / gridY) * gridY
+    limits.minRight = null
+    limits.maxright =
+      right.value + Math.floor((width.value - minW.value) / gridX) * gridX
+    limits.minBottom = null
+    limits.maxbottom =
+      bottom.value + Math.floor((height.value - minH.value) / gridY) * gridY
+
+    if (maxW.value) {
+      limits.minLeft = -(right.value + maxW.value)
+      limits.minRight = -(left.value + maxW.value)
+    }
+
+    if (maxH.value) {
+      limits.minTop = -(bottom.value + maxH.value)
+      limits.minBottom = -(top.value + maxH.value)
+    }
+
+    if (props.lockAspectRatio && maxW.value && maxH.value) {
+      limits.minLeft = Math.min(limits.minLeft, -(right.value + maxW.value))
+      limits.minTop = Math.min(limits.minTop, -(maxH.value + bottom.value))
+      limits.minRight = Math.min(limits.minRight, -left.value - maxW.value)
+      limits.minBottom = Math.min(limits.minBottom, -top.value - maxH.value)
+    }
+  }
+
+  return limits
+}
+
+const move = (e) => {
+  if (resizing.value) {
+    handleResize(e)
+  } else if (dragEnable.value) {
+    handleDrag(e)
+  }
+}
+const handleDrag = (e) => {
+  const grid = props.grid
+
+  const tmpDeltaX =
+    props.axis && props.axis !== 'y'
+      ? mouseClickPosition.value.mouseX -
+        (e.touches ? e.touches[0].pageX : e.pageX)
+      : 0
+
+  const tmpDeltaY =
+    props.axis && props.axis !== 'x'
+      ? mouseClickPosition.value.mouseY -
+        (e.touches ? e.touches[0].pageY : e.pageY)
+      : 0
+
+  const [deltaX, deltaY] = snapToGrid(grid, tmpDeltaX, tmpDeltaY, props.scale)
+
+  const leftPx = restrictToBounds(
+    mouseClickPosition.value.left - deltaX,
+    bounds.value.minLeft,
+    bounds.value.maxLeft,
+  )
+
+  const topPx = restrictToBounds(
+    mouseClickPosition.value.top - deltaY,
+    bounds.value.minTop,
+    bounds.value.maxTop,
+  )
+
+  if (props.onDrag(left, top) === false) {
+    return
+  }
+
+  const rightPx = restrictToBounds(
+    mouseClickPosition.value.right + deltaX,
+    bounds.value.minRight,
+    bounds.value.maxRight,
+  )
+
+  const bottomPx = restrictToBounds(
+    mouseClickPosition.value.bottom + deltaY,
+    bounds.value.minBottom,
+    bounds.value.maxBottom,
+  )
+
+  left.value = leftPx
+  top.value = topPx
+  right.value = rightPx
+  bottom.value = bottomPx
+
+  emit('dragging', left.value, top.value)
+
+  dragging.value = true
+}
+
+const moveHorizontally = (val) => {
+  // should calculate with scale 1.
+
+  const [deltaX, _] = snapToGrid(props.grid, val, top.value, 1)
+
+  const leftPx = restrictToBounds(
+    deltaX,
+    bounds.value.minLeft,
+    bounds.value.maxLeft,
+  )
+
+  left.value = leftPx
+  right.value = parentWidth.value - width.value - leftPx
+}
+
+const moveVertically = (val) => {
+  // should calculate with scale 1.
+
+  const [_, deltaY] = snapToGrid(props.grid, left.value, val, 1)
+
+  const topPx = restrictToBounds(
+    deltaY,
+    bounds.value.minTop,
+    bounds.value.maxTop,
+  )
+
+  top.value = topPx
+  bottom.value = parentHeight.value - height.value - topPx
+}
+
+const handleResize = (e) => {
+  let leftPx = left.value
+  let topPx = top.value
+  let rightPx = right.value
+  let bottomPx = bottom.value
+
+  const lockAspectRatio = props.lockAspectRatio
+
+  const tmpDeltaX =
+    mouseClickPosition.value.mouseX - (e.touches ? e.touches[0].pageX : e.pageX)
+
+  const tmpDeltaY =
+    mouseClickPosition.value.mouseY - (e.touches ? e.touches[0].pageY : e.pageY)
+
+  if (!widthTouched.value && tmpDeltaX) {
+    widthTouched.value = true
+  }
+
+  if (!heightTouched.value && tmpDeltaY) {
+    heightTouched.value = true
+  }
+
+  const [deltaX, deltaY] = snapToGrid(
+    props.grid,
+    tmpDeltaX,
+    tmpDeltaY,
+    props.scale,
+  )
+
+  if (handle.value.includes('b')) {
+    bottomPx = restrictToBounds(
+      mouseClickPosition.value.bottom + deltaY,
+      bounds.value.minBottom,
+      bounds.value.maxBottom,
+    )
+
+    if (props.lockAspectRatio && resizingOnY) {
+      rightPx = right.value - (bottom.value - bottomPx) * aspectFactor.value
+    }
+  } else if (handle.value.includes('t')) {
+    topPx = restrictToBounds(
+      mouseClickPosition.value.top - deltaY,
+      bounds.value.minTop,
+      bounds.value.maxTop,
+    )
+
+    if (props.lockAspectRatio && resizingOnY) {
+      leftPx = left.value - (top.value - topPx) * aspectFactor.value
+    }
+  }
+
+  if (handle.value.includes('r')) {
+    rightPx = restrictToBounds(
+      mouseClickPosition.value.right + deltaX,
+      bounds.value.minRight,
+      bounds.value.maxRight,
+    )
+
+    if (props.lockAspectRatio && resizingOnX) {
+      bottomPx = bottom.value - (right.value - rightPx) / aspectFactor.value
+    }
+  } else if (handle.value.includes('l')) {
+    leftPx = restrictToBounds(
+      mouseClickPosition.value.left - deltaX,
+      bounds.value.minLeft,
+      bounds.value.maxLeft,
+    )
+
+    if (props.lockAspectRatio && resizingOnX) {
+      topPx = top.value - (left.value - leftPx) / aspectFactor.value
+    }
+  }
+
+  const widthPx = computeWidth(parentWidth.value, leftPx, rightPx)
+
+  const heightPx = computeHeight(parentHeight.value, topPx, bottomPx)
+
+  if (
+    props.onResize(handle.value, leftPx, topPx, widthPx, heightPx) === false
+  ) {
+    return
+  }
+
+  left.value = leftPx
+  top.value = topPx
+  right.value = rightPx
+  bottom.value = bottomPx
+  width.value = widthPx
+  height.value = heightPx
+
+  emit('resizing', left.value, top.value, width.value, height.value)
+
+  resizing.value = true
+}
+
+const changeWidth = (val) => {
+  // should calculate with scale 1.
+
+  const [newWidth, _] = snapToGrid(props.grid, val, 0, 1)
+
+  let rightPx = restrictToBounds(
+    parentWidth.value - newWidth - left.value,
+    bounds.value.minRight,
+    bounds.value.maxRight,
+  )
+
+  let bottomPx = bottom.value
+
+  if (props.lockAspectRatio) {
+    bottomPx = bottom.value - (right.value - rightPx) / aspectFactor.value
+  }
+
+  const widthPx = computeWidth(parentWidth.value, left.value, rightPx)
+  const heightPx = computeHeight(parentHeight.value, top.value, bottomPx)
+
+  right.value = rightPx
+  bottom.value = bottomPx
+  width.value = widthPx
+  height.value = heightPx
+}
+
+const changeHeight = (val) => {
+  // should calculate with scale 1.
+
+  const [_, newHeight] = snapToGrid(props.grid, 0, val, 1)
+
+  let bottomPx = restrictToBounds(
+    parentHeight.value - newHeight - top.value,
+    bounds.value.minBottom,
+    bounds.value.maxBottom,
+  )
+
+  let rightPx = right.value
+
+  if (props.lockAspectRatio) {
+    rightPx = right.value - (bottom.value - bottomPx) * aspectFactor.value
+  }
+
+  const widthPx = computeWidth(parentWidth.value, left.value, rightPx)
+
+  const heightPx = computeHeight(parentHeight.value, top.value, bottomPx)
+
+  right.value = rightPx
+  bottom.value = bottomPx
+  width.value = widthPx
+  height.value = heightPx
+}
+
+const handleUp = (e) => {
+  handle.value = null
+
+  resetBoundsAndMouseState()
+
+  dragEnable.value = false
+  resizeEnable.value = false
+
+  if (resizing.value) {
+    resizing.value = false
+
+    emit('resizestop', left.value, top.value, width.value, height.value)
+  }
+
+  if (dragging.value) {
+    dragging.value = false
+
+    emit('dragstop', left.value, top.value)
+  }
+
+  removeEvent(document.documentElement, eventsFor.move, handleResize)
+}
+
+onMounted(() => {
+  resetBoundsAndMouseState()
+
+  if (!props.enableNativeDrag) {
+    el.value.ondragstart = () => false
+  }
+
+  const [parentWidthPx, parentHeightPx] = getParentSize()
+
+  parentWidth.value = parentWidthPx
+  parentHeight.value = parentHeightPx
+
+  const [widthPx, heightPx] = getComputedSize(el.value)
+
+  aspectFactor.value =
+    (width.value !== 'auto' ? width.value : widthPx) /
+    (height.value !== 'auto' ? height.value : heightPx)
+
+  width.value = width.value !== 'auto' ? width.value : widthPx
+  height.value = height.value !== 'auto' ? height.value : heightPx
+  right.value = parentWidth.value - width.value - left.value
+  bottom.value = parentHeight.value - height.value - top.value
+
+  if (active.value) {
+    emit('activated')
+  }
+
+  addEvent(document.documentElement, 'mousedown', deselect)
+  addEvent(document.documentElement, 'touchend touchcancel', deselect)
+  addEvent(window, 'resize', checkParentSize)
+})
+
+watch(
+  () => props.x,
+  (val) => {
+    if (resizing.value || dragging.value) {
+      return
+    }
+
+    if (props.parent) {
+      bounds.value = calcDragLimits()
+    }
+
+    moveHorizontally(val)
+  },
+)
+
+watch(
+  () => props.y,
+  (val) => {
+    if (resizing.value || dragging.value) {
+      return
+    }
+
+    if (props.parent) {
+      bounds.value = calcDragLimits()
+    }
+
+    moveVertically(val)
+  },
+)
+
+watch(
+  () => props.lockAspectRatio,
+  (val) => {
+    if (val) {
+      aspectFactor.value = width.value / height.value
+    } else {
+      aspectFactor.value = undefined
+    }
+  },
+)
+
+watch(
+  () => props.w,
+  (val) => {
+    if (resizing.value || dragging.value) {
+      return
+    }
+
+    if (props.parent) {
+      bounds.value = calcResizeLimits()
+    }
+
+    changeWidth(val)
+  },
+)
+
+watch(
+  () => props.h,
+  (val) => {
+    if (resizing.value || dragging.value) {
+      return
+    }
+
+    if (props.parent) {
+      bounds.value = calcResizeLimits()
+    }
+
+    changeHeight(val)
+  },
+)
+
+const old = {
+  created: function () {
+    // eslint-disable-next-line
+
+    if (maxWidth && minWidth > maxWidth)
+      console.warn(
+        '[Vdr warn]: Invalid prop: minWidth cannot be greater than maxWidth',
+      )
+
+    // eslint-disable-next-line
+
+    if (maxHeight && minHeight > maxHeight)
+      console.warn(
+        '[Vdr warn]: Invalid prop: minHeight cannot be greater than maxHeight',
+      )
+
+    resetBoundsAndMouseState()
+  },
+
+  mounted: function () {
+    if (!props.enableNativeDrag) {
+      el.value.ondragstart = () => false
+    }
+
+    const [parentWidth, parentHeight] = getParentSize()
+
+    parentWidth.value = parentWidth
+
+    parentHeight.value = parentHeight
+
+    const [width, height] = getComputedSize(el.value)
+
+    aspectFactor.value =
+      (width.value !== 'auto' ? width.value : width) /
+      (height.value !== 'auto' ? height.value : height)
+
+    width.value = width.value !== 'auto' ? width.value : width
+
+    height.value = height.value !== 'auto' ? height.value : height
+
+    right.value = parentWidth.value - width.value - left.value
+
+    bottom.value = parentHeight.value - height.value - top.value
+
+    if (active.value) {
+      emit('activated')
+    }
+
+    addEvent(document.documentElement, 'mousedown', deselect)
+
+    addEvent(document.documentElement, 'touchend touchcancel', deselect)
+
+    addEvent(window, 'resize', checkParentSize)
+  },
+
+  beforeUnmount: function () {
+    removeEvent(document.documentElement, 'mousedown', deselect)
+
+    removeEvent(document.documentElement, 'touchstart', handleUp)
+
+    removeEvent(document.documentElement, 'mousemove', move)
+
+    removeEvent(document.documentElement, 'touchmove', move)
+
+    removeEvent(document.documentElement, 'mouseup', handleUp)
+
+    removeEvent(document.documentElement, 'touchend touchcancel', deselect)
+
+    removeEvent(window, 'resize', checkParentSize)
+  },
+
+  methods: {},
+
+  watch: {
+    // active(val) {
+    //   active.value = val
+
+    //   if (val) {
+    //     emit('activated')
+    //   } else {
+    //     emit('deactivated')
+    //   }
+    // },
+
+    // z(val) {
+    //   if (val >= 0 || val === 'auto') {
+    //     zIndex = val
+    //   }
+    // },
+
+    x(val) {
+      if (resizing.value || dragging.value) {
+        return
+      }
+
+      if (props.parent) {
+        bounds.value = calcDragLimits()
+      }
+
+      moveHorizontally(val)
+    },
+
+    y(val) {
+      if (resizing.value || dragging.value) {
+        return
+      }
+
+      if (props.parent) {
+        bounds.value = calcDragLimits()
+      }
+
+      moveVertically(val)
+    },
+
+    lockAspectRatio(val) {
+      if (val) {
+        aspectFactor.value = width.value / height.value
+      } else {
+        aspectFactor.value = undefined
+      }
+    },
+
+    w(val) {
+      if (resizing.value || dragging.value) {
+        return
+      }
+
+      if (props.parent) {
+        bounds.value = calcResizeLimits()
+      }
+
+      changeWidth(val)
+    },
+
+    h(val) {
+      if (resizing.value || dragging.value) {
+        return
+      }
+
+      if (props.parent) {
+        bounds.value = calcResizeLimits()
+      }
+
+      changeHeight(val)
+    },
+  },
+}
+</script>

@@ -7,5 +7,5 @@ export default () => ({
         <p>Try to resize the window. The component will adapt to the new parent size.</p>
       </vue-draggable-resizable>
     </div>
-  `
+  `,
 })

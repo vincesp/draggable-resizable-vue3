@@ -12,10 +12,13 @@ import StyleHandleSlots from './style-handle-slots'
 import StyleHandleSlotsNotes from './notes/style-handle-slots.md'
 
 export default {
-  'Style Component' : [() => new StyleComponent, StyleComponentNotes],
-  'Style Dragging' : [() => new StyleDragging, StyleDraggingNotes],
-  'Style Resizing' : [() => new StyleResizing, StyleResizingNotes],
-  'Style Active' : [() => new StyleActive, StyleActiveNotes],
-  'Style Handles' : [() => new StyleHandles, StyleHandlesNotes],
-  'Style Handles With Slots' : [() => new StyleHandleSlots, StyleHandleSlotsNotes]
+  'Style Component': [() => new StyleComponent(), StyleComponentNotes],
+  'Style Dragging': [() => new StyleDragging(), StyleDraggingNotes],
+  'Style Resizing': [() => new StyleResizing(), StyleResizingNotes],
+  'Style Active': [() => new StyleActive(), StyleActiveNotes],
+  'Style Handles': [() => new StyleHandles(), StyleHandlesNotes],
+  'Style Handles With Slots': [
+    () => new StyleHandleSlots(),
+    StyleHandleSlotsNotes,
+  ],
 }

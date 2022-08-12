@@ -19,7 +19,7 @@ export default () => ({
   `,
   data() {
     return {
-      z: 0
+      z: 0,
     }
-  }
+  },
 })

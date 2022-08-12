@@ -1,8 +1,8 @@
 import Vue from 'vue'
 
 const style = {
-  border: 'dashed 1px black'
-};
+  border: 'dashed 1px black',
+}
 
 export default () => ({
   template: `
@@ -17,9 +17,9 @@ export default () => ({
       </div>
     </div>
   `,
-   data() {
+  data() {
     return {
-      disableUserSelect: false
+      disableUserSelect: false,
     }
-  }
+  },
 })

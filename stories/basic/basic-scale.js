@@ -20,7 +20,7 @@ export default () => ({
   `,
   data() {
     return {
-      scale: 1
+      scale: 1,
     }
-  }
+  },
 })

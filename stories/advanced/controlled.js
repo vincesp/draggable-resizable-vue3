@@ -26,7 +26,7 @@ export default () => ({
       x: 0,
       y: 0,
       width: 200,
-      height: 200
+      height: 200,
     }
   },
   methods: {
@@ -43,31 +43,31 @@ export default () => ({
       this.y = this.y + 1
     },
     onDragging(x, y) {
-      this.x = x;
-      this.y = y;
+      this.x = x
+      this.y = y
     },
     onResizing(x, y, width, height) {
-      this.x = x;
-      this.y = y;
+      this.x = x
+      this.y = y
       this.width = width
       this.height = height
-    }
+    },
   },
   computed: {
-    collision: function() {
+    collision: function () {
       return (
-        (this.x < (box.left + box.width)) &&
-        ((this.x + this.width) > box.left) &&
-        (this.y < (box.top + box.height)) &&
-        ((this.y + this.height) > box.top)
+        this.x < box.left + box.width &&
+        this.x + this.width > box.left &&
+        this.y < box.top + box.height &&
+        this.y + this.height > box.top
       )
     },
-    activeColor: function() {
+    activeColor: function () {
       if (this.collision) {
         return 'red'
       } else {
         return 'green'
       }
-    }
-  }
+    },
+  },
 })

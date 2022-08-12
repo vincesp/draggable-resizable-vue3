@@ -15,7 +15,7 @@ export default () => ({
   data() {
     return {
       maxWidth: 300,
-      maxHeight: 300
+      maxHeight: 300,
     }
-  }
+  },
 })

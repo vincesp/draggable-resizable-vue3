@@ -12,9 +12,9 @@ export default () => ({
   `,
   methods: {
     onDrag(x, y) {
-      if ((x > 100 && x < 400) && (y > 100 && y < 400)) {
+      if (x > 100 && x < 400 && y > 100 && y < 400) {
         return false
       }
-    }
-  }
+    },
+  },
 })

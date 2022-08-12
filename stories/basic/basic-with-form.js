@@ -1,8 +1,8 @@
 import Vue from 'vue'
 
 const style = {
-  border: 'dashed 1px black'
-};
+  border: 'dashed 1px black',
+}
 
 export default () => ({
   template: `
@@ -16,7 +16,7 @@ export default () => ({
   `,
   methods: {
     onSubmit(e) {
-      alert("You just submitted the form!")
-    }
-  }
+      alert('You just submitted the form!')
+    },
+  },
 })

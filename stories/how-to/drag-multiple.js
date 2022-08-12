@@ -31,78 +31,78 @@ export default () => ({
       prevOffsetX: 0,
       prevOffsetY: 0,
       elements: [
-        {id: 1, x: 0, y: 0, text: 'Element 1'},
-        {id: 2, x: 200, y: 200, text: 'Element 2'}
-      ]
+        { id: 1, x: 0, y: 0, text: 'Element 1' },
+        { id: 2, x: 200, y: 200, text: 'Element 2' },
+      ],
     }
   },
   mounted() {
-    window.addEventListener('keydown', ev => {
+    window.addEventListener('keydown', (ev) => {
       if (ev.keyCode === 17) {
-        this.sync = true;
+        this.sync = true
       }
-    });
-    window.addEventListener('keyup', ev => {
+    })
+    window.addEventListener('keyup', (ev) => {
       if (ev.keyCode === 17) {
-        this.sync = false;
+        this.sync = false
       }
-    });
+    })
   },
   methods: {
     dragging(id, left, top) {
-      this.draggingId = id;
+      this.draggingId = id
 
-      if (! this.sync) return;
+      if (!this.sync) return
 
-      const offsetX = left - this.draggingElement.x;
-      const offsetY = top - this.draggingElement.y;
+      const offsetX = left - this.draggingElement.x
+      const offsetY = top - this.draggingElement.y
 
-      const deltaX = this.deltaX(offsetX);
-      const deltaY = this.deltaY(offsetY);
+      const deltaX = this.deltaX(offsetX)
+      const deltaY = this.deltaY(offsetY)
 
-      this.elements.map(el => {
+      this.elements.map((el) => {
         if (el.id !== id) {
-          el.x += deltaX;
-          el.y += deltaY;
+          el.x += deltaX
+          el.y += deltaY
         }
 
-        return el;
-      });
+        return el
+      })
     },
     dragstop(id, left, top) {
-      this.elements.map(el => {
+      this.elements.map((el) => {
         if (el.id === id) {
-          el.x = left;
-          el.y = top;
+          el.x = left
+          el.y = top
         }
 
-        return el;
-      });
+        return el
+      })
 
-      this.draggingId = null;
-      this.prevOffsetX = 0;
-      this.prevOffsetY = 0;
+      this.draggingId = null
+      this.prevOffsetX = 0
+      this.prevOffsetY = 0
     },
     deltaX(offsetX) {
-      const ret = offsetX - this.prevOffsetX;
+      const ret = offsetX - this.prevOffsetX
 
-      this.prevOffsetX = offsetX;
+      this.prevOffsetX = offsetX
 
-      return ret;
+      return ret
     },
     deltaY(offsetY) {
-      const ret = offsetY - this.prevOffsetY;
+      const ret = offsetY - this.prevOffsetY
 
-      this.prevOffsetY = offsetY;
+      this.prevOffsetY = offsetY
 
-      return ret;
-    }
+      return ret
+    },
   },
   computed: {
     draggingElement: function () {
-      if (! this.draggingId) return;
+      if (!this.draggingId) return
 
-      return this.elements.find(el => el.id === this.draggingId);
-    }
-  }
+      return this.elements.find((el) => el.id === this.draggingId)
+    },
+  },
 })

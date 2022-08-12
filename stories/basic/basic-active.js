@@ -13,12 +13,12 @@ export default () => ({
   `,
   data() {
     return {
-      active: false
+      active: false,
     }
   },
   methods: {
     toggle() {
       this.active = !this.active
-    }
-  }
+    },
+  },
 })

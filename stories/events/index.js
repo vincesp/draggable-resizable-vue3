@@ -6,7 +6,7 @@ import EventsResizing from './events-resizing'
 import EventsResizingNotes from './notes/events-resizing.md'
 
 export default {
-  'Activated' : [() => new EventsActivated, EventsActivatedNotes],
-  'Dragging' : [() => new EventsDragging, EventsDraggingNotes],
-  'Resizing' : [() => new EventsResizing, EventsResizingNotes]
+  Activated: [() => new EventsActivated(), EventsActivatedNotes],
+  Dragging: [() => new EventsDragging(), EventsDraggingNotes],
+  Resizing: [() => new EventsResizing(), EventsResizingNotes],
 }

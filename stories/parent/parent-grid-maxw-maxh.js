@@ -1,14 +1,15 @@
 import Vue from 'vue'
 
 const style = {
-    position: 'relative',
-    backgroundColor: '#808080',
-    background: 'linear-gradient(-90deg, rgba(0, 0, 0, .1) 1px, transparent 1px), linear-gradient(rgba(0, 0, 0, .1) 1px, transparent 1px)',
-    backgroundSize: '10px 20px, 10px 20px',
-    height: '400px',
-    width: '400px',
-    border: '1px solid blue',
-    margin: '1em'
+  position: 'relative',
+  backgroundColor: '#808080',
+  background:
+    'linear-gradient(-90deg, rgba(0, 0, 0, .1) 1px, transparent 1px), linear-gradient(rgba(0, 0, 0, .1) 1px, transparent 1px)',
+  backgroundSize: '10px 20px, 10px 20px',
+  height: '400px',
+  width: '400px',
+  border: '1px solid blue',
+  margin: '1em',
 }
 
 export default () => ({
@@ -27,13 +28,13 @@ export default () => ({
   data() {
     return {
       width: 200,
-      height: 200
+      height: 200,
     }
   },
   methods: {
     onResizing(x, y, width, height) {
       this.width = width
       this.height = height
-    }
-  }
+    },
+  },
 })

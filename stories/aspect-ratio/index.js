@@ -12,11 +12,20 @@ import AspectRatioGridOffsetMin from './aspect-ratio-grid-with-offset-and-min'
 import AspectRatioGridParent from './aspect-ratio-with-grid-in-parent'
 
 export default {
-  'Basic Aspect Ratio' : [() => new AspectRatio, AspectRatioNotes],
-  'Costrained in Parent' : [() => new AspectRatioParent, AspectRatioParentNotes],
-  'With minHeight and minWidth' : [() => new AspectRatioMinWidthMinHeight, AspectRatioMinWidthMinHeightNotes],
-  'With maxWidth and maxHeight' : [() => new AspectRatioMaxWidthMaxHeight, AspectRatioMaxWidthMaxHeightNotes],
-  'Forced on grid' : [() => new AspectRatioGrid, AspectRatioGridNotes],
-  'Forced on grid with offset and min' : [() => new AspectRatioGridOffsetMin],
-  'Forced on grid in parent' : [() => new AspectRatioGridParent]
+  'Basic Aspect Ratio': [() => new AspectRatio(), AspectRatioNotes],
+  'Costrained in Parent': [
+    () => new AspectRatioParent(),
+    AspectRatioParentNotes,
+  ],
+  'With minHeight and minWidth': [
+    () => new AspectRatioMinWidthMinHeight(),
+    AspectRatioMinWidthMinHeightNotes,
+  ],
+  'With maxWidth and maxHeight': [
+    () => new AspectRatioMaxWidthMaxHeight(),
+    AspectRatioMaxWidthMaxHeightNotes,
+  ],
+  'Forced on grid': [() => new AspectRatioGrid(), AspectRatioGridNotes],
+  'Forced on grid with offset and min': [() => new AspectRatioGridOffsetMin()],
+  'Forced on grid in parent': [() => new AspectRatioGridParent()],
 }

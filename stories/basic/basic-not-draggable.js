@@ -11,9 +11,9 @@ export default () => ({
       </div>
     </div>
   `,
-   data() {
+  data() {
     return {
-      draggable: false
+      draggable: false,
     }
-  }
+  },
 })

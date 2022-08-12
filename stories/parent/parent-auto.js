@@ -7,5 +7,5 @@ export default () => ({
         <p>Component with "auto" size.</p>
       </vue-draggable-resizable>
     </div>
-  `
+  `,
 })

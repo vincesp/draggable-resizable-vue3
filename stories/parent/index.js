@@ -16,13 +16,28 @@ import ParentControlledComponentNotes from './notes/parent-controlled-component.
 import ParentUserSelect from './parent-user-select'
 
 export default {
-  'Parent Basic Case' : [() => new ParentBasicCase, ParentBasicCaseNotes],
-  'Parent MaxWidth MaxHeight' : [() => new ParentMaxWidthMaxHeight, ParentMaxWidthMaxHeightNotes],
-  'Parent Grid' : [() => new ParentGrid, ParentGridNotes],
+  'Parent Basic Case': [() => new ParentBasicCase(), ParentBasicCaseNotes],
+  'Parent MaxWidth MaxHeight': [
+    () => new ParentMaxWidthMaxHeight(),
+    ParentMaxWidthMaxHeightNotes,
+  ],
+  'Parent Grid': [() => new ParentGrid(), ParentGridNotes],
   'Parent Auto': [() => new ParentAuto()],
-  'Parent Grid With Offset' : [() => new ParentGridWithOffset, ParentGridWithOffsetNotes],
-  'Parent Grid With Even Offset' : [() => new ParentGridWithEvenOffset, ParentGridWithEvenOffsetNotes],
-  'Parent Grid With MaxWidth MaxHeight' : [() => new ParentGridMaxWidthMaxHeight, ParentGridMaxWidthMaxHeightNotes],
-  'Parent Controlled Component' : [() => new ParentControlledComponent, ParentControlledComponentNotes],
-  'Parent User Select': [() => new ParentUserSelect]
+  'Parent Grid With Offset': [
+    () => new ParentGridWithOffset(),
+    ParentGridWithOffsetNotes,
+  ],
+  'Parent Grid With Even Offset': [
+    () => new ParentGridWithEvenOffset(),
+    ParentGridWithEvenOffsetNotes,
+  ],
+  'Parent Grid With MaxWidth MaxHeight': [
+    () => new ParentGridMaxWidthMaxHeight(),
+    ParentGridMaxWidthMaxHeightNotes,
+  ],
+  'Parent Controlled Component': [
+    () => new ParentControlledComponent(),
+    ParentControlledComponentNotes,
+  ],
+  'Parent User Select': [() => new ParentUserSelect()],
 }

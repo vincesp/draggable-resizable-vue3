@@ -15,7 +15,7 @@ export default () => ({
   data() {
     return {
       minWidth: 100,
-      minHeight: 100
+      minHeight: 100,
     }
-  }
+  },
 })

@@ -19,7 +19,7 @@ export default () => ({
   data() {
     return {
       x: true,
-      y: true
+      y: true,
     }
   },
   computed: {
@@ -31,6 +31,6 @@ export default () => ({
       if (this.y) return 'y'
 
       return false
-    }
-  }
+    },
+  },
 })

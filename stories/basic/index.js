@@ -34,21 +34,60 @@ import BasicScale from './basic-scale'
 import BasicScaleNotes from './notes/basic-scale.md'
 
 export default {
-  'Basic component': [() => new Basic, BasicNotes],
-  'Basic component with "auto" size': [() => new BasicAuto, BasicAutoNotes],
-  'Basic component with minw and minh' : [() => new BasicMinWidthHeight, BasicMinWidthHeightNotes],
-  'Basic component with maxw and maxh' : [() => new BasicMaxWidthHeight, BasicMaxWidthHeightNotes],
-  'Basic component with form inside' : [() => new BasicWithForm, BasicWithFormNotes],
-  'Basic component with active prop' : [() => new BasicActive, BasicActiveNotes],
-  'Basic component with deactivation prevented' : [() => new BasicPreventDeactivation, BasicPreventDeactivationNotes],
-  'Basic component not draggable' : [() => new BasicNotDraggable, BasicNotDraggableNotes],
-  'Basic component not resizable' : [() => new BasicNotResizable, BasicNotResizableNotes],
-  'Basic component with native drag disabled' : [() => new BasicNativeDragEnabled, BasicNativeDragEnabledNotes],
-  'Basic controlled component' : [() => new BasicControlled, BasicControlledNotes],
-  'Basic component with drag handle' : [() => new BasicDragHandle, BasicDragHandleNotes],
-  'Basic component with drag cancel' : [() => new BasicCancelHandle, BasicCancelHandleNotes],
-  'Basic component with z-index prop' : [() => new BasicZIndex, BasicZIndexNotes],
-  'Basic component with handles prop' : [() => new BasicHandles, BasicHandlesNotes],
-  'Basic component with axis prop' : [() => new BasicAxis, BasicAxisNotes],
-  'Basic component with scale prop' : [() => new BasicScale, BasicScaleNotes],
+  'Basic component': [() => new Basic(), BasicNotes],
+  'Basic component with "auto" size': [() => new BasicAuto(), BasicAutoNotes],
+  'Basic component with minw and minh': [
+    () => new BasicMinWidthHeight(),
+    BasicMinWidthHeightNotes,
+  ],
+  'Basic component with maxw and maxh': [
+    () => new BasicMaxWidthHeight(),
+    BasicMaxWidthHeightNotes,
+  ],
+  'Basic component with form inside': [
+    () => new BasicWithForm(),
+    BasicWithFormNotes,
+  ],
+  'Basic component with active prop': [
+    () => new BasicActive(),
+    BasicActiveNotes,
+  ],
+  'Basic component with deactivation prevented': [
+    () => new BasicPreventDeactivation(),
+    BasicPreventDeactivationNotes,
+  ],
+  'Basic component not draggable': [
+    () => new BasicNotDraggable(),
+    BasicNotDraggableNotes,
+  ],
+  'Basic component not resizable': [
+    () => new BasicNotResizable(),
+    BasicNotResizableNotes,
+  ],
+  'Basic component with native drag disabled': [
+    () => new BasicNativeDragEnabled(),
+    BasicNativeDragEnabledNotes,
+  ],
+  'Basic controlled component': [
+    () => new BasicControlled(),
+    BasicControlledNotes,
+  ],
+  'Basic component with drag handle': [
+    () => new BasicDragHandle(),
+    BasicDragHandleNotes,
+  ],
+  'Basic component with drag cancel': [
+    () => new BasicCancelHandle(),
+    BasicCancelHandleNotes,
+  ],
+  'Basic component with z-index prop': [
+    () => new BasicZIndex(),
+    BasicZIndexNotes,
+  ],
+  'Basic component with handles prop': [
+    () => new BasicHandles(),
+    BasicHandlesNotes,
+  ],
+  'Basic component with axis prop': [() => new BasicAxis(), BasicAxisNotes],
+  'Basic component with scale prop': [() => new BasicScale(), BasicScaleNotes],
 }

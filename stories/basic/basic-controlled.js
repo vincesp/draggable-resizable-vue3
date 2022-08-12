@@ -19,7 +19,7 @@ export default () => ({
       x: 0,
       y: 0,
       w: 100,
-      h: 100
+      h: 100,
     }
   },
   methods: {
@@ -32,6 +32,6 @@ export default () => ({
       this.y = top
       this.w = width
       this.h = height
-    }
-  }
+    },
+  },
 })

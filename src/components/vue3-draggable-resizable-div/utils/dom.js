@@ -1,6 +1,6 @@
 import { isFunction } from './fns'
 
-export function matchesSelectorToParentElements (el, selector, baseNode) {
+export function matchesSelectorToParentElements(el, selector, baseNode) {
   let node = el
 
   const matchesSelectorFunc = [
@@ -8,8 +8,8 @@ export function matchesSelectorToParentElements (el, selector, baseNode) {
     'webkitMatchesSelector',
     'mozMatchesSelector',
     'msMatchesSelector',
-    'oMatchesSelector'
-  ].find(func => isFunction(node[func]))
+    'oMatchesSelector',
+  ].find((func) => isFunction(node[func]))
 
   if (!isFunction(node[matchesSelectorFunc])) return false
 
@@ -22,16 +22,16 @@ export function matchesSelectorToParentElements (el, selector, baseNode) {
   return false
 }
 
-export function getComputedSize ($el) {
+export function getComputedSize($el) {
   const style = window.getComputedStyle($el)
 
   return [
     parseFloat(style.getPropertyValue('width'), 10),
-    parseFloat(style.getPropertyValue('height'), 10)
+    parseFloat(style.getPropertyValue('height'), 10),
   ]
 }
 
-export function addEvent (el, event, handler) {
+export function addEvent(el, event, handler) {
   if (!el) {
     return
   }
@@ -44,7 +44,7 @@ export function addEvent (el, event, handler) {
   }
 }
 
-export function removeEvent (el, event, handler) {
+export function removeEvent(el, event, handler) {
   if (!el) {
     return
   }
