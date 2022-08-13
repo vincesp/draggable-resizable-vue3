@@ -4,7 +4,7 @@
     :style="style"
     :class="[
       {
-        [classNameActive]: active || alwaysActive,
+        [classNameActive]: active,
         [classNameDragging]: dragging,
         [classNameResizing]: resizing,
         [classNameDraggable]: draggable,
@@ -17,7 +17,7 @@
     @mouseover="elementMouseOver"
     @mouseleave="elementMouseLeave"
   >
-    <div :class="'drv-' + resizeHandlesType">
+    <div :class="'drv-' + handlesType">
       <div
         v-for="handleEl in actualHandles"
         :key="handleEl"
@@ -58,7 +58,7 @@ import {
   restrictToBounds,
   snapToGrid,
 } from './utils/fns'
-import { ref, computed, onMounted, watch, useSlots, useCssModule } from 'vue'
+import { ref, computed, onMounted, watch, useSlots } from 'vue'
 
 const events = {
   mouse: {
@@ -135,10 +135,6 @@ const props = defineProps({
     type: Boolean,
     default: false,
   },
-  alwaysActive: {
-    type: Boolean,
-    default: false,
-  },
   activeOnHover: {
     type: Boolean,
     default: false,
@@ -209,7 +205,7 @@ const props = defineProps({
     default: 'auto',
     validator: (val) => (typeof val === 'string' ? val === 'auto' : val >= 0),
   },
-  resizeHandlesType: {
+  handlesType: {
     type: String,
     default: 'handles',
     validator: (val) => ['handles', 'borders', 'custom'].includes(val),
@@ -1070,7 +1066,7 @@ const elementMouseOver = () => {
   }
 }
 const elementMouseLeave = () => {
-  if (props.activeOnHover) {
+  if (props.activeOnHover && !dragging.value) {
     active.value = false
   }
 }

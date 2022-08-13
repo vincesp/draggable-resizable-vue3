@@ -1,24 +1,36 @@
 {
   "name": "draggable-resizable-vue3",
-  "version": "1.0.2-beta",
+  "version": "1.0.3-beta",
   "license": "MIT",
   "description": "Vue 3 Component to drag and resize.",
   "scripts": {
     "dev": "vite --host",
     "build": "vite build",
     "preview": "vite preview --port 4173",
-    "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs --fix --ignore-path .gitignore"
+    "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs --fix --ignore-path .gitignore",
+    "storybook": "start-storybook -p 6006",
+    "build-storybook": "build-storybook"
   },
   "devDependencies": {
+    "@babel/core": "^7.18.10",
     "@rushstack/eslint-patch": "^1.1.4",
+    "@storybook/addon-actions": "^6.5.10",
+    "@storybook/addon-essentials": "^6.5.10",
+    "@storybook/addon-interactions": "^6.5.10",
+    "@storybook/addon-links": "^6.5.10",
+    "@storybook/builder-vite": "^0.2.2",
+    "@storybook/testing-library": "^0.0.13",
+    "@storybook/vue3": "^6.5.10",
     "@vitejs/plugin-vue": "^3.0.1",
     "@vue/eslint-config-prettier": "^7.0.0",
+    "babel-loader": "^8.2.5",
     "eslint": "^8.21.0",
     "eslint-plugin-vue": "^9.3.0",
     "prettier": "^2.7.1",
     "vite": "^3.0.4",
     "vue": "^3.2.37",
-    "vue-eslint-parser": "^9.0.3"
+    "vue-eslint-parser": "^9.0.3",
+    "vue-loader": "^16.8.3"
   },
   "repository": {
     "type": "git",
@@ -36,5 +48,6 @@
   ],
   "main": "src/index.js",
   "module": "src/index.js",
-  "unpkg": "src/index.js"
+  "unpkg": "src/index.js",
+  "dependencies": {}
 }
