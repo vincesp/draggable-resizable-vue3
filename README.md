@@ -1,13 +1,13 @@
-<p align="center"><img src="https://rawgit.com/mauricius/vue-draggable-resizable/v1/docs/resources/logo.png" alt="logo"></p>
+<p align="center"><img src="https://rawgit.com/mauricius/draggable-resizable-vue/v1/docs/resources/logo.png" alt="logo"></p>
 <h1 align="center">DraggableResizableVue3</h1>
 
-<!-- [![Latest Version on NPM](https://img.shields.io/npm/v/vue-draggable-resizable.svg?style=flat-square)](https://npmjs.com/package/vue-draggable-resizable) -->
+<!-- [![Latest Version on NPM](https://img.shields.io/npm/v/draggable-resizable-vue.svg?style=flat-square)](https://npmjs.com/package/draggable-resizable-vue) -->
 [![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)](LICENSE.md)
-<!-- [![npm](https://img.shields.io/npm/dt/vue-draggable-resizable.svg?style=flat-square)](https://www.npmjs.com/package/vue-draggable-resizable) -->
+<!-- [![npm](https://img.shields.io/npm/dt/draggable-resizable-vue.svg?style=flat-square)](https://www.npmjs.com/package/draggable-resizable-vue) -->
 
-> Vue 3 Component for draggable and resizable elements. 
+> Vue 3 component for draggable and resizable elements. 
 > 
-> Originally this package is a fork of ["vue-draggable-resizable"](https://github.com/mauricius/vue-draggable-resizable) that has been rewritten to Vue 3 Composition API . But it has new features.
+> Originally this package is a fork of ["draggable-resizable-vue"](https://github.com/mauricius/draggable-resizable-vue) that has been rewritten to Vue 3 Composition API . But it has new features.
 
 
 ## Table of Contents
@@ -36,7 +36,7 @@
 
 ### Live Playground
 
-For examples of the component go to the [live playground](https://mauricius.github.io/vue-draggable-resizable/)
+For examples of the component go to the [live playground](https://mauricius.github.io/draggable-resizable-vue/)
 
 Alternatively you can run the playground on your own computer:
 
@@ -50,59 +50,65 @@ Alternatively you can run the playground on your own computer:
 ## Install and basic usage
 
 ```bash
-$ npm install --save vue-draggable-resizable
+$ npm install --save draggable-resizable-vue3
 ```
 
 
-Register the component
+Register the component globally:
 
 ```js
-import Vue from 'vue'
-import VueDraggableResizable from 'vue-draggable-resizable'
+import { createApp } from 'vue'
+import App from './App.vue'
+import DraggableResizableVue from 'draggable-resizable-vue3'
 
 // optionally import default styles
-import 'vue-draggable-resizable/dist/VueDraggableResizable.css'
+import 'draggable-resizable-vue3/dist/DraggableResizableVue3.css'
 
-Vue.component('vue-draggable-resizable', VueDraggableResizable)
+const app = createApp(App)
+app.component('DraggableResizableVue', DraggableResizableVue)
+
+app.mount('#app')
+
 ```
 
-You may now use the component in your markup
+or locally (composition API):
+
+```html
+<script setup>
+import DraggableResizableVue from 'draggable-resizable-vue3'
+import 'draggable-resizable-vue3/dist/DraggableResizableVue3.css'
+
+</script>
+```
+
+Basic no props usage:
 
 ```vue
 <template>
-  <div style="height: 500px; width: 500px; border: 1px solid red; position: relative;">
-    <vue-draggable-resizable :w="100" :h="100" @dragging="onDrag" @resizing="onResize" :parent="true">
-      <p>Hello! I'm a flexible component. You can drag me around and you can resize me.<br>
-      X: {{ x }} / Y: {{ y }} - Width: {{ width }} / Height: {{ height }}</p>
-    </vue-draggable-resizable>
-  </div>
+    <draggable-resizable-vue>
+      Draggable element
+    </draggable-resizable-vue>
 </template>
 
-<script>
-import VueDraggableResizable from 'vue-draggable-resizable'
+<script setup>
+import DraggableResizableVue from 'draggable-resizable-vue3'
+import 'draggable-resizable-vue3/dist/DraggableResizableVue3.css'
 
-export default {
-  data: function () {
-    return {
-      width: 0,
-      height: 0,
-      x: 0,
-      y: 0
-    }
-  },
-  methods: {
-    onResize: function (x, y, width, height) {
-      this.x = x
-      this.y = y
-      this.width = width
-      this.height = height
-    },
-    onDrag: function (x, y) {
-      this.x = x
-      this.y = y
-    }
-  }
-}
+</script>
+```
+Basic usage:
+
+```vue
+<template>
+     <draggable-resizable-vue>
+      Draggable element
+    </draggable-resizable-vue>
+</template>
+
+<script setup>
+import DraggableResizableVue from 'draggable-resizable-vue3'
+import 'draggable-resizable-vue3/dist/DraggableResizableVue3.css'
+
 </script>
 ```
 
@@ -116,7 +122,7 @@ Default: `drv`
 Used to set the custom `class` of a draggable-resizable component.
 
 ```html
-<vue-draggable-resizable class-name="my-class">
+<draggable-resizable-vue class-name="my-class">
 ```
 
 #### classNameDraggable
@@ -127,7 +133,7 @@ Default: `draggable`
 Used to set the custom `class` of a draggable-resizable component when `draggable` is enable.
 
 ```html
-<vue-draggable-resizable class-name-draggable="my-draggable-class">
+<draggable-resizable-vue class-name-draggable="my-draggable-class">
 ```
 
 #### classNameResizable
@@ -138,7 +144,7 @@ Default: `resizable`
 Used to set the custom `class` of a draggable-resizable component when `resizable` is enable.
 
 ```html
-<vue-draggable-resizable class-name-resizable="my-resizable-class">
+<draggable-resizable-vue class-name-resizable="my-resizable-class">
 ```
 
 #### classNameDragging
@@ -149,7 +155,7 @@ Default: `dragging`
 Used to set the custom `class` of a draggable-resizable component when is dragging.
 
 ```html
-<vue-draggable-resizable class-name-dragging="my-dragging-class">
+<draggable-resizable-vue class-name-dragging="my-dragging-class">
 ```
 
 #### classNameResizing
@@ -160,7 +166,7 @@ Default: `resizing`
 Used to set the custom `class` of a draggable-resizable component when is resizing.
 
 ```html
-<vue-draggable-resizable class-name-resizing="my-resizing-class">
+<draggable-resizable-vue class-name-resizing="my-resizing-class">
 ```
 
 #### classNameActive
@@ -171,7 +177,7 @@ Default: `active`
 Used to set the custom `class` of a draggable-resizable component when is active.
 
 ```html
-<vue-draggable-resizable class-name-active="my-active-class">
+<draggable-resizable-vue class-name-active="my-active-class">
 ```
 
 #### classNameHandle
@@ -184,7 +190,7 @@ Used to set the custom common `class` of each handle element. This way you can s
 So for example, this component:
 
 ```html
-<vue-draggable-resizable class-name-handle="my-handle-class"></vue-draggable-resizable>
+<draggable-resizable-vue class-name-handle="my-handle-class"></draggable-resizable-vue>
 ```
 
 renders the following:
@@ -206,9 +212,9 @@ Default: `1`
 The `scale` prop controls the scale property when the CSS 3 [scale transformation](https://developer.mozilla.org/en-US/docs/Web/CSS/transform-function/scale) is applied to one of the parent elements. If not provided the default value is 1.
 
 ```html
-<vue-draggable-resizable :scale="0.5">
+<draggable-resizable-vue :scale="0.5">
 
-<vue-draggable-resizable :scale="[0.5, 0.4]">
+<draggable-resizable-vue :scale="[0.5, 0.4]">
 ```
 
 #### disableUserSelect
@@ -219,7 +225,7 @@ Default: `true`
 By default, the component adds the style declaration `'user-select:none'` to itself to prevent text selection during drag. You can disable this behaviour by setting this prop to `false`.
 
 ```html
-<vue-draggable-resizable :disable-user-select="false">
+<draggable-resizable-vue :disable-user-select="false">
 ```
 
 #### enableNativeDrag
@@ -230,7 +236,7 @@ Default: `false`
 By default, the browser's native drag and drop funcionality (usually used for images and some other elements) is disabled, as it may conflict with the one provided by the component. If you need, for whatever reason, to have this functionality back you can set this prop to `true`.
 
 ```html
-<vue-draggable-resizable :enable-native-drag="true">
+<draggable-resizable-vue :enable-native-drag="true">
 ```
 
 #### active
@@ -241,7 +247,7 @@ Default: `false`
 Determines if the component should be active or not. The prop reacts to changes and also can be used with the `sync`[modifier](https://vuejs.org/v2/guide/components.html#sync-Modifier) to keep the state in sync with the parent. You can use along with the `preventDeactivation` prop in order to fully control the active behavior from outside the component.
 
 ```html
-<vue-draggable-resizable :active="true">
+<draggable-resizable-vue :active="true">
 ```
 
 #### preventDeactivation
@@ -252,7 +258,7 @@ Default: `false`
 Determines if the component should be deactivated when the user clicks/taps outside it.
 
 ```html
-<vue-draggable-resizable :prevent-deactivation="true">
+<draggable-resizable-vue :prevent-deactivation="true">
 ```
 
 #### draggable
@@ -263,7 +269,7 @@ Default: `true`
 Defines it the component should be draggable or not.
 
 ```html
-<vue-draggable-resizable :draggable="false">
+<draggable-resizable-vue :draggable="false">
 ```
 
 #### resizable
@@ -274,7 +280,7 @@ Default: `true`
 Defines it the component should be resizable or not.
 
 ```html
-<vue-draggable-resizable :resizable="false">
+<draggable-resizable-vue :resizable="false">
 ```
 
 #### w
@@ -285,7 +291,7 @@ Default: `200`
 Define the initial width of the element. It also supports `auto`, but when you start resizing the value will fallback to a number.
 
 ```html
-<vue-draggable-resizable :w="200">
+<draggable-resizable-vue :w="200">
 ```
 
 #### h
@@ -296,7 +302,7 @@ Default: `200`
 Define the initial height of the element. It also supports `auto`, but when you start resizing the value will fallback to a number.
 
 ```html
-<vue-draggable-resizable :h="200">
+<draggable-resizable-vue :h="200">
 ```
 
 #### minWidth
@@ -307,7 +313,7 @@ Default: `50`
 Define the minimal width of the element.
 
 ```html
-<vue-draggable-resizable :min-width="50">
+<draggable-resizable-vue :min-width="50">
 ```
 
 #### minHeight
@@ -318,7 +324,7 @@ Default: `50`
 Define the minimal height of the element.
 
 ```html
-<vue-draggable-resizable :min-height="50">
+<draggable-resizable-vue :min-height="50">
 ```
 
 #### maxWidth
@@ -329,7 +335,7 @@ Default: `null`
 Define the maximum width of the element.
 
 ```html
-<vue-draggable-resizable :max-width="400">
+<draggable-resizable-vue :max-width="400">
 ```
 
 #### maxHeight
@@ -340,7 +346,7 @@ Default: `null`
 Define the maximum height of the element.
 
 ```html
-<vue-draggable-resizable :max-height="50">
+<draggable-resizable-vue :max-height="50">
 ```
 
 #### x
@@ -351,7 +357,7 @@ Default: `0`
 Define the initial x position of the element.
 
 ```html
-<vue-draggable-resizable :x="0">
+<draggable-resizable-vue :x="0">
 ```
 
 #### y
@@ -362,7 +368,7 @@ Default: `0`
 Define the initial y position of the element.
 
 ```html
-<vue-draggable-resizable :y="0">
+<draggable-resizable-vue :y="0">
 ```
 
 #### z
@@ -373,7 +379,7 @@ Default: `auto`
 Define the zIndex of the element.
 
 ```html
-<vue-draggable-resizable :z="999">
+<draggable-resizable-vue :z="999">
 ```
 
 #### handles
@@ -392,7 +398,7 @@ Define the array of handles to restrict the element resizing:
 * `ml` - Middle left
 
 ```html
-<vue-draggable-resizable :handles="['tm','bm','ml','mr']">
+<draggable-resizable-vue :handles="['tm','bm','ml','mr']">
 ```
 
 #### axis
@@ -403,7 +409,7 @@ Default: `both`
 Define the axis on which the element is draggable. Available values are `x`, `y` or `both`.
 
 ```html
-<vue-draggable-resizable axis="x">
+<draggable-resizable-vue axis="x">
 ```
 
 #### grid
@@ -414,7 +420,7 @@ Default: `[1,1]`
 Define the grid on which the element is snapped.
 
 ```html
-<vue-draggable-resizable :grid="[1,1]">
+<draggable-resizable-vue :grid="[1,1]">
 ```
 
 #### parent
@@ -425,7 +431,7 @@ Default: `false`
 Restricts the movement and the dimensions of the component to the parent.
 
 ```html
-<vue-draggable-resizable :parent="true">
+<draggable-resizable-vue :parent="true">
 ```
 
 #### dragHandle
@@ -435,7 +441,7 @@ Required: `false`
 Defines the selector that should be used to drag the component.
 
 ```html
-<vue-draggable-resizable drag-handle=".drag">
+<draggable-resizable-vue drag-handle=".drag">
 ```
 
 #### dragCancel
@@ -445,7 +451,7 @@ Required: `false`
 Defines a selector that should be used to prevent drag initialization.
 
 ```html
-<vue-draggable-resizable drag-cancel=".drag">
+<draggable-resizable-vue drag-cancel=".drag">
 ```
 
 #### lockAspectRatio
@@ -456,7 +462,7 @@ Default: `false`
 The `lockAspectRatio` property is used to lock aspect ratio. This property doesn't play well with `grid`, so make sure to use only one at a time.
 
 ```html
-<vue-draggable-resizable :lock-aspect-ratio="true">
+<draggable-resizable-vue :lock-aspect-ratio="true">
 ```
 
 #### onDragStart
@@ -467,7 +473,7 @@ Default: `null`
 Called when dragging starts (element is clicked or touched). If `false` is returned by any handler, the action will cancel. You can use this function to prevent bubbling of events.
 
 ```html
-<vue-draggable-resizable :onDragStart="onDragStartCallback">
+<draggable-resizable-vue :onDragStart="onDragStartCallback">
 ```
 
 ```js
@@ -485,7 +491,7 @@ Default: `null`
 Called before the element is dragged. The function receives the next values of `x` and `y`. If `false` is returned by any handler, the action will cancel.
 
 ```html
-<vue-draggable-resizable :onDrag="onDragCallback">
+<draggable-resizable-vue :onDrag="onDragCallback">
 ```
 
 ```js
@@ -504,7 +510,7 @@ Default: `null`
 Called when resizing starts (handle is clicked or touched). If `false` is returned by any handler, the action will cancel.
 
 ```html
-<vue-draggable-resizable :onResizeStart="onResizeStartCallback">
+<draggable-resizable-vue :onResizeStart="onResizeStartCallback">
 ```
 
 ```js
@@ -523,7 +529,7 @@ Default: `null`
 Called before the element is resized. The function receives the handle and the next values of `x`, `y`, `width` and `height`. If `false` is returned by any handler, the action will cancel.
 
 ```html
-<vue-draggable-resizable :onResize="onResizeCallback">
+<draggable-resizable-vue :onResize="onResizeCallback">
 ```
 
 ```js
@@ -544,7 +550,7 @@ Parameters: `-`
 Called whenever the component gets clicked, in order to show handles.
 
 ```html
-<vue-draggable-resizable @activated="onActivated">
+<draggable-resizable-vue @activated="onActivated">
 ```
 
 #### deactivated
@@ -554,7 +560,7 @@ Parameters: `-`
 Called whenever the user clicks anywhere outside the component, in order to deactivate it.
 
 ```html
-<vue-draggable-resizable @deactivated="onDeactivated">
+<draggable-resizable-vue @deactivated="onDeactivated">
 ```
 
 #### resizing
@@ -568,7 +574,7 @@ Parameters:
 Called whenever the component gets resized.
 
 ```html
-<vue-draggable-resizable @resizing="onResizing">
+<draggable-resizable-vue @resizing="onResizing">
 ```
 
 #### resizestop
@@ -582,7 +588,7 @@ Parameters:
 Called whenever the component stops getting resized.
 
 ```html
-<vue-draggable-resizable @resizestop="onResizstop">
+<draggable-resizable-vue @resizestop="onResizstop">
 ```
 
 #### dragging
@@ -594,7 +600,7 @@ Parameters:
 Called whenever the component gets dragged.
 
 ```html
-<vue-draggable-resizable @dragging="onDragging">
+<draggable-resizable-vue @dragging="onDragging">
 ```
 
 #### dragstop
@@ -606,14 +612,14 @@ Parameters:
 Called whenever the component stops getting dragged.
 
 ```html
-<vue-draggable-resizable @dragstop="onDragstop">
+<draggable-resizable-vue @dragstop="onDragstop">
 ```
 
 ---
 
 ### Styling
 
-You can style the component using appropriate class names passed as props to the component. Moreover you can replace the default styles for the handles, provided in the source file `vue-draggable-resizable.css`, but you should take care to define position and size for them. The default classes for handles are `handle` and `handle-tl`, `handle-br` and so on.
+You can style the component using appropriate class names passed as props to the component. Moreover you can replace the default styles for the handles, provided in the source file `draggable-resizable-vue.css`, but you should take care to define position and size for them. The default classes for handles are `handle` and `handle-tl`, `handle-br` and so on.
 
 The component also provides [named slots](https://vuejs.org/v2/guide/components-slots.html#Named-Slots) for each handle, so you can use your markup inside each one.
 

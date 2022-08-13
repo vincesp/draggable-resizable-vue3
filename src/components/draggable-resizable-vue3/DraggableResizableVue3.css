@@ -1,6 +1,6 @@
 .drv {
   touch-action: none;
-  /* position: absolute; */
+  position: absolute;
   box-sizing: border-box;
   border: 1px dashed gray;
 }
