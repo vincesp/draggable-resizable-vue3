@@ -1,6 +1,8 @@
 {
   "name": "draggable-resizable-vue3",
   "version": "1.0.1-beta",
+  "license": "MIT",
+  "description": "Vue 3 Component to drag and resize.",
   "scripts": {
     "dev": "vite --host",
     "build": "vite build",
@@ -17,5 +19,22 @@
     "vite": "^3.0.4",
     "vue": "^3.2.37",
     "vue-eslint-parser": "^9.0.3"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/zavalen/draggable-resizable-vue3.git"
+  },
+  "bugs": {
+    "url": "https://github.com/zavalen/draggable-resizable-vue3/issues"
+  },
+  "homepage": "https://github.com/zavalen/draggable-resizable-vue3",
+  "keywords": [
+    "vue3",
+    "component",
+    "draggable",
+    "resizable"
+  ],
+  "main": "src/index.js",
+  "module": "src/index.js",
+  "unpkg": "src/index.js"
 }

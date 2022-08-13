@@ -11,6 +11,10 @@ export default defineConfig({
     },
   },
   build: {
+    lib: {
+      entry: path.resolve(__dirname, 'src/index.js'),
+      name: 'draggable-resizable-vue3',
+    },
     minify: false,
     commonjsOptions: {
       transformMixedEsModules: true,
