@@ -14,6 +14,8 @@
     ]"
     @mousedown="elementMouseDown"
     @touchstart="elementTouchDown"
+    @mouseover="elementMouseOver"
+    @mouseleave="elementMouseLeave"
   >
     <div :class="'drv-' + resizeHandlesType">
       <div
@@ -27,7 +29,7 @@
         ]"
         :style="{
           display: active ? 'block' : 'none',
-          border: slots.handle ? '' : '0.5px solid gray',
+          // border: slots.handle ? '' : '0.5px solid gray',
         }"
         @mousedown.stop.prevent="handleDown(handleEl, $event)"
         @touchstart.stop.prevent="handleTouchDown(handleEl, $event)"
@@ -57,7 +59,6 @@ import {
   snapToGrid,
 } from './utils/fns'
 import { ref, computed, onMounted, watch, useSlots, useCssModule } from 'vue'
-// import './DraggableResizableVue3.css'
 
 const events = {
   mouse: {
@@ -135,6 +136,10 @@ const props = defineProps({
     default: false,
   },
   alwaysActive: {
+    type: Boolean,
+    default: false,
+  },
+  activeOnHover: {
     type: Boolean,
     default: false,
   },
@@ -296,9 +301,9 @@ const emit = defineEmits([
 
 const el = ref(null)
 const parentEl = ref(null)
-const noProps = ref({ h: 200, w: 200, active: true, x: 0, y: 0 })
+const noProps = ref({ h: 200, w: 200, active: false, x: 0, y: 0 })
 const slots = useSlots()
-useCssModule()
+// useCssModule()
 
 const width = computed({
   get() {
@@ -1059,6 +1064,17 @@ const handleUp = (e) => {
   removeEvent(document.documentElement, eventsFor.move, handleResize)
 }
 
+const elementMouseOver = () => {
+  if (props.activeOnHover) {
+    active.value = true
+  }
+}
+const elementMouseLeave = () => {
+  if (props.activeOnHover) {
+    active.value = false
+  }
+}
+
 onMounted(() => {
   resetBoundsAndMouseState()
 
@@ -1187,6 +1203,7 @@ watch(
   position: absolute;
   min-width: v-bind(handlesSize);
   min-height: v-bind(handlesSize);
+  border: 0.5px solid gray;
 }
 
 .drv-handles .drv-handle-tl {
