@@ -8,5 +8,5 @@ DraggableResizableVue.install = (app) => {
   return app
 }
 
-export { default as DraggableContainer } from './components/DraggableContainer'
+// export { default as DraggableContainer } from './components/DraggableContainer'
 export default DraggableResizableVue
