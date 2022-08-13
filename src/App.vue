@@ -10,26 +10,14 @@
           v-model:w="position.w"
           v-model:active="position.active"
           :show-grid="true"
-          :grid="[20, 40]"
+          :grid="[20, 20]"
           :parent="true"
+          resize-handles-type="borders"
+          :handles-size="6"
           drag-handle="#handle"
         >
           <div
             id="handle"
-            style="background: aqua; width: 100%; height: 20px"
-          ></div>
-        </VueDraggableResizable>
-        <VueDraggableResizable
-          v-model:x="position2.x"
-          v-model:y="position2.y"
-          v-model:h="position2.h"
-          v-model:w="position2.w"
-          v-model:active="position2.active"
-          :parent="true"
-          drag-handle="#handle1"
-        >
-          <div
-            id="handle1"
             style="background: aqua; width: 100%; height: 20px"
           ></div>
         </VueDraggableResizable>
@@ -42,7 +30,7 @@
 
 <script setup>
 import VueDraggableResizable from './index'
-import './components/draggable-resizable-vue3/DraggableResizableVue3.css'
+// import './components/draggable-resizable-vue3/DraggableResizableVue3.css'
 import { ref } from 'vue'
 
 const position = ref({ x: 100, y: 100, w: 100, h: 100, active: true })

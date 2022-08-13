@@ -15,17 +15,30 @@
     @mousedown="elementMouseDown"
     @touchstart="elementTouchDown"
   >
-    <div
-      v-for="handleEl in actualHandles"
-      :key="handleEl"
-      :class="[classNameHandle, classNameHandle + '-' + handleEl]"
-      :style="{ display: active ? 'block' : 'none' }"
-      @mousedown.stop.prevent="handleDown(handleEl, $event)"
-      @touchstart.stop.prevent="handleTouchDown(handleEl, $event)"
-    >
-      <slot :name="handle"></slot>
+    <div :class="'drv-' + resizeHandlesType">
+      <div
+        v-for="handleEl in actualHandles"
+        :key="handleEl"
+        :class="[
+          classNameHandle,
+          classNameHandle + '-' + handleEl,
+          classNameHandle !== 'drv-handle' ? 'drv-handle' : '',
+          classNameHandle !== 'drv-handle' ? 'drv-handle' + '-' + handleEl : '',
+        ]"
+        :style="{
+          display: active ? 'block' : 'none',
+          border: slots.handle ? '' : '0.5px solid gray',
+        }"
+        @mousedown.stop.prevent="handleDown(handleEl, $event)"
+        @touchstart.stop.prevent="handleTouchDown(handleEl, $event)"
+      >
+        <slot
+          v-if="slots['handle-' + handleEl]"
+          :name="'handle-' + handleEl"
+        ></slot>
+        <slot v-if="!slots['handle-' + handleEl]" name="handle"></slot>
+      </div>
     </div>
-
     <slot></slot>
   </div>
 </template>
@@ -43,7 +56,8 @@ import {
   restrictToBounds,
   snapToGrid,
 } from './utils/fns'
-import { ref, computed, onMounted, watch } from 'vue'
+import { ref, computed, onMounted, watch, useSlots, useCssModule } from 'vue'
+// import './DraggableResizableVue3.css'
 
 const events = {
   mouse: {
@@ -190,6 +204,11 @@ const props = defineProps({
     default: 'auto',
     validator: (val) => (typeof val === 'string' ? val === 'auto' : val >= 0),
   },
+  resizeHandlesType: {
+    type: String,
+    default: 'handles',
+    validator: (val) => ['handles', 'borders', 'custom'].includes(val),
+  },
   handles: {
     type: Array,
     default: () => ['tl', 'tm', 'tr', 'mr', 'br', 'bm', 'bl', 'ml'],
@@ -197,6 +216,10 @@ const props = defineProps({
       const s = new Set(['tl', 'tm', 'tr', 'mr', 'br', 'bm', 'bl', 'ml'])
       return new Set(val.filter((h) => s.has(h))).size === val.length
     },
+  },
+  handlesSize: {
+    type: Number,
+    default: 10,
   },
   dragHandle: {
     type: String,
@@ -274,6 +297,8 @@ const emit = defineEmits([
 const el = ref(null)
 const parentEl = ref(null)
 const noProps = ref({ h: 200, w: 200, active: true, x: 0, y: 0 })
+const slots = useSlots()
+useCssModule()
 
 const width = computed({
   get() {
@@ -331,6 +356,8 @@ const active = computed({
     noProps.value.active = value
   },
 })
+const handlesSize = computed(() => props.handlesSize + 'px')
+const handlesHalfSize = computed(() => props.handlesSize / 2 + 'px')
 
 const widthTouched = ref(false)
 const heightTouched = ref(false)
@@ -673,9 +700,9 @@ const calcResizeLimits = () => {
     minTop: null,
     maxTop: null,
     minRight: null,
-    maxright: null,
+    maxRight: null,
     minBottom: null,
-    maxbottom: null,
+    maxBottom: null,
   }
 
   if (props.parent) {
@@ -686,33 +713,33 @@ const calcResizeLimits = () => {
     limits.maxTop =
       top.value + Math.floor((height.value - minH.value) / gridY) * gridY
     limits.minRight = right.value % gridX
-    limits.maxright =
+    limits.maxRight =
       right.value + Math.floor((width.value - minW.value) / gridX) * gridX
     limits.minBottom = bottom.value % gridY
-    limits.maxbottom =
+    limits.maxBottom =
       bottom.value + Math.floor((height.value - minH.value) / gridY) * gridY
 
     if (maxW.value) {
       limits.minLeft = Math.max(
         limits.minLeft,
-        parentwidth.value - right.value - maxW.value,
+        parentWidth.value - right.value - maxW.value,
       )
 
       limits.minRight = Math.max(
         limits.minRight,
-        parentwidth.value - left.value - maxW.value,
+        parentWidth.value - left.value - maxW.value,
       )
     }
 
     if (maxH.value) {
       limits.minTop = Math.max(
         limits.minTop,
-        parentheight.value - bottom.value - maxH.value,
+        parentHeight.value - bottom.value - maxH.value,
       )
 
       limits.minBottom = Math.max(
         limits.minBottom,
-        parentheight.value - top.value - maxH.value,
+        parentHeight.value - top.value - maxH.value,
       )
     }
 
@@ -742,10 +769,10 @@ const calcResizeLimits = () => {
     limits.maxTop =
       top.value + Math.floor((height.value - minH.value) / gridY) * gridY
     limits.minRight = null
-    limits.maxright =
+    limits.maxRight =
       right.value + Math.floor((width.value - minW.value) / gridX) * gridX
     limits.minBottom = null
-    limits.maxbottom =
+    limits.maxBottom =
       bottom.value + Math.floor((height.value - minH.value) / gridY) * gridY
 
     if (maxW.value) {
@@ -867,7 +894,7 @@ const handleResize = (e) => {
   let rightPx = right.value
   let bottomPx = bottom.value
 
-  const lockAspectRatio = props.lockAspectRatio
+  // const lockAspectRatio = props.lockAspectRatio
 
   const tmpDeltaX =
     mouseClickPosition.value.mouseX - (e.touches ? e.touches[0].pageX : e.pageX)
@@ -959,7 +986,7 @@ const handleResize = (e) => {
 const changeWidth = (val) => {
   // should calculate with scale 1.
 
-  const [newWidth, _] = snapToGrid(props.grid, val, 0, 1)
+  const [newWidth] = snapToGrid(props.grid, val, 0, 1)
 
   let rightPx = restrictToBounds(
     parentWidth.value - newWidth - left.value,
@@ -1146,3 +1173,141 @@ watch(
   },
 )
 </script>
+
+<style>
+.drv {
+  touch-action: none;
+  position: absolute;
+  box-sizing: border-box;
+  border: 1px dashed gray;
+}
+
+.drv-handles .drv-handle {
+  box-sizing: border-box;
+  position: absolute;
+  min-width: v-bind(handlesSize);
+  min-height: v-bind(handlesSize);
+}
+
+.drv-handles .drv-handle-tl {
+  transform: translate(-100%, -100%);
+  top: 0;
+  left: 0;
+  cursor: nw-resize;
+}
+
+.drv-handles .drv-handle-tm {
+  transform: translate(-50%, -100%);
+  top: 0;
+  left: 50%;
+  cursor: n-resize;
+}
+
+.drv-handles .drv-handle-tr {
+  transform: translate(100%, -100%);
+  top: 0;
+  right: 0;
+  cursor: ne-resize;
+}
+
+.drv-handles .drv-handle-ml {
+  transform: translate(-100%, -50%);
+  top: 50%;
+  left: 0;
+  cursor: w-resize;
+}
+
+.drv-handles .drv-handle-mr {
+  transform: translate(100%, -50%);
+  top: 50%;
+  right: 0;
+  cursor: e-resize;
+}
+
+.drv-handles .drv-handle-bl {
+  transform: translate(-100%, 100%);
+  bottom: 0;
+  left: 0;
+  cursor: sw-resize;
+}
+
+.drv-handles .drv-handle-bm {
+  transform: translate(-50%, 100%);
+  bottom: 0;
+  left: 50%;
+  cursor: s-resize;
+}
+
+.drv-handles .drv-handle-br {
+  transform: translate(100%, 100%);
+  bottom: 0;
+  right: 0;
+  cursor: se-resize;
+}
+
+.drv-borders .drv-handle {
+  box-sizing: border-box;
+  position: absolute;
+  min-width: v-bind(handlesSize);
+  min-height: v-bind(handlesSize);
+}
+
+.drv-borders .drv-handle-tl {
+  transform: translate(-50%, -50%);
+  top: 0;
+  left: 0;
+  cursor: nw-resize;
+}
+.drv-borders .drv-handle-tm {
+  transform: translate(0, -50%);
+  left: v-bind(handlesHalfSize);
+  width: calc(100% - v-bind(handlesSize));
+  top: 0;
+  cursor: n-resize;
+}
+
+.drv-borders .drv-handle-tr {
+  transform: translate(50%, -50%);
+  top: 0;
+  right: 0;
+  cursor: ne-resize;
+}
+
+.drv-borders .drv-handle-ml {
+  transform: translate(-50%, 0);
+  top: v-bind(handlesHalfSize);
+  height: calc(100% - v-bind(handlesSize));
+  left: 0;
+  cursor: w-resize;
+}
+
+.drv-borders .drv-handle-bl {
+  transform: translate(-50%, 50%);
+  bottom: 0;
+  left: 0;
+  cursor: sw-resize;
+}
+
+.drv-borders .drv-handle-bm {
+  transform: translate(0, 50%);
+  left: v-bind(handlesHalfSize);
+  width: calc(100% - v-bind(handlesSize));
+  bottom: 0;
+  cursor: s-resize;
+}
+
+.drv-borders .drv-handle-br {
+  transform: translate(50%, 50%);
+  bottom: 0;
+  right: 0;
+  cursor: se-resize;
+}
+
+.drv-borders .drv-handle-mr {
+  transform: translate(50%, 0);
+  top: v-bind(handlesHalfSize);
+  height: calc(100% - v-bind(handlesSize));
+  right: 0;
+  cursor: e-resize;
+}
+</style>

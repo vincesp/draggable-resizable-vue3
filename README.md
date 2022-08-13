@@ -1,19 +1,18 @@
-<p align="center"><img src="https://rawgit.com/mauricius/draggable-resizable-vue/v1/docs/resources/logo.png" alt="logo"></p>
 <h1 align="center">DraggableResizableVue3</h1>
 
 <!-- [![Latest Version on NPM](https://img.shields.io/npm/v/draggable-resizable-vue.svg?style=flat-square)](https://npmjs.com/package/draggable-resizable-vue) -->
 [![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)](LICENSE.md)
 <!-- [![npm](https://img.shields.io/npm/dt/draggable-resizable-vue.svg?style=flat-square)](https://www.npmjs.com/package/draggable-resizable-vue) -->
 
-> Vue 3 component for draggable and resizable elements. 
-> 
-> Originally this package is a fork of ["draggable-resizable-vue"](https://github.com/mauricius/draggable-resizable-vue) that has been rewritten to Vue 3 Composition API . But it has new features.
+ Vue 3 component for draggable and resizable elements. 
+
+
+ Originally this package is a fork of ["draggable-resizable-vue"](https://github.com/mauricius/draggable-resizable-vue) that has been rewritten to Vue 3 Composition API . But it has new features.
 
 
 ## Table of Contents
 
 * [Features](#features)
-* [Live Playground](#live-playground)
 * [Install and basic usage](#install-and-basic-usage)
   * [Props](#props)
   * [Events](#events)
@@ -34,16 +33,6 @@
 * Use your own classes
 * Provide your own markup for handles
 
-### Live Playground
-
-For examples of the component go to the [live playground](https://mauricius.github.io/draggable-resizable-vue/)
-
-Alternatively you can run the playground on your own computer:
-
-* Clone this repository
-* `npm install`
-* `npm run storybook`
-* Visit [http://localhost:9001/](http://localhost:9001/)
 
 ---
 
