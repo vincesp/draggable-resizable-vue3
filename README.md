@@ -1,13 +1,14 @@
 <p align="center"><img src="https://rawgit.com/mauricius/vue-draggable-resizable/v1/docs/resources/logo.png" alt="logo"></p>
-<h1 align="center">VueDraggableResizable 2</h1>
+<h1 align="center">DraggableResizableVue3</h1>
 
-[![Latest Version on NPM](https://img.shields.io/npm/v/vue-draggable-resizable.svg?style=flat-square)](https://npmjs.com/package/vue-draggable-resizable)
+<!-- [![Latest Version on NPM](https://img.shields.io/npm/v/vue-draggable-resizable.svg?style=flat-square)](https://npmjs.com/package/vue-draggable-resizable) -->
 [![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)](LICENSE.md)
-[![npm](https://img.shields.io/npm/dt/vue-draggable-resizable.svg?style=flat-square)](https://www.npmjs.com/package/vue-draggable-resizable)
+<!-- [![npm](https://img.shields.io/npm/dt/vue-draggable-resizable.svg?style=flat-square)](https://www.npmjs.com/package/vue-draggable-resizable) -->
 
-> Vue3 Component for draggable and resizable elements.
+> Vue 3 Component for draggable and resizable elements. 
+> 
+> Originally this package is a fork of ["vue-draggable-resizable"](https://github.com/mauricius/vue-draggable-resizable) that has been rewritten to Vue 3 Composition API . But it has new features.
 
-If you are looking for the version 1 of the component, it is available on the [v1 branch](https://github.com/mauricius/vue-draggable-resizable/tree/v1).
 
 ## Table of Contents
 
