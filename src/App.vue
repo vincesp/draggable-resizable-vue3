@@ -3,31 +3,33 @@
     <div id="top" class="container"></div>
     <div>
       <div style="background: aqua; width: 771px; height: 500px">
-        <VueDraggableResizable>
+        <!-- <VueDraggableResizable>
           <div
             id="handle"
             style="background: aqua; width: 100%; height: 20px"
           ></div>
-        </VueDraggableResizable>
-        <VueDraggableResizable
+        </VueDraggableResizable> -->
+        <DraggableResizableVue
           v-model:x="position2.x"
           v-model:y="position2.y"
           v-model:h="position2.h"
           v-model:w="position2.w"
           v-model:active="position2.active"
-          :scale="0.3"
-          :active-on-hover="true"
           :show-grid="true"
           :grid="[20, 20]"
           :parent="true"
           resize-handles-type="borders"
           :handles-size="6"
+          :min-width="80"
+          :min-height="80"
+          :max-width="200"
+          :max-height="200"
         >
           <div
             id="handle"
             style="background: aqua; width: 100%; height: 20px"
           ></div>
-        </VueDraggableResizable>
+        </DraggableResizableVue>
       </div>
 
       <!-- <VueDraggableResizable> asdsadsad </VueDraggableResizable> -->
@@ -36,7 +38,7 @@
 </template>
 
 <script setup>
-import VueDraggableResizable from './index'
+import DraggableResizableVue from './index'
 // import './components/draggable-resizable-vue3/DraggableResizableVue3.css'
 import { ref } from 'vue'
 
