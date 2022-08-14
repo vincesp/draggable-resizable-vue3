@@ -4,15 +4,25 @@ import {
   WithBasicProps,
   WithMinMax,
   WithAuto,
+  ResizeImage,
+  ResizeImageAspectRatio,
+  NotDraggable,
+  NotResizable,
 } from "./examples/components.js";
 import {
   NoPropsDocs,
   WithBasicPropsDocs,
   WithMinMaxDocs,
   WithAutoDocs,
+  ResizeImageDocs,
+  ResizeImageAspectRatioDocs,
+  NotDraggableDocs,
+  NotResizableDocs,
 } from "./examples/docs.js";
 
-<Meta title="Basic" />
+import "../style.css";
+
+<Meta title="Examples" />
 
 # No props
 
@@ -68,3 +78,55 @@ import {
 </Canvas>
 
 <WithAutoDocs />
+
+# Resize image
+
+<Canvas>
+  <Story name="Resize image" height="300px">
+    {{
+      components: { ResizeImage },
+      template: "<ResizeImage />",
+    }}
+  </Story>
+</Canvas>
+
+<ResizeImageDocs />
+
+# Resize image with locked aspect ratio
+
+<Canvas>
+  <Story name="Resize image with locked aspect ratio" height="300px">
+    {{
+      components: { ResizeImageAspectRatio },
+      template: "<ResizeImageAspectRatio />",
+    }}
+  </Story>
+</Canvas>
+
+<ResizeImageAspectRatioDocs />
+
+# Not draggable
+
+<Canvas>
+  <Story name="Not draggable" height="300px">
+    {{
+      components: { NotDraggable },
+      template: "<NotDraggable />",
+    }}
+  </Story>
+</Canvas>
+
+<NotDraggableDocs />
+
+# Not resizable
+
+<Canvas>
+  <Story name="Not resizable" height="300px">
+    {{
+      components: { NotResizable },
+      template: "<NotResizable />",
+    }}
+  </Story>
+</Canvas>
+
+<NotResizableDocs />

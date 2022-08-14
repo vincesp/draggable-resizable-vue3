@@ -1,6 +1,19 @@
-import NoPropsDocs from './1-NoProps.md'
-import WithBasicPropsDocs from './2-WithBasicProps.md'
-import WithMinMaxDocs from './3-WithMinMax.md'
-import WithAutoDocs from './4-WithAuto.md'
+import NoPropsDocs from './NoProps.md'
+import WithBasicPropsDocs from './WithBasicProps.md'
+import WithMinMaxDocs from './WithMinMax.md'
+import WithAutoDocs from './WithAuto.md'
+import ResizeImageDocs from './ResizeImage.md'
+import ResizeImageAspectRatioDocs from './ResizeImageAspectRatio.md'
+import NotDraggableDocs from './NotDraggable.md'
+import NotResizableDocs from './NotDraggable.md'
 
-export { NoPropsDocs, WithBasicPropsDocs, WithMinMaxDocs, WithAutoDocs }
+export {
+  NoPropsDocs,
+  WithBasicPropsDocs,
+  WithMinMaxDocs,
+  WithAutoDocs,
+  ResizeImageDocs,
+  ResizeImageAspectRatioDocs,
+  NotDraggableDocs,
+  NotResizableDocs,
+}

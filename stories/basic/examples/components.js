@@ -1,6 +1,19 @@
-import NoProps from './1-NoProps.vue'
-import WithBasicProps from './2-WithBasicProps.vue'
-import WithMinMax from './3-WithMinMax.vue'
-import WithAuto from './4-WithAuto.vue'
+import NoProps from './NoProps.vue'
+import WithBasicProps from './WithBasicProps.vue'
+import WithMinMax from './WithMinMax.vue'
+import WithAuto from './WithAuto.vue'
+import ResizeImage from './ResizeImage.vue'
+import ResizeImageAspectRatio from './ResizeImageAspectRatio.vue'
+import NotDraggable from './NotDraggable.vue'
+import NotResizable from './NotResizable.vue'
 
-export { NoProps, WithBasicProps, WithMinMax, WithAuto }
+export {
+  NoProps,
+  WithBasicProps,
+  WithMinMax,
+  WithAuto,
+  ResizeImage,
+  ResizeImageAspectRatio,
+  NotDraggable,
+  NotResizable,
+}
