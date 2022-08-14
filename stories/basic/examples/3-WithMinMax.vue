@@ -5,24 +5,28 @@
     v-model:h="element.height"
     v-model:w="element.width"
     v-model:active="element.isActive"
-    :min-width="100"
-    :min-height="100"
+    :min-width="150"
+    :min-height="150"
     :max-width="300"
     :max-height="300"
   >
-    Draggable and resizable element
+    x={{ element.x }}<br />
+    y={{ element.y }}<br />
+    height={{ element.height }}<br />
+    width={{ element.width }}<br />
+    isActive={{ element.isActive }}
   </draggable-resizable-vue>
 </template>
 
 <script setup>
 import { ref } from 'vue'
-import DraggableResizableVue from './index'
+import DraggableResizableVue from 'draggable-resizable-vue3'
 
 const element = ref({
   x: 20,
   y: 20,
-  with: 200,
+  width: 200,
   height: 200,
-  isActive: true,
+  isActive: false,
 })
 </script>

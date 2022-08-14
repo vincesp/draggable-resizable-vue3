@@ -3,6 +3,12 @@
 All notable changes to `draggable-resizable-vue3` will be documented in this file
 
 
+## 1.0.4-beta - 2022-08-13
+   Readme has been updated.
+## 1.0.3-beta - 2022-08-13
+   Bugs fixing.
+## 1.0.2-beta - 2022-08-13
+- Bugs fixing.
 ## 1.0.1-beta - 2022-08-13
 - Fixed import. Added borders handles. Fix some bugs.
 ## 1.0.0 - 2022-08-11

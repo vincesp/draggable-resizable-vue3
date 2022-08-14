@@ -1,0 +1,70 @@
+import { Meta, Story, Canvas } from "@storybook/addon-docs";
+import {
+  NoProps,
+  WithBasicProps,
+  WithMinMax,
+  WithAuto,
+} from "./examples/components.js";
+import {
+  NoPropsDocs,
+  WithBasicPropsDocs,
+  WithMinMaxDocs,
+  WithAutoDocs,
+} from "./examples/docs.js";
+
+<Meta title="Basic" />
+
+# No props
+
+<Canvas>
+  <Story name="No props" height="300px">
+    {{
+      components: { NoProps },
+      template: "<NoProps />",
+    }}
+  </Story>
+</Canvas>
+
+<NoPropsDocs />
+
+# With basic props
+
+<Canvas>
+  <Story name="With basic props" height="300px">
+    {{
+      components: { WithBasicProps },
+      template: "<WithBasicProps />",
+    }}
+  </Story>
+</Canvas>
+
+<WithBasicPropsDocs />
+
+# With min-width, min-height, max-width, max-height
+
+<Canvas>
+  <Story
+    name="With min-width, min-height, max-width, max-height"
+    height="300px"
+  >
+    {{
+      components: { WithMinMax },
+      template: "<WithMinMax />",
+    }}
+  </Story>
+</Canvas>
+
+<WithMinMaxDocs />
+
+# With auto width
+
+<Canvas>
+  <Story name="With auto width" height="300px">
+    {{
+      components: { WithAuto },
+      template: "<WithAuto />",
+    }}
+  </Story>
+</Canvas>
+
+<WithAutoDocs />

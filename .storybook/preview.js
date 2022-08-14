@@ -1,8 +1,7 @@
 
 
-import {app, addParameters} from '@storybook/vue3';
+import {app } from '@storybook/vue3';
 import DraggableResizableVue from '../src/components/draggable-resizable-vue3/DraggableResizableVue3.vue'
-
 app.component('DraggableResizableVue', DraggableResizableVue);
 
 export const parameters = {
@@ -13,9 +12,12 @@ export const parameters = {
       date: /Date$/,
     },
   },
-  docs: {
-    inlineStories: true,
-  },
 
 }
-
+export const options = {
+  /**
+   * display panel that shows addon configurations
+   * @type {Boolean}
+   */
+  showPanel: false
+}

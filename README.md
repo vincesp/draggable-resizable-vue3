@@ -9,6 +9,7 @@
 
  Originally this package is a fork of ["draggable-resizable-vue"](https://github.com/mauricius/draggable-resizable-vue) that has been rewritten to Vue 3 Composition API . But it has new features.
 
+---
 
 ## Table of Contents
 
@@ -18,8 +19,10 @@
   * [Props](#props)
   * [Events](#events)
   * [Styling](#styling)
+  * [Slots](#slots)
 * [Contributing](#contributing)
 * [License](#license)
+---
 
 ### Features
 
@@ -34,7 +37,15 @@
 * Use your own classes
 * Provide your own markup for handles
 
-
+New features of this fork: 
+* Vue 3 (Composition API).
+* Using `v-model` for `x`, `y`, `h`, `w` and `active`.
+* Toggle active when hovering `active-on-hover`.
+* Using css selector for `parent` prop. 
+* Showing parent grid using `show-grid` and `grid-color`.
+* Borders to resize using `handlesType="borders"`
+* A new approach for the styling using [slots](#slots) or [custom styles](#styling) (`handlesType="custom"`). Added prefix `drv-` for default class names to make them less common.
+* 
 ---
 
 ## Install
@@ -63,12 +74,15 @@ app.mount('#app')
 or locally (composition API):
 
 ```vue
-// your component
+// YourComponent.vue
 <script setup>
 import DraggableResizableVue from 'draggable-resizable-vue3'
 
 </script>
 ```
+
+---
+
 ## Usage
 
 No props usage:
@@ -90,19 +104,19 @@ Usage with position and sizes props:
 
 ```vue
 <template>
-        <draggable-resizable-vue
-          v-model:x="element.x"
-          v-model:y="element.y"
-          v-model:h="element.height"
-          v-model:w="element.width"
-          v-model:active="element.isActive"
-          :min-width="100"
-          :min-height="100"
-          :max-width="300"
-          :max-height="300"
-        >
-          Draggable and resizable element
-        </draggable-resizable-vue>
+  <draggable-resizable-vue
+    v-model:x="element.x"
+    v-model:y="element.y"
+    v-model:h="element.height"
+    v-model:w="element.width"
+    v-model:active="element.isActive"
+    :min-width="100"
+    :min-height="100"
+    :max-width="300"
+    :max-height="300"
+  >
+    Draggable and resizable element
+  </draggable-resizable-vue>
 </template>
 
 <script setup>
@@ -110,14 +124,14 @@ import { ref } from 'vue'
 import DraggableResizableVue from 'draggable-resizable-vue3'
 
 const element = ref({
-   x: 20,
-   y: 20,
-   with: 200,
-   height: 200,
-   isActive: true,
+  x: 20,
+  y: 20,
+  with: 200,
+  height: 200,
+  isActive: true,
 })
-
 </script>
+
 ```
 Usage with grid:
 
@@ -130,10 +144,7 @@ Usage with grid:
           v-model:h="element.height"
           v-model:w="element.width"
           v-model:active="element.isActive"
-          :min-width="100"
-          :min-height="100"
-          :max-width="300"
-          :max-height="300"
+          :grid=[20,20]
         >
           Draggable and resizable element
         </draggable-resizable-vue>
@@ -147,13 +158,13 @@ const element = ref({
    x: 20,
    y: 20,
    zIndex: 10,
-   with: 200,
+   width: 200,
    height: 200,
    isActive: true,
 })
-
 </script>
 ```
+---
 
 ### Props
 
@@ -367,6 +378,8 @@ The prop can be
 * `handles` - handles are squares around the element. 
 * `borders` - resizable borders and corners of the element. If `custom`
 * `custom` - no styles for handles. For using your own styles or classes.
+* 
+* New approach for styling component.
 
 
 
@@ -760,9 +773,11 @@ Called whenever the component stops getting dragged.
 
 You can style the component using appropriate class names passed as props to the component. Moreover you can disable the default styles for the handles, using `handles-type="custom"`, but you should take care to define position and size for them. The default classes for handles are `handle` and `handle-tl`, `handle-br` and so on.
 
-Here is the references you can use for custom styles: 
+Here is the templates you can use for custom styles: 
 * [`handles-type="handles"` - link](https://github.com/zavalen/draggable-resizable-vue3/blob/master/src/components/draggable-resizable-vue3/css/DraggableResizableVue3Handles.css).
 * [`handles-type="borders"` - link](https://github.com/zavalen/draggable-resizable-vue3/blob/master/src/components/draggable-resizable-vue3/css/DraggableResizableVue3Borders.css).
+
+---
 
 
 ## Slots 
@@ -795,6 +810,7 @@ Or customize specific handle:
    </template>
 </draggable-resizable-vue>
 ```
+---
 
 
 ## Contributing
@@ -817,6 +833,7 @@ npm run tests
 # run storybook at localhost:9001
 npm run storybook
 ```
+---
 
 ## License
 

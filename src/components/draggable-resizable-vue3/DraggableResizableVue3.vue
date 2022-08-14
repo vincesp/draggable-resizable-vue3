@@ -91,54 +91,6 @@ const userSelectAuto = {
 let eventsFor = events.mouse
 
 const props = defineProps({
-  className: {
-    type: String,
-    default: 'drv',
-  },
-  classNameDraggable: {
-    type: String,
-    default: 'drv-draggable',
-  },
-  classNameResizable: {
-    type: String,
-    default: 'drv-resizable',
-  },
-  classNameDragging: {
-    type: String,
-    default: 'drv-dragging',
-  },
-  classNameResizing: {
-    type: String,
-    default: 'drv-resizing',
-  },
-  classNameActive: {
-    type: String,
-    default: 'drv-active',
-  },
-  classNameHandle: {
-    type: String,
-    default: 'drv-handle',
-  },
-  disableUserSelect: {
-    type: Boolean,
-    default: true,
-  },
-  enableNativeDrag: {
-    type: Boolean,
-    default: false,
-  },
-  preventDeactivation: {
-    type: Boolean,
-    default: false,
-  },
-  active: {
-    type: Boolean,
-    default: false,
-  },
-  activeOnHover: {
-    type: Boolean,
-    default: false,
-  },
   draggable: {
     type: Boolean,
     default: true,
@@ -147,9 +99,18 @@ const props = defineProps({
     type: Boolean,
     default: true,
   },
-  lockAspectRatio: {
-    type: Boolean,
-    default: false,
+  x: {
+    type: Number,
+    default: 0,
+  },
+  y: {
+    type: Number,
+    default: 0,
+  },
+  z: {
+    type: [String, Number],
+    default: 'auto',
+    validator: (val) => (typeof val === 'string' ? val === 'auto' : val >= 0),
   },
   w: {
     type: [Number, String],
@@ -192,18 +153,30 @@ const props = defineProps({
     default: null,
     validator: (val) => val >= 0,
   },
-  x: {
-    type: Number,
-    default: 0,
+  active: {
+    type: Boolean,
+    default: false,
   },
-  y: {
-    type: Number,
-    default: 0,
+  preventDeactivation: {
+    type: Boolean,
+    default: false,
   },
-  z: {
-    type: [String, Number],
-    default: 'auto',
-    validator: (val) => (typeof val === 'string' ? val === 'auto' : val >= 0),
+  activeOnHover: {
+    type: Boolean,
+    default: false,
+  },
+  disableUserSelect: {
+    type: Boolean,
+    default: true,
+  },
+  enableNativeDrag: {
+    type: Boolean,
+    default: false,
+  },
+
+  lockAspectRatio: {
+    type: Boolean,
+    default: false,
   },
   handlesType: {
     type: String,
@@ -263,6 +236,34 @@ const props = defineProps({
       return val.length === 2 && val[0] > 0 && val[1] > 0
     },
   },
+  className: {
+    type: String,
+    default: 'drv',
+  },
+  classNameDraggable: {
+    type: String,
+    default: 'drv-draggable',
+  },
+  classNameResizable: {
+    type: String,
+    default: 'drv-resizable',
+  },
+  classNameDragging: {
+    type: String,
+    default: 'drv-dragging',
+  },
+  classNameResizing: {
+    type: String,
+    default: 'drv-resizing',
+  },
+  classNameActive: {
+    type: String,
+    default: 'drv-active',
+  },
+  classNameHandle: {
+    type: String,
+    default: 'drv-handle',
+  },
   onDragStart: {
     type: Function,
     default: () => true,
@@ -297,9 +298,8 @@ const emit = defineEmits([
 
 const el = ref(null)
 const parentEl = ref(null)
-const noProps = ref({ h: 200, w: 200, active: false, x: 0, y: 0 })
+const noProps = ref({ h: 'auto', w: 'auto', active: false, x: 0, y: 0 })
 const slots = useSlots()
-// useCssModule()
 
 const width = computed({
   get() {
