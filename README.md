@@ -818,8 +818,6 @@ npm run build
 # build the storybook docs into gh-pages
 npm run gh-pages:build
 
-# run storybook at localhost:6006
-npm run storybook
 ```
 ---
 
