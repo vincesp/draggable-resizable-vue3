@@ -1,44 +1,33 @@
 {
-  "name": "draggable-resizable-vue3",
-  "version": "1.0.5-beta",
-  "license": "MIT",
-  "description": "Vue 3 Component to drag and resize.",
+  "name": "cvbuilder",
+  "version": "0.0.0",
   "scripts": {
-    "dev": "vite --host",
+    "dev": "vite",
     "build": "vite build",
     "preview": "vite preview --port 4173",
-    "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs --fix --ignore-path .gitignore",
+    "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs --fix --ignore-path .gitignore"
+  },
+  "dependencies": {
+    "@headlessui/vue": "^1.6.7",
+    "@heroicons/vue": "^1.0.6",
+    "floating-vue": "^2.0.0-beta.15",
+    "vue": "^3.2.37",
+    "vue-router": "^4.1.3",
+    "vue3-markdown-it": "^1.0.10"
   },
   "devDependencies": {
-    "@babel/core": "^7.18.10",
     "@rushstack/eslint-patch": "^1.1.4",
     "@vitejs/plugin-vue": "^3.0.1",
     "@vue/eslint-config-prettier": "^7.0.0",
-    "babel-loader": "^8.2.5",
-    "draggable-resizable-vue3": "^1.0.4-beta",
+    "autoprefixer": "^10.4.8",
     "eslint": "^8.21.0",
     "eslint-plugin-vue": "^9.3.0",
+    "postcss": "^8.4.16",
     "prettier": "^2.7.1",
-    "vite": "^3.0.4",
-    "vue": "^3.2.37",
-    "vue-eslint-parser": "^9.0.3",
-    "vue-loader": "^16.8.3"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/zavalen/draggable-resizable-vue3.git"
-  },
-  "bugs": {
-    "url": "https://github.com/zavalen/draggable-resizable-vue3/issues"
-  },
-  "homepage": "https://github.com/zavalen/draggable-resizable-vue3",
-  "keywords": [
-    "vue3",
-    "component",
-    "draggable",
-    "resizable"
-  ],
-  "main": "src/index.js",
-  "module": "src/index.js",
-  "unpkg": "src/index.js"
+    "sass": "^1.54.4",
+    "tailwindcss": "^3.1.8",
+    "vite": "^3.0.5",
+    "vite-plugin-pages": "^0.25.0",
+    "vue-eslint-parser": "^9.0.3"
+  }
 }
