@@ -135,18 +135,19 @@ const element = ref({
 </script>
 
 ```
-Usage with grid:
+Usage with grid and z-index:
 
 ```vue
 <template>
         <draggable-resizable-vue
           v-model:x="element.x"
           v-model:y="element.y"
-          v-model:z="element.zIndex"
           v-model:h="element.height"
           v-model:w="element.width"
           v-model:active="element.isActive"
+          :z="element.zIndex"
           :grid=[20,20]
+          :show-grid:true
         >
           Draggable and resizable element
         </draggable-resizable-vue>
@@ -820,8 +821,8 @@ Or customize specific handle:
 Any contribution to the code or any part of the documentation and any idea and/or suggestion are very welcome.
 
 ``` bash
-# serve with hot reload at localhost:8080
-npm run serve
+# serve with hot reload at localhost:5173
+npm run dev
 
 # distribution build
 npm run build
@@ -829,10 +830,7 @@ npm run build
 # build the storybook docs into gh-pages
 npm run gh-pages:build
 
-# run tests
-npm run tests
-
-# run storybook at localhost:9001
+# run storybook at localhost:6006
 npm run storybook
 ```
 ---

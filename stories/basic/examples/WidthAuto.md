@@ -11,7 +11,7 @@
     >
       {{ text }}
     </draggable-resizable-vue>
-    Text: <input v-model="text" />
+    <div class="toolbar">Text: <input v-model="text" /></div>
   </div>
 </template>
 

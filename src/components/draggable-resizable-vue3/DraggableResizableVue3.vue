@@ -210,7 +210,7 @@ const props = defineProps({
   },
   grid: {
     type: Array,
-    default: () => [1, 1],
+    // default: () => [1, 1],
     validator: (val) =>
       Array.isArray(val) &&
       typeof val[0] === 'number' &&
@@ -400,11 +400,9 @@ const containerGrid = inject('drvContainerGrid')
 
 const grid = computed(() => {
   if (!containerGrid.value) {
-    return props.grid
+    return props.grid || [1, 1]
   }
-  return props.grid[0] === 1 && props.grid[1] === 1
-    ? containerGrid.value
-    : props.grid
+  return props.grid ? props.grid : containerGrid.value
 })
 
 const parentGridBackgroundStyle = computed(() => {
