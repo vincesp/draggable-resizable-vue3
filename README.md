@@ -11,7 +11,6 @@
 
  Originally this package is a fork of ["draggable-resizable-vue"](https://github.com/mauricius/draggable-resizable-vue) that has been rewritten to Vue 3 Composition API . But it has new features.
 
----
 
 ## Table of Contents
 
@@ -24,7 +23,6 @@
   * [Slots](#slots)
 * [Contributing](#contributing)
 * [License](#license)
----
 
 ### Features
 
@@ -83,7 +81,6 @@ import DraggableResizableVue from 'draggable-resizable-vue3'
 </script>
 ```
 
----
 
 ## Usage
 
@@ -167,7 +164,6 @@ const element = ref({
 })
 </script>
 ```
----
 
 ### Props
 
@@ -694,7 +690,6 @@ function onResizeStartCallback(handle, x, y, width, height){
    // return false; — for cancel
 }
 ```
----
 
 ### Events
 
@@ -770,8 +765,6 @@ Called whenever the component stops getting dragged.
 <draggable-resizable-vue @dragstop="onDragstop">
 ```
 
----
-
 ### Styling
 
 You can style the component using appropriate class names passed as props to the component. Moreover you can disable the default styles for the handles, using `handles-type="custom"`, but you should take care to define position and size for them. The default classes for handles are `handle` and `handle-tl`, `handle-br` and so on.
@@ -779,8 +772,6 @@ You can style the component using appropriate class names passed as props to the
 Here is the templates you can use for custom styles: 
 * [`handles-type="handles"` - link](https://github.com/zavalen/draggable-resizable-vue3/blob/master/src/components/draggable-resizable-vue3/css/DraggableResizableVue3Handles.css).
 * [`handles-type="borders"` - link](https://github.com/zavalen/draggable-resizable-vue3/blob/master/src/components/draggable-resizable-vue3/css/DraggableResizableVue3Borders.css).
-
----
 
 
 ## Slots 
@@ -813,9 +804,6 @@ Or customize specific handle:
    </template>
 </draggable-resizable-vue>
 ```
----
-
-
 ## Contributing
 
 Any contribution to the code or any part of the documentation and any idea and/or suggestion are very welcome.
