@@ -9,7 +9,7 @@
     "preview": "vite preview --port 4173",
     "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs --fix --ignore-path .gitignore",
     "storybook": "start-storybook -p 6006",
-    "build-storybook": "build-storybook -o, --output-dir docs"
+    "build-storybook": "build-storybook --docs -o, --output-dir docs"
   },
   "devDependencies": {
     "@babel/core": "^7.18.10",
