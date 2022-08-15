@@ -1,10 +1,12 @@
 <h1 align="center">DraggableResizableVue3</h1>
 
-<!-- [![Latest Version on NPM](https://img.shields.io/npm/v/draggable-resizable-vue.svg?style=flat-square)](https://npmjs.com/package/draggable-resizable-vue) -->
+ [![Latest Version on NPM](https://img.shields.io/npm/v/draggable-resizable-vue3.svg?style=flat-square)](https://www.npmjs.com/package/draggable-resizable-vue3) 
 [![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)](LICENSE.md)
-<!-- [![npm](https://img.shields.io/npm/dt/draggable-resizable-vue.svg?style=flat-square)](https://www.npmjs.com/package/draggable-resizable-vue) -->
+ [![npm](https://img.shields.io/npm/dt/draggable-resizable-vue3.svg?style=flat-square)](https://www.npmjs.com/package/draggable-resizable-vue3) 
 
  Vue 3 component for draggable and resizable elements. 
+
+#### [Live playground (codesandbox).](https://codesandbox.io/s/github/zavalen/draggable-resizable-vue3?file=/src/App.vue)
 
 
  Originally this package is a fork of ["draggable-resizable-vue"](https://github.com/mauricius/draggable-resizable-vue) that has been rewritten to Vue 3 Composition API . But it has new features.
@@ -45,7 +47,7 @@ New features of this fork:
 * Showing parent grid using `show-grid` and `grid-color`.
 * Borders to resize using `handlesType="borders"`
 * A new approach for the styling using [slots](#slots) or [custom styles](#styling) (`handlesType="custom"`). Added prefix `drv-` for default class names to make them less common.
-* 
+
 ---
 
 ## Install

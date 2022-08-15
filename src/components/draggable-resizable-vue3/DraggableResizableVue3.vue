@@ -58,7 +58,7 @@ import {
   restrictToBounds,
   snapToGrid,
 } from './utils/fns'
-import { ref, computed, onMounted, watch, useSlots } from 'vue'
+import { ref, computed, onMounted, watch, useSlots, inject } from 'vue'
 
 const events = {
   mouse: {
@@ -211,6 +211,10 @@ const props = defineProps({
   grid: {
     type: Array,
     default: () => [1, 1],
+    validator: (val) =>
+      Array.isArray(val) &&
+      typeof val[0] === 'number' &&
+      typeof val[1] === 'number',
   },
   showGrid: {
     type: [Boolean, String],
@@ -315,7 +319,6 @@ const height = computed({
   get() {
     return props.h || noProps.value.h
   },
-
   set(value) {
     emit('update:h', value)
     noProps.value.h = value
@@ -337,7 +340,6 @@ const top = computed({
   get() {
     return props.y || noProps.value.y
   },
-
   set(value) {
     emit('update:y', value)
     noProps.value.y = value
@@ -351,7 +353,6 @@ const active = computed({
   get() {
     return props.active || noProps.value.active
   },
-
   set(value) {
     emit('update:active', value)
     noProps.value.active = value
@@ -389,10 +390,27 @@ const style = computed(() => {
   }
 })
 
+const containerClass = inject('drvContainerClass')
+
+const parent = computed(() => {
+  return containerClass.value ? '.' + containerClass.value : props.parent
+})
+
+const containerGrid = inject('drvContainerGrid')
+
+const grid = computed(() => {
+  if (!containerGrid.value) {
+    return props.grid
+  }
+  return props.grid[0] === 1 && props.grid[1] === 1
+    ? containerGrid.value
+    : props.grid
+})
+
 const parentGridBackgroundStyle = computed(() => {
   const axisBg = {
-    x: `linear-gradient(-90deg, ${props.gridColor} 1px, transparent 1px) 0px 0px / ${props.grid[0]}px ${props.grid[0]}px`,
-    y: `linear-gradient(0deg, ${props.gridColor} 1px, transparent 1px) 0px 0px / ${props.grid[1]}px ${props.grid[1]}px`,
+    x: `linear-gradient(-90deg, ${grid.value.valueColor} 1px, transparent 1px) 0px 0px / ${grid.value[0]}px ${grid.value[0]}px`,
+    y: `linear-gradient(0deg, ${grid.value.valueColor} 1px, transparent 1px) 0px 0px / ${grid.value[1]}px ${grid.value[1]}px`,
   }
 
   if (props.showGrid === 'x' || props.showGrid === 'y') {
@@ -476,7 +494,7 @@ const resetBoundsAndMouseState = () => {
 }
 
 const checkParentSize = () => {
-  if (props.parent) {
+  if (parent.value) {
     const [newParentWidth, newParentHeight] = getParentSize()
 
     parentWidth.value = newParentWidth
@@ -488,13 +506,13 @@ const checkParentSize = () => {
 }
 
 const getParentSize = () => {
-  if (props.parent) {
-    const parent =
-      typeof props.parent === 'string'
-        ? el.value.closest(props.parent)
+  if (parent.value) {
+    const parentElement =
+      typeof parent.value === 'string'
+        ? el.value.closest(parent.value)
         : el.value.parentNode
-    parentEl.value = parent
-    const style = window.getComputedStyle(parent, null)
+    parentEl.value = parentElement
+    const style = window.getComputedStyle(parentElement, null)
     return [
       parseInt(style.getPropertyValue('width'), 10),
       parseInt(style.getPropertyValue('height'), 10),
@@ -505,11 +523,11 @@ const getParentSize = () => {
 }
 
 const showParentGrid = () => {
-  if (props.parent && props.showGrid) {
+  if (parent.value && props.showGrid) {
     if (!parentEl.value) {
       const parent =
-        typeof props.parent === 'string'
-          ? el.value.closest(props.parent)
+        typeof parent.value === 'string'
+          ? el.value.closest(parent.value)
           : el.value.parentNode
       parentEl.value = parent
     }
@@ -567,7 +585,7 @@ const elementDown = (e) => {
     mouseClickPosition.value.top = top.value
     mouseClickPosition.value.bottom = bottom.value
 
-    if (props.parent) {
+    if (parent.value) {
       bounds.value = calcDragLimits()
     }
 
@@ -578,35 +596,35 @@ const elementDown = (e) => {
 
 const calcDragLimits = () => {
   return {
-    minLeft: left.value % props.grid[0],
+    minLeft: left.value % grid.value[0],
     maxLeft:
       Math.floor(
-        (parentWidth.value - width.value - left.value) / props.grid[0],
+        (parentWidth.value - width.value - left.value) / grid.value[0],
       ) *
-        props.grid[0] +
+        grid.value[0] +
       left.value,
 
-    minRight: right.value % props.grid[0],
+    minRight: right.value % grid.value[0],
     maxRight:
       Math.floor(
-        (parentWidth.value - width.value - right.value) / props.grid[0],
+        (parentWidth.value - width.value - right.value) / grid.value[0],
       ) *
-        props.grid[0] +
+        grid.value[0] +
       right.value,
 
-    minTop: top.value % props.grid[1],
+    minTop: top.value % grid.value[1],
     maxTop:
       Math.floor(
-        (parentHeight.value - height.value - top.value) / props.grid[1],
+        (parentHeight.value - height.value - top.value) / grid.value[1],
       ) *
-        props.grid[1] +
+        grid.value[1] +
       top.value,
-    minBottom: bottom.value % props.grid[1],
+    minBottom: bottom.value % grid.value[1],
     maxBottom:
       Math.floor(
-        (parentHeight.value - height.value - bottom.value) / props.grid[1],
+        (parentHeight.value - height.value - bottom.value) / grid.value[1],
       ) *
-        props.grid[1] +
+        grid.value[1] +
       bottom.value,
   }
 }
@@ -673,7 +691,7 @@ const handleDown = (handleEl, e) => {
 }
 
 const calcResizeLimits = () => {
-  const [gridX, gridY] = props.grid
+  const [gridX, gridY] = grid.value
 
   if (props.lockAspectRatio) {
     if (minW.value / minH.value > aspectFactor.value) {
@@ -706,7 +724,7 @@ const calcResizeLimits = () => {
     maxBottom: null,
   }
 
-  if (props.parent) {
+  if (parent.value) {
     limits.minLeft = left.value % gridX
     limits.maxLeft =
       left.value + Math.floor((width.value - minW.value) / gridX) * gridX
@@ -805,8 +823,6 @@ const move = (e) => {
   }
 }
 const handleDrag = (e) => {
-  const grid = props.grid
-
   const tmpDeltaX =
     props.axis && props.axis !== 'y'
       ? mouseClickPosition.value.mouseX -
@@ -819,7 +835,12 @@ const handleDrag = (e) => {
         (e.touches ? e.touches[0].pageY : e.pageY)
       : 0
 
-  const [deltaX, deltaY] = snapToGrid(grid, tmpDeltaX, tmpDeltaY, props.scale)
+  const [deltaX, deltaY] = snapToGrid(
+    grid.value,
+    tmpDeltaX,
+    tmpDeltaY,
+    props.scale,
+  )
 
   const leftPx = restrictToBounds(
     mouseClickPosition.value.left - deltaX,
@@ -862,7 +883,7 @@ const handleDrag = (e) => {
 const moveHorizontally = (val) => {
   // should calculate with scale 1.
 
-  const [deltaX, _] = snapToGrid(props.grid, val, top.value, 1)
+  const [deltaX, _] = snapToGrid(grid.value, val, top.value, 1)
 
   const leftPx = restrictToBounds(
     deltaX,
@@ -877,7 +898,7 @@ const moveHorizontally = (val) => {
 const moveVertically = (val) => {
   // should calculate with scale 1.
 
-  const [_, deltaY] = snapToGrid(props.grid, left.value, val, 1)
+  const [_, deltaY] = snapToGrid(grid.value, left.value, val, 1)
 
   const topPx = restrictToBounds(
     deltaY,
@@ -912,7 +933,7 @@ const handleResize = (e) => {
   }
 
   const [deltaX, deltaY] = snapToGrid(
-    props.grid,
+    grid.value,
     tmpDeltaX,
     tmpDeltaY,
     props.scale,
@@ -987,7 +1008,7 @@ const handleResize = (e) => {
 const changeWidth = (val) => {
   // should calculate with scale 1.
 
-  const [newWidth] = snapToGrid(props.grid, val, 0, 1)
+  const [newWidth] = snapToGrid(grid.value, val, 0, 1)
 
   let rightPx = restrictToBounds(
     parentWidth.value - newWidth - left.value,
@@ -1013,7 +1034,7 @@ const changeWidth = (val) => {
 const changeHeight = (val) => {
   // should calculate with scale 1.
 
-  const [_, newHeight] = snapToGrid(props.grid, 0, val, 1)
+  const [_, newHeight] = snapToGrid(grid.value, 0, val, 1)
 
   let bottomPx = restrictToBounds(
     parentHeight.value - newHeight - top.value,
@@ -1114,7 +1135,7 @@ watch(
       return
     }
 
-    if (props.parent) {
+    if (parent.value) {
       bounds.value = calcDragLimits()
     }
 
@@ -1129,7 +1150,7 @@ watch(
       return
     }
 
-    if (props.parent) {
+    if (parent.value) {
       bounds.value = calcDragLimits()
     }
 
@@ -1155,7 +1176,7 @@ watch(
       return
     }
 
-    if (props.parent) {
+    if (parent.value) {
       bounds.value = calcResizeLimits()
     }
 
@@ -1170,7 +1191,7 @@ watch(
       return
     }
 
-    if (props.parent) {
+    if (parent.value) {
       bounds.value = calcResizeLimits()
     }
 

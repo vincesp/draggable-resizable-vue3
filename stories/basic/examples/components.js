@@ -1,7 +1,7 @@
 import NoProps from './NoProps.vue'
 import WithBasicProps from './WithBasicProps.vue'
 import WithMinMax from './WithMinMax.vue'
-import WithAuto from './WithAuto.vue'
+import WidthAuto from './WithAuto.vue'
 import ResizeImage from './ResizeImage.vue'
 import ResizeImageAspectRatio from './ResizeImageAspectRatio.vue'
 import NotDraggable from './NotDraggable.vue'
@@ -11,7 +11,7 @@ export {
   NoProps,
   WithBasicProps,
   WithMinMax,
-  WithAuto,
+  WidthAuto,
   ResizeImage,
   ResizeImageAspectRatio,
   NotDraggable,
