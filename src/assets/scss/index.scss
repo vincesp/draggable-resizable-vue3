@@ -2,85 +2,8 @@
 @tailwind components;
 @tailwind utilities;
 
-
-@import url("https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;700&display=swap");
-
-.container {
-  @apply max-w-7xl w-full mx-auto px-3;
-}
-
-.header-container {
-  @apply max-w-7xl w-full mx-auto px-0 sm:px-3;
-}
-
-.btn {
-  @apply relative transition-colors duration-300 text-white text-base bg-blue-800 rounded-xl px-6 py-2 flex gap-2 items-center justify-center hover:bg-blue-700;
-
-  &-lg {
-    @apply text-base px-8 py-4 font-medium;
-  }
-
-  &-xl {
-    @apply px-12 py-4 rounded-lg text-xl font-medium;
-  }
-
-  &-sm {
-    @apply px-8 py-1 rounded-lg text-sm;
-  }
-
-  &:active:enabled {
-    @apply -bottom-px;
-  }
-
-  &:disabled {
-    @apply opacity-60 grayscale;
-  }
-
-  &-cancel {
-    @apply bg-transparent text-black hover:bg-slate-200  px-4;
-  }
-}
-
-.dashed-border {
-  background-image: linear-gradient(
-      90deg,
-      rgb(209 213 219) 50%,
-      transparent 50%
-    ),
-    linear-gradient(90deg, rgb(209 213 219) 50%, transparent 50%),
-    linear-gradient(0deg, rgb(209 213 219) 50%, transparent 50%),
-    linear-gradient(0deg, rgb(209 213 219) 50%, transparent 50%);
-  background-repeat: repeat-x, repeat-x, repeat-y, repeat-y;
-  background-size: 15px 4px, 15px 4px, 4px 15px, 4px 15px;
-  background-position: left top, right bottom, left bottom, right top;
-}
-
-.dashed-border-active {
-  background-image: linear-gradient(
-      90deg,
-      rgb(156 163 175) 50%,
-      transparent 50%
-    ),
-    linear-gradient(90deg, rgb(156 163 175) 50%, transparent 50%),
-    linear-gradient(0deg, rgb(156 163 175) 50%, transparent 50%),
-    linear-gradient(0deg, rgb(156 163 175) 50%, transparent 50%);
-}
-
-.dashed-animation {
-  animation: border-dance 2s infinite linear;
-}
-@keyframes border-dance {
-  0% {
-    background-position: left top, right bottom, left bottom, right top;
-  }
-  100% {
-    background-position: left 15px top, right 15px bottom, left bottom 15px,
-      right top 15px;
-  }
-}
-
-.ghost {
-  @apply opacity-60;
+body {
+  @apply bg-slate-200;
 }
 
 .scrollbar {
@@ -99,21 +22,6 @@
 
 .scrollbar::-webkit-scrollbar-thumb {
   @apply rounded-lg bg-gray-300 min-h-[50px];
-}
-
-img[lazy="loading"] {
-  -webkit-animation: fade-in 0.3s ease-in-out both;
-  animation: fade-in 0.3s ease-in-out both;
-}
-img[lazy="error"] {
-  /*your style here*/
-  -webkit-animation: fade-in 0.3s ease-in-out both;
-  animation: fade-in 0.3s ease-in-out both;
-}
-img[lazy="loaded"] {
-  /*your style here*/
-  -webkit-animation: fade-in 0.3s ease-in-out both;
-  animation: fade-in 0.3s ease-in-out both;
 }
 
 @-webkit-keyframes fade-in {
