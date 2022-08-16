@@ -1,4 +1,6 @@
-<h1 align="center">DraggableResizableVue3</h1>
+#draggable-resizable-vue3
+
+ ![Preview](https://zavalen.github.io/draggable-resizable-vue3/draggable.gif) 
 
  [![Latest Version on NPM](https://img.shields.io/npm/v/draggable-resizable-vue3.svg?style=flat-square)](https://www.npmjs.com/package/draggable-resizable-vue3) 
 [![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)](LICENSE.md)
