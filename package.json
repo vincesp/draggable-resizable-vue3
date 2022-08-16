@@ -15,7 +15,6 @@
     "@vitejs/plugin-vue": "^3.0.1",
     "@vue/eslint-config-prettier": "^7.0.0",
     "babel-loader": "^8.2.5",
-    "draggable-resizable-vue3": "^1.0.4-beta",
     "eslint": "^8.21.0",
     "eslint-plugin-vue": "^9.3.0",
     "prettier": "^2.7.1",

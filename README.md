@@ -4,12 +4,12 @@
 [![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)](LICENSE.md)
  [![npm](https://img.shields.io/npm/dt/draggable-resizable-vue3.svg?style=flat-square)](https://www.npmjs.com/package/draggable-resizable-vue3) 
 
- Vue 3 component for draggable and resizable elements. 
+Vue 3 component for draggable and resizable elements with custom grid. 
 
-#### [Live playground (codesandbox).](https://codesandbox.io/s/github/zavalen/draggable-resizable-vue3?file=/src/App.vue)
+[Live playground (codesandbox).](https://codesandbox.io/s/github/zavalen/draggable-resizable-vue3?file=/src/App.vue)
 
+ Originally this package is a fork of [draggable-resizable-vue](https://github.com/mauricius/draggable-resizable-vue) that has been rewritten to Vue 3 Composition API. And now it has many new features.
 
- Originally this package is a fork of ["draggable-resizable-vue"](https://github.com/mauricius/draggable-resizable-vue) that has been rewritten to Vue 3 Composition API . But it has new features.
 
 
 ## Table of Contents
@@ -24,29 +24,26 @@
 * [Contributing](#contributing)
 * [License](#license)
 
+---
+
 ### Features
 
-* No dependencies
-* Use draggable, resizable or both
-* Define handles for resizing
-* Restrict size and movement to parent element
-* Snap element to custom grid
-* Restrict drag to vertical or horizontal axis
-* Maintain aspect ratio
-* Touch enabled
-* Use your own classes
-* Provide your own markup for handles
-
-New features of this fork: 
 * Vue 3 (Composition API).
-* Using `v-model` for `x`, `y`, `h`, `w` and `active`.
-* Toggle active when hovering `active-on-hover`.
-* Using css selector for `parent` prop. 
-* Showing parent grid using `show-grid` and `grid-color`.
-* Borders to resize using `handlesType="borders"`
-* A new approach for the styling using [slots](#slots) or [custom styles](#styling) (`handlesType="custom"`). Added prefix `drv-` for default class names to make them less common.
+* No dependencies.
+* Lightweight (`36.2 KB` without minification).
+* Use draggable, resizable or both.
+* Define handles for resizing or use borders.
+* Restrict size and movement to parent any element.
+* Snap element to custom grid.
+* Restrict drag to vertical or horizontal axis.
+* Maintain aspect ratio.
+* Touch enabled.
+* Use your own classes.
+* Provide your own markup for handles.
+* Toggle active state while hovering.
+* Showing parent grid using prop or component.
+* Styling using [slots](#slots) or [custom styles](#styling).
 
----
 
 ## Install
 
@@ -183,6 +180,7 @@ Defines it the component should be draggable or not.
 Type: `Boolean`
 Required: `false`
 Default: `true`
+
 
 Defines it the component should be resizable or not.
 
@@ -815,11 +813,7 @@ npm run dev
 # distribution build
 npm run build
 
-# build the storybook docs into gh-pages
-npm run gh-pages:build
-
 ```
----
 
 ## License
 
