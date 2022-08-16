@@ -1,4 +1,4 @@
-#draggable-resizable-vue3
+# draggable-resizable-vue3
 
  ![Preview](https://zavalen.github.io/draggable-resizable-vue3/draggable.gif) 
 
