@@ -42,7 +42,7 @@ export default defineConfig({
         entryFileNames: 'assets/js/[name]-[hash].js',
       },
     },
-    outDir: 'docs',
+    // outDir: 'docs',
   },
-  base: './draggable-resizable-vue3/',
+  base: '/<REPO>/',
 })
