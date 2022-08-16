@@ -44,5 +44,5 @@ export default defineConfig({
     },
     outDir: 'docs',
   },
-  base: './',
+  base: './draggable-resizable-vue3/',
 })
