@@ -1,0 +1,1 @@
+import{_ as e}from"./index-13972185.js";import{o as a,a as t,w as o,u as r,b as s}from"./index-48032f8e.js";const _=s(" Draggable and resizable element "),u={__name:"1NoProps",setup(n){return(c,l)=>(a(),t(r(e),null,{default:o(()=>[_]),_:1}))}};export{u as default};
