@@ -1,5 +1,3 @@
-
-```html
 <template>
   <draggable-resizable-vue
     v-model:x="element.x"
@@ -7,12 +5,9 @@
     v-model:h="element.height"
     v-model:w="element.width"
     v-model:active="element.isActive"
+    :resizable="false"
   >
-    x={{ element.x }}<br />
-    y={{ element.y }}<br />
-    height={{ element.height }}<br />
-    width={{ element.width }}<br />
-    isActive={{ element.isActive }}
+    Not draggable but resizable
   </draggable-resizable-vue>
 </template>
 
@@ -28,5 +23,3 @@ const element = ref({
   isActive: false,
 })
 </script>
-
-```

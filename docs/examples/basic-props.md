@@ -1,5 +1,12 @@
+# Basic usage
 
-```html
+<div class="example-container">
+  <ClientOnly>  
+      <BasicProps />
+  </ClientOnly>
+</div>
+
+```vue
 <template>
   <draggable-resizable-vue
     v-model:x="element.x"
@@ -7,9 +14,12 @@
     v-model:h="element.height"
     v-model:w="element.width"
     v-model:active="element.isActive"
-    :draggable="false"
   >
-   Not draggable
+    x={{ element.x }}<br />
+    y={{ element.y }}<br />
+    height={{ element.height }}<br />
+    width={{ element.width }}<br />
+    isActive={{ element.isActive }}
   </draggable-resizable-vue>
 </template>
 
