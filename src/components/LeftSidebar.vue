@@ -1,5 +1,7 @@
 <template>
-  <div class="bg-blue-800 text-white px-4 w-[250px] py-4 text-sm h-full">
+  <div
+    class="bg-blue-800 text-white px-4 w-[250px] py-4 text-sm h-full overflow-auto"
+  >
     <router-link
       v-for="route in routes"
       :key="route.path"
