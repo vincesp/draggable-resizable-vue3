@@ -3,6 +3,9 @@
 All notable changes to `draggable-resizable-vue3` will be documented in this file
 
 
+## 1.0.6-beta - 2022-08-18
+   Container component injection is fixed.
+
 ## 1.0.5-beta - 2022-08-13
    Container component is released.
 ## 1.0.4-beta - 2022-08-13

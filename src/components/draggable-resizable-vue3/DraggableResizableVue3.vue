@@ -390,16 +390,16 @@ const style = computed(() => {
   }
 })
 
-const containerClass = inject('drvContainerClass')
+const containerClass = inject('drvContainerClass', {})
 
 const parent = computed(() => {
   return containerClass.value ? '.' + containerClass.value : props.parent
 })
 
-const containerGrid = inject('drvContainerGrid')
+const containerGrid = inject('drvContainerGrid', {})
 
 const grid = computed(() => {
-  if (!containerGrid.value) {
+  if (!containerGrid || !containerGrid.value) {
     return props.grid || [1, 1]
   }
   return props.grid ? props.grid : containerGrid.value
