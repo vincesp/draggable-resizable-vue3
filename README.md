@@ -50,7 +50,7 @@ Vue 3 component for draggable and resizable elements with custom grid.
 ## Install
 
 ```bash
-$ npm install --save draggable-resizable-vue3
+$ npm install draggable-resizable-vue3
 ```
 
 
