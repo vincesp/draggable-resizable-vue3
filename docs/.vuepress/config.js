@@ -5,7 +5,6 @@ const {
 const { path } = require('@vuepress/utils')
 
 module.exports = {
-  base: '/draggable-resizable-vue3/',
   plugins: [
     registerComponentsPlugin({
       componentsDir: path.resolve(__dirname, './components'),
