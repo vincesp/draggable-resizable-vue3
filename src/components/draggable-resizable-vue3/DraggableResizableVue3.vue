@@ -374,7 +374,6 @@ const resizing = ref(false)
 const dragging = ref(false)
 const dragEnable = ref(false)
 const resizeEnable = ref(false)
-const zIndex = ref(props.z)
 const mouseClickPosition = ref(null)
 const bounds = ref(null)
 
@@ -383,7 +382,7 @@ const style = computed(() => {
     transform: `translate(${left.value}px, ${top.value}px)`,
     width: computedWidth.value,
     height: computedHeight.value,
-    zIndex: zIndex.value,
+    zIndex: props.z,
     ...(dragging.value && props.disableUserSelect
       ? userSelectNone
       : userSelectAuto),
