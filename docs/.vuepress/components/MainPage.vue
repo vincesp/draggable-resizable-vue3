@@ -13,7 +13,7 @@
       class="element-one"
       :handles-size="20"
     >
-      Draggable and resizable element
+      Draggable and resizable element with custom handles size
     </draggable-resizable-vue>
     <draggable-resizable-vue
       v-model:x="elementTwo.x"
@@ -26,7 +26,8 @@
       :active-on-hover="true"
       class="element-two"
     >
-      Draggable and resizable element
+      Draggable and resizable element with different from parent grid, active on
+      hover and resizable borders instead of handles.
     </draggable-resizable-vue>
     <draggable-resizable-vue
       v-model:x="elementThree.x"
@@ -37,10 +38,13 @@
       handles-type="handles"
       class="element-three"
       drag-handle=".drag"
+      :grid="[1, 1]"
     >
       <template #handle-tl> handle-tl </template>
+      <template #handle-bm> handle-bm </template>
       <template #handle> handle </template>
       <div class="drag">Drag here</div>
+      Custom handles, drag handle, :grid=[1, 1]
     </draggable-resizable-vue>
   </draggable-resizable-container>
 </template>
@@ -58,23 +62,23 @@ const elementOne = ref({
   width: 200,
   height: 200,
   zIndex: 2,
-  isActive: true,
+  isActive: false,
 })
 
 const elementTwo = ref({
-  x: 180,
-  y: 180,
-  width: 100,
+  x: 260,
+  y: 100,
+  width: 200,
   height: 100,
   zIndex: 4,
-  isActive: true,
+  isActive: false,
 })
 
 const elementThree = ref({
-  x: 500,
+  x: 540,
   y: 100,
   width: 100,
-  height: 100,
+  height: 140,
   zIndex: 4,
   isActive: true,
 })
