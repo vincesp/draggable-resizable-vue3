@@ -1,3 +1,12 @@
+# Width and height auto
+
+<div class="example-container">
+  <ClientOnly>  
+      <WidthHeightAuto />
+  </ClientOnly>
+</div>
+
+```vue
 <template>
   <div>
     <draggable-resizable-vue
@@ -22,8 +31,8 @@ import DraggableResizableVue from 'draggable-resizable-vue3'
 const element = ref({
   x: 20,
   y: 80,
-  width: 320,
-  height: 213,
+  width: 640,
+  height: 426,
   isActive: false,
 })
 </script>
@@ -34,3 +43,5 @@ const element = ref({
   height: 100%;
 }
 </style>
+
+```

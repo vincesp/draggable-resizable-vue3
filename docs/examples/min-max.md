@@ -1,3 +1,12 @@
+# Min and max width and height
+
+<div class="example-container">
+  <ClientOnly>  
+      <MinMax />
+  </ClientOnly>
+</div>
+
+```vue
 <template>
   <draggable-resizable-vue
     v-model:x="element.x"
@@ -5,9 +14,16 @@
     v-model:h="element.height"
     v-model:w="element.width"
     v-model:active="element.isActive"
-    :resizable="false"
+    :min-width="150"
+    :min-height="150"
+    :max-width="300"
+    :max-height="300"
   >
-    Not resizable but draggable
+    x={{ element.x }}<br />
+    y={{ element.y }}<br />
+    height={{ element.height }}<br />
+    width={{ element.width }}<br />
+    isActive={{ element.isActive }}
   </draggable-resizable-vue>
 </template>
 
@@ -23,3 +39,5 @@ const element = ref({
   isActive: false,
 })
 </script>
+
+```

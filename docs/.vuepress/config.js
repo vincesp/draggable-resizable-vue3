@@ -3,11 +3,15 @@ const {
   registerComponentsPlugin,
 } = require('@vuepress/plugin-register-components')
 const { path } = require('@vuepress/utils')
+const { mediumZoomPlugin } = require('@vuepress/plugin-medium-zoom')
 
 module.exports = {
   plugins: [
     registerComponentsPlugin({
       componentsDir: path.resolve(__dirname, './components'),
+    }),
+    mediumZoomPlugin({
+      selector: 'zoom',
     }),
   ],
   lang: 'en-US',
@@ -23,10 +27,9 @@ module.exports = {
   ],
   theme: defaultTheme({
     repo: 'https://github.com/zavalen/draggable-resizable-vue3',
-    editLinks: false,
-    docsDir: '',
-    editLinkText: '',
+    editLink: false,
     lastUpdated: false,
+    contributors: false,
     navbar: [
       {
         text: 'Guide',
@@ -41,7 +44,17 @@ module.exports = {
       '/examples/': [
         {
           text: 'Examples',
-          children: ['no-props', 'basic-props'],
+          children: [
+            'no-props',
+            'basic-props',
+            'min-max',
+            'not-draggable',
+            'not-resizable',
+            'width-height-auto',
+            'resize-image',
+            'resize-image-aspect-ratio',
+            'z-index',
+          ],
         },
       ],
     },

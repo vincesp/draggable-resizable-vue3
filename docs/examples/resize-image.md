@@ -1,3 +1,12 @@
+# Resize image
+
+<div class="example-container">
+  <ClientOnly>  
+      <ResizeImage />
+  </ClientOnly>
+</div>
+
+```vue
 <template>
   <div>
     <draggable-resizable-vue
@@ -34,3 +43,5 @@ const element = ref({
   height: 100%;
 }
 </style>
+
+```

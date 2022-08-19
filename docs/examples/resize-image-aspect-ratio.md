@@ -1,3 +1,12 @@
+# Resize image with aspect ratio
+
+<div class="example-container">
+  <ClientOnly>  
+      <ResizeImageAspectRatio />
+  </ClientOnly>
+</div>
+
+```vue
 <template>
   <draggable-resizable-vue
     v-model:x="element.x"
@@ -33,3 +42,5 @@ const element = ref({
   height: 100%;
 }
 </style>
+
+```
