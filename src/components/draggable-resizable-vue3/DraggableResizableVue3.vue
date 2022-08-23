@@ -1202,6 +1202,13 @@ watch(
     showParentGrid()
   },
 )
+
+watch(
+  () => props.grid,
+  () => {
+    showParentGrid()
+  },
+)
 </script>
 
 <style>
