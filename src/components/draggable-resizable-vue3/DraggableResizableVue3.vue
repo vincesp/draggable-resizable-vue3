@@ -880,7 +880,7 @@ const handleDrag = (e) => {
 const moveHorizontally = (val) => {
   // should calculate with scale 1.
 
-  const [deltaX, _] = snapToGrid(grid.value, val, top.value, 1)
+  const [deltaX] = snapToGrid(grid.value, val, top.value, 1)
 
   const leftPx = restrictToBounds(
     deltaX,
@@ -895,7 +895,7 @@ const moveHorizontally = (val) => {
 const moveVertically = (val) => {
   // should calculate with scale 1.
 
-  const [_, deltaY] = snapToGrid(grid.value, left.value, val, 1)
+  const [, deltaY] = snapToGrid(grid.value, left.value, val, 1)
 
   const topPx = restrictToBounds(
     deltaY,
@@ -1031,7 +1031,7 @@ const changeWidth = (val) => {
 const changeHeight = (val) => {
   // should calculate with scale 1.
 
-  const [_, newHeight] = snapToGrid(grid.value, 0, val, 1)
+  const [, newHeight] = snapToGrid(grid.value, 0, val, 1)
 
   let bottomPx = restrictToBounds(
     parentHeight.value - newHeight - top.value,
