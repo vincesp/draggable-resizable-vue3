@@ -3,6 +3,8 @@
 All notable changes to `draggable-resizable-vue3` will be documented in this file
 
 
+## 1.0.8-beta - 2022-08-18
+   Showing grid fix.
 ## 1.0.6-beta - 2022-08-18
    Z-index relativity fix.
 ## 1.0.6-beta - 2022-08-18

@@ -1,5 +1,9 @@
 <template>
-  <div :grid="[20, 20]" :show-grid="true" class="container">
+  <draggable-resizable-container
+    :grid="[20, 20]"
+    :show-grid="true"
+    class="container"
+  >
     <draggable-resizable-vue
       v-model:x="elementOne.x"
       v-model:y="elementOne.y"
@@ -8,8 +12,6 @@
       v-model:active="elementOne.isActive"
       class="element-one"
       :handles-size="20"
-      :parent="true"
-      :show-grid="true"
     >
       Draggable and resizable element
     </draggable-resizable-vue>
@@ -40,7 +42,7 @@
       <template #handle> handle </template>
       <div class="drag">Drag here</div>
     </draggable-resizable-vue>
-  </div>
+  </draggable-resizable-container>
 </template>
 
 <script setup>
