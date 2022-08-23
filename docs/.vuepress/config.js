@@ -57,6 +57,8 @@ module.exports = {
             'drag-handle',
             'drag-cancel',
             'axis',
+            'basic-parent',
+            'parent-selector',
             'basic-grid',
             'show-grid',
           ],

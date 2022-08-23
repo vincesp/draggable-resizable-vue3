@@ -1,14 +1,21 @@
+# Basic parent
+
+<div class="example-container">
+  <ClientOnly>  
+      <BasicParent />
+  </ClientOnly>
+</div>
+
+```vue
 <template>
-  <div id="parent" style="width:600px;height:300px;border:1px solid black; margin: 20px;">
+  <div style="width:600px;height:300px;border:1px solid black; margin: 20px;">
     <draggable-resizable-vue
       v-model:x="element.x"
       v-model:y="element.y"
       v-model:h="element.height"
       v-model:w="element.width"
       v-model:active="element.isActive"
-      :grid="grid"
       :parent="true"
-      :show-grid="true"
     >
       x={{ element.x }}<br />
       y={{ element.y }}<br />
@@ -16,15 +23,6 @@
       width={{ element.width }}<br />
       isActive={{ element.isActive }}
     </draggable-resizable-vue>
-  </div>
-  <div class="toolbar">
-    Grid:
-    <select style="width: 200px" v-model="grid">
-      <option :value="[20, 20]">[20,20]</option>
-      <option :value="[20, 80]">[20,80]</option>
-      <option :value="[40, 40]">[40,40]</option>
-      <option :value="[60, 80]">[60,80]</option>
-    </select>
   </div>
 </template>
 
@@ -40,5 +38,6 @@ const element = ref({
   isActive: false,
 })
 
-const grid = ref([20, 20])
 </script>
+
+```
