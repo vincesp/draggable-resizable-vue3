@@ -4,8 +4,7 @@
     style="width: 600px; height: 300px; border: 1px solid black; margin: 20px"
   >
     <div
-      id="ignored-parent"
-      style="width: 400px; height: 200px; border: 1px solid #d7d7d7"
+      style="width: 400px; height: 200px; border: 1px solid #d7d7d7;"
     >
       <draggable-resizable-vue
         v-model:x="element.x"
