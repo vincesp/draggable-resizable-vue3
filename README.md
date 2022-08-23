@@ -131,39 +131,6 @@ const element = ref({
 </script>
 
 ```
-Usage with grid and z-index:
-
-```vue
-<template>
-        <draggable-resizable-vue
-          v-model:x="element.x"
-          v-model:y="element.y"
-          v-model:h="element.height"
-          v-model:w="element.width"
-          v-model:active="element.isActive"
-          :z="element.zIndex"
-          :grid=[20,20]
-          :show-grid:true
-        >
-          Draggable and resizable element
-        </draggable-resizable-vue>
-</template>
-
-<script setup>
-import { ref } from 'vue'
-import DraggableResizableVue from 'draggable-resizable-vue3'
-
-const element = ref({
-   x: 20,
-   y: 20,
-   zIndex: 10,
-   width: 200,
-   height: 200,
-   isActive: true,
-})
-</script>
-```
-
 ### Props
 
 
