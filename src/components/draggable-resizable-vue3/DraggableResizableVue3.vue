@@ -406,8 +406,8 @@ const grid = computed(() => {
 
 const parentGridBackgroundStyle = computed(() => {
   const axisBg = {
-    x: `linear-gradient(-90deg, ${grid.value.valueColor} 1px, transparent 1px) 0px 0px / ${grid.value[0]}px ${grid.value[0]}px`,
-    y: `linear-gradient(0deg, ${grid.value.valueColor} 1px, transparent 1px) 0px 0px / ${grid.value[1]}px ${grid.value[1]}px`,
+    x: `linear-gradient(-90deg, ${props.gridColor} 1px, transparent 1px) 0px 0px / ${grid.value[0]}px ${grid.value[0]}px`,
+    y: `linear-gradient(0deg, ${props.gridColor} 1px, transparent 1px) 0px 0px / ${grid.value[1]}px ${grid.value[1]}px`,
   }
 
   if (props.showGrid === 'x' || props.showGrid === 'y') {
@@ -1055,7 +1055,7 @@ const changeHeight = (val) => {
   height.value = heightPx
 }
 
-const handleUp = (e) => {
+const handleUp = () => {
   handle.value = null
 
   resetBoundsAndMouseState()

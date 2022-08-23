@@ -1,48 +1,46 @@
 <template>
-  <!-- <draggable-resizable-container
-    :grid="[20, 20]"
-    :show-grid="true"
-    class="container"
-  > -->
-  <draggable-resizable-vue
-    v-model:x="elementOne.x"
-    v-model:y="elementOne.y"
-    v-model:h="elementOne.height"
-    v-model:w="elementOne.width"
-    v-model:active="elementOne.isActive"
-    class="element-one"
-    :handles-size="20"
-  >
-    Draggable and resizable element
-  </draggable-resizable-vue>
-  <draggable-resizable-vue
-    v-model:x="elementTwo.x"
-    v-model:y="elementTwo.y"
-    v-model:h="elementTwo.height"
-    v-model:w="elementTwo.width"
-    v-model:active="elementTwo.isActive"
-    :grid="[80, 80]"
-    handles-type="borders"
-    :active-on-hover="true"
-    class="element-two"
-  >
-    Draggable and resizable element
-  </draggable-resizable-vue>
-  <draggable-resizable-vue
-    v-model:x="elementThree.x"
-    v-model:y="elementThree.y"
-    v-model:h="elementThree.height"
-    v-model:w="elementThree.width"
-    v-model:active="elementThree.isActive"
-    handles-type="handles"
-    class="element-two"
-    drag-handle=".drag"
-  >
-    <template #handle-tl> handle-tl </template>
-    <template #handle> handle </template>
-    <div class="drag">Drag here</div>
-  </draggable-resizable-vue>
-  <!-- </draggable-resizable-container> -->
+  <div :grid="[20, 20]" :show-grid="true" class="container">
+    <draggable-resizable-vue
+      v-model:x="elementOne.x"
+      v-model:y="elementOne.y"
+      v-model:h="elementOne.height"
+      v-model:w="elementOne.width"
+      v-model:active="elementOne.isActive"
+      class="element-one"
+      :handles-size="20"
+      :parent="true"
+      :show-grid="true"
+    >
+      Draggable and resizable element
+    </draggable-resizable-vue>
+    <draggable-resizable-vue
+      v-model:x="elementTwo.x"
+      v-model:y="elementTwo.y"
+      v-model:h="elementTwo.height"
+      v-model:w="elementTwo.width"
+      v-model:active="elementTwo.isActive"
+      :grid="[80, 80]"
+      handles-type="borders"
+      :active-on-hover="true"
+      class="element-two"
+    >
+      Draggable and resizable element
+    </draggable-resizable-vue>
+    <draggable-resizable-vue
+      v-model:x="elementThree.x"
+      v-model:y="elementThree.y"
+      v-model:h="elementThree.height"
+      v-model:w="elementThree.width"
+      v-model:active="elementThree.isActive"
+      handles-type="handles"
+      class="element-two"
+      drag-handle=".drag"
+    >
+      <template #handle-tl> handle-tl </template>
+      <template #handle> handle </template>
+      <div class="drag">Drag here</div>
+    </draggable-resizable-vue>
+  </div>
 </template>
 
 <script setup>
