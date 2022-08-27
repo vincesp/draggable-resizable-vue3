@@ -6,7 +6,6 @@
 
 This is Vue 3 (Composition API) library for draggable and resizable elements with custom grid.
 
-Initially, this is a fork of the Vue 2 library [vue-draggable-resizable](https://github.com/mauricius/vue-draggable-resizable). Now it is being developed independently from the source.
 
 ## Get started
 
@@ -14,6 +13,8 @@ Initially, this is a fork of the Vue 2 library [vue-draggable-resizable](https:/
 - [:white_check_mark: Examples](https://draggable-resizable-vue3.netlify.app/docs/examples/no-props.html).
 - [:tomato: Live playground.](https://codesandbox.io/s/github/zavalen/draggable-resizable-vue3?file=/src/App.vue)
 
+
+Initially, this is a fork of the Vue 2 library [vue-draggable-resizable](https://github.com/mauricius/vue-draggable-resizable). Now it is being developed independently from the source.
 ## Installation
 
 ```bash
