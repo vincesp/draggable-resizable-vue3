@@ -29,7 +29,10 @@
         ]"
         :style="{
           display: active ? 'block' : 'none',
-          // border: slots.handle ? '' : '0.5px solid gray',
+          border:
+            slots.handle || slots['handle-' + handleEl]
+              ? ''
+              : '0.5px solid #bbbbbb',
         }"
         @mousedown.stop.prevent="handleDown(handleEl, $event)"
         @touchstart.stop.prevent="handleTouchDown(handleEl, $event)"
@@ -1224,7 +1227,7 @@ watch(
   position: absolute;
   min-width: v-bind(handlesSize);
   min-height: v-bind(handlesSize);
-  border: 0.5px solid gray;
+  /* border: 0.5px solid gray; */
 }
 
 .drv-handles .drv-handle-tl {
