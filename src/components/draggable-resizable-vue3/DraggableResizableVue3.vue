@@ -29,12 +29,6 @@
         ]"
         :style="{
           display: active ? 'block' : 'none',
-          border:
-            slots.handle ||
-            slots['handle-' + handleEl] ||
-            handlesType === 'borders'
-              ? ''
-              : '0.5px solid #bbbbbb',
         }"
         @mousedown.stop.prevent="handleDown(handleEl, $event)"
         @touchstart.stop.prevent="handleTouchDown(handleEl, $event)"
@@ -178,7 +172,6 @@ const props = defineProps({
     type: Boolean,
     default: false,
   },
-
   lockAspectRatio: {
     type: Boolean,
     default: false,
@@ -199,6 +192,10 @@ const props = defineProps({
   handlesSize: {
     type: Number,
     default: 10,
+  },
+  handlesBorder: {
+    type: String,
+    default: '0.5px solid #bbb',
   },
   dragHandle: {
     type: String,
@@ -365,6 +362,7 @@ const active = computed({
 })
 const handlesSize = computed(() => props.handlesSize + 'px')
 const handlesHalfSize = computed(() => props.handlesSize / 2 + 'px')
+const handlesBorder = computed(() => props.handlesBorder)
 
 const widthTouched = ref(false)
 const heightTouched = ref(false)
@@ -1229,7 +1227,7 @@ watch(
   position: absolute;
   min-width: v-bind(handlesSize);
   min-height: v-bind(handlesSize);
-  /* border: 0.5px solid gray; */
+  border: v-bind(handlesBorder);
 }
 
 .drv-handles .drv-handle-tl {
