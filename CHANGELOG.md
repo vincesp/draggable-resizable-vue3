@@ -3,6 +3,9 @@
 All notable changes to `draggable-resizable-vue3` will be documented in this file
 
 
+## 1.0.91-beta - 2022-08-23
+   Global registration fix and docs.
+
 ## 1.0.9-beta - 2022-08-23
    Watch grid size to show grid.
 ## 1.0.8-beta - 2022-08-23
