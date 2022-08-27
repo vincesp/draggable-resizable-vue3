@@ -98,6 +98,8 @@ module.exports = {
             '/docs/examples/show-grid',
             '/docs/examples/parent-component',
             '/docs/examples/parent-component-custom-grid',
+            '/docs/examples/custom-handles',
+            '/docs/examples/border-handles',
           ],
         },
       ],
