@@ -15,7 +15,16 @@ This is Vue 3 (Composition API) library for draggable and resizable elements wit
 - [:tomato: Live playground.](https://codesandbox.io/s/github/zavalen/draggable-resizable-vue3?file=/src/App.vue)
 
 
-Initially, this is a fork of the Vue 2 library [vue-draggable-resizable](https://github.com/mauricius/vue-draggable-resizable). Now it is being developed independently from the source.
+
+## Roadmap
+- :white_check_mark: Rewrite to Composition API.
+- :white_check_mark: Create docs.
+- :black_square_button: Test all props, slots and events.
+- :black_square_button: Add as much as possible examples of usage to the docs.
+- :black_square_button: Release the stable `1.1.0` version.
+
+
+
 ## Installation
 
 ```bash
@@ -52,3 +61,6 @@ import {
 } from "draggable-resizable-vue3";
 </script>
 ```
+___
+
+Initially, this is a fork of the Vue 2 library [vue-draggable-resizable](https://github.com/mauricius/vue-draggable-resizable). Now it is being developed independently from the source.
