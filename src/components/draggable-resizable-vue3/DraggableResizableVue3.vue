@@ -30,7 +30,9 @@
         :style="{
           display: active ? 'block' : 'none',
           border:
-            slots.handle || slots['handle-' + handleEl]
+            slots.handle ||
+            slots['handle-' + handleEl] ||
+            handlesType === 'borders'
               ? ''
               : '0.5px solid #bbbbbb',
         }"
