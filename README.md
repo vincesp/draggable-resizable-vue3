@@ -6,6 +6,7 @@
 
 This is Vue 3 (Composition API) library for draggable and resizable elements with custom grid.
 
+![preview](static/draggable.gif)
 
 ## Get started
 
