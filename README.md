@@ -10,7 +10,7 @@ Initially, this is a fork of the Vue 2 library [vue-draggable-resizable](https:/
 
 ## Get started
 
-- [:green_book: Documentation](https://github.com/draggable-resizable-vue3.netlify.app/)
+- [:green_book: Documentation](https://github.com/draggable-resizable-vue3.netlify.app/).
 - [:tomato: Live playground (codesandbox).](https://codesandbox.io/s/github/zavalen/draggable-resizable-vue3?file=/src/App.vue)
 
 ## Installation
