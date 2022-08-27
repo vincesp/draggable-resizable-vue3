@@ -11,7 +11,7 @@ This is Vue 3 (Composition API) library for draggable and resizable elements wit
 ## Get started
 
 - [:green_book: Documentation](https://draggable-resizable-vue3.netlify.app/).
-- [:white_check_mark: Examples](https://draggable-resizable-vue3.netlify.app/docs/examples/no-props.html).
+- [:cookie: Examples](https://draggable-resizable-vue3.netlify.app/docs/examples/no-props.html).
 - [:tomato: Live playground.](https://codesandbox.io/s/github/zavalen/draggable-resizable-vue3?file=/src/App.vue)
 
 
