@@ -290,7 +290,18 @@ Default: `10`<br />
 If `handlesType='handles'` defines the squares sizes. if If `handlesType='border'` defines the borders sizes`borders` or `custom`.
 
 ```vue
-<draggable-resizable-vue handles-size="14">
+<draggable-resizable-vue :handles-size="14">
+```
+### handlesBorder
+
+Type: `String`<br />
+Required: `false`<br />
+Default: `0.5px solid #bbb`<br />
+
+You can modify or disable the handles border.
+
+```vue
+<draggable-resizable-vue handles-border="none">
 ```
 
 ## Parent
