@@ -4,7 +4,7 @@ import DraggableResizableContainer from './components/draggable-resizable-vue3/D
 export { DraggableResizableVue, DraggableResizableContainer }
 
 DraggableResizableVue.install = (app) => {
-  app.component('DraggableResizableContainer', DraggableResizableVue)
+  app.component('DraggableResizableVue', DraggableResizableVue)
   app.component('DraggableResizableContainer', DraggableResizableContainer)
   return app
 }

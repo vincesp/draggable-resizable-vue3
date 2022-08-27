@@ -47,7 +47,7 @@
 
 <script setup>
 import { ref } from 'vue'
-import { DraggableResizableVue, DraggableResizableContainer } from './index'
+// import { DraggableResizableVue, DraggableResizableContainer } from './index'
 
 const elementOne = ref({
   x: 20,
