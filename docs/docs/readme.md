@@ -7,7 +7,7 @@
 This is Vue 3 (Composition API) library for draggable and resizable elements with custom grid. 
 
 
- Initially, this is a fork of the Vue 2 library [draggable-resizable-vue](https://github.com/mauricius/draggable-resizable-vue). Now it is being developed independently from the source.
+ Initially, this is a fork of the Vue 2 library [vue-draggable-resizable](https://github.com/mauricius/vue-draggable-resizable). Now it is being developed independently from the source.
 
 
 
@@ -36,20 +36,25 @@ This is Vue 3 (Composition API) library for draggable and resizable elements wit
 $ npm install draggable-resizable-vue3
 ```
 
+___
 
-Register the component globally:
+Register (`DraggableResizableVue` and `DraggableResizableContainer` components) globally: 
 
 ```js
 // main.js
 import { createApp } from 'vue'
 import App from './App.vue'
+
 import DraggableResizableVue from 'draggable-resizable-vue3'
+
 const app = createApp(App)
-app.component('DraggableResizableVue', DraggableResizableVue)
+
+app.use(DraggableResizableVue)
+
 app.mount('#app')
 ```
 
-Locally (composition API):
+Register locally (composition API):
 
 ```vue
 <script setup>
@@ -57,7 +62,7 @@ import DraggableResizableVue from 'draggable-resizable-vue3'
 </script>
 ```
 
-With the parent component:
+Register locally with the container component:
 
 ```vue
 <script setup>
@@ -98,4 +103,6 @@ const element = ref({
 </script>
 
 ```
+
+For advanced usage [check examples](/docs/examples/no-props.html).
 

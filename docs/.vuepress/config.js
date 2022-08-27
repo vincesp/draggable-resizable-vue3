@@ -68,6 +68,7 @@ module.exports = {
           
           { text: 'Get started', link: '/docs/',  },
             { text: 'Props', link: '/docs/props/' },
+            { text: 'Container props', link: '/docs/container-props/' },
             { text: 'Events', link: '/docs/events/' },
             { text: 'Slots', link: '/docs/slots/' },
             { text: 'Styling', link: '/docs/styling/' },
