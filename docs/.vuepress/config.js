@@ -52,7 +52,7 @@ module.exports = {
       },
       {
         text: 'Examples',
-        link: '/examples/no-props',
+        link: '/docs/examples/no-props',
       },
       {
         text: 'Live playground',
