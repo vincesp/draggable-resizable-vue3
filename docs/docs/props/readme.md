@@ -1,7 +1,6 @@
 # Props
 
-
-#### draggable
+## draggable
 Type: `Boolean`<br />
 Required: `false`<br />
 Default: `true`<br />
@@ -12,7 +11,7 @@ Defines it the component should be draggable or not.
 <draggable-resizable-vue :draggable="false">
 ```
 
-#### resizable
+## resizable
 Type: `Boolean`<br />
 Required: `false`<br />
 Default: `true`<br />
@@ -25,7 +24,7 @@ Defines it the component should be resizable or not.
 ```
 
 
-#### x
+## x
 Type: `Number`<br />
 Required: `false`<br />
 Default: `0`<br />
@@ -41,7 +40,7 @@ import { ref } from 'vue'
 const x = ref(200)
 ```
 
-#### y
+## y
 Type: `Number`<br />
 Required: `false`<br />
 Default: `0`<br />
@@ -52,7 +51,7 @@ Define the initial y position of the element.
 <draggable-resizable-vue :y="0">
 ```
 
-#### z
+## z
 Type: `Number|String`<br />
 Required: `false`<br />
 Default: `auto`<br />
@@ -63,7 +62,7 @@ Define the zIndex of the element.
 <draggable-resizable-vue :z="999">
 ```
 
-#### w
+## w
 Type: `Number|String`<br />
 Required: `false`<br />
 
@@ -79,7 +78,7 @@ import { ref } from 'vue'
 const width = ref(200)
 ```
 
-#### h
+## h
 Type: `Number|String`<br />
 Required: `false`<br />
 Default: `200`<br />
@@ -95,7 +94,7 @@ import { ref } from 'vue'
 const height = ref(200)
 ```
 
-#### minWidth
+## minWidth
 Type: `Number`<br />
 Required: `false`<br />
 Default: `50`<br />
@@ -106,7 +105,7 @@ Define the minimal width of the element.
 <draggable-resizable-vue :min-width="50">
 ```
 
-#### minHeight
+## minHeight
 Type: `Number`<br />
 Required: `false`<br />
 Default: `50`<br />
@@ -117,7 +116,7 @@ Define the minimal height of the element.
 <draggable-resizable-vue :min-height="50">
 ```
 
-#### maxWidth
+## maxWidth
 Type: `Number`<br />
 Required: `false`<br />
 Default: `null`<br />
@@ -128,7 +127,7 @@ Define the maximum width of the element.
 <draggable-resizable-vue :max-width="400">
 ```
 
-#### maxHeight
+## maxHeight
 Type: `Number`<br />
 Required: `false`<br />
 Default: `null`<br />
@@ -140,7 +139,7 @@ Define the maximum height of the element.
 ```
 
 
-#### active
+## active
 Type: `Boolean`<br />
 Required: `false`<br />
 Default: `false`<br />
@@ -157,7 +156,7 @@ const isActive = ref(false)
 ...
 ```
 
-#### activeOnHover
+## activeOnHover
 Type: `Boolean`<br />
 Required: `false`<br />
 Default: `false`<br />
@@ -168,7 +167,7 @@ Toggle `active` while hovering.
 <draggable-resizable-vue :active-on-hover="true">
 ```
 
-#### preventDeactivation
+## preventDeactivation
 Type: `Boolean`<br />
 Required: `false`<br />
 Default: `false`<br />
@@ -178,9 +177,9 @@ Determines if the component should be deactivated when the user clicks/taps outs
 ```vue
 <draggable-resizable-vue :prevent-deactivation="true">
 ```
+## Handles
 
-
-#### handles
+### handles
 Type: `Array`<br />
 Required: `false`<br />
 Default: `['tl', 'tm', 'tr', 'mr', 'br', 'bm', 'bl', 'ml']`<br />
@@ -199,7 +198,7 @@ Define the array of handles to restrict the element resizing:
 <draggable-resizable-vue :handles="['tm','bm','ml','mr']">
 ```
 
-#### handlesType
+### handlesType
 Type: `String`<br />
 Required: `false`<br />
 Default: `handles`<br />
@@ -220,7 +219,7 @@ The prop can be
 <draggable-resizable-vue handles-type="borders">
 ```
 
-#### handlesSize
+### handlesSize
 Type: `Number`<br />
 Required: `false`<br />
 Default: `10`<br />
@@ -235,7 +234,7 @@ If `handlesType='handles'` defines the squares sizes. if If `handlesType='border
 <draggable-resizable-vue handles-size="14">
 ```
 
-#### axis
+## axis
 Type: `String`<br />
 Required: `false`<br />
 Default: `both`<br />
@@ -246,7 +245,9 @@ Define the axis on which the element is draggable. Available values are `x`, `y`
 <draggable-resizable-vue axis="x">
 ```
 
-#### grid
+## Grid
+
+### grid
 Type: `Array`<br />
 Required: `false`<br />
 Default: `[1,1]`<br />
@@ -258,7 +259,7 @@ Define the grid on which the element is snapped.
 ```
 
 
-#### showGrid
+### showGrid
 Type: `Boolean|String`<br />
 Required: `false`<br />
 Default: `false`<br />
@@ -269,7 +270,7 @@ Works only if `:parent="true"` or `parent=".selector"`. Adds grid to the parent 
 <draggable-resizable-vue :showGrid="true">
 ```
 
-#### gridColor
+### gridColor
 Type: `String`<br />
 Required: `false`<br />
 Default: `rgba(0, 0, 0, 0.1)`<br />
@@ -280,7 +281,7 @@ Color of the grid when `:showGrid="true"`.
 <draggable-resizable-vue :showGrid="true">
 ```
 
-#### parent
+## parent
 Type: `Boolean|String`<br />
 Required: `false`<br />
 Default: `false`<br />
@@ -291,7 +292,7 @@ If it's `true` restricts the movement and the dimensions of the component to the
 <draggable-resizable-vue parent=".parent">
 ```
 
-#### dragHandle
+## dragHandle
 Type: `String`<br />
 Required: `false`<br />
 
@@ -301,7 +302,7 @@ Defines the selector that should be used to drag the component.
 <draggable-resizable-vue drag-handle=".drag">
 ```
 
-#### dragCancel
+## dragCancel
 Type: `String`<br />
 Required: `false`<br />
 
@@ -311,7 +312,7 @@ Defines a selector that should be used to prevent drag initialization.
 <draggable-resizable-vue drag-cancel=".drag">
 ```
 
-#### lockAspectRatio
+## lockAspectRatio
 Type: `Boolean`<br />
 Required: `false`<br />
 Default: `false`<br />
@@ -323,7 +324,7 @@ The `lockAspectRatio` property is used to lock aspect ratio. This property doesn
 ```
 
 
-#### scale
+## scale
 Type: `Number|Array`<br />
 Required: `false`<br />
 Default: `1`<br />
@@ -336,7 +337,7 @@ The `scale` prop controls the scale property when the CSS 3 [scale transformatio
 <draggable-resizable-vue :scale="[0.5, 0.4]">
 ```
 
-#### disableUserSelect
+## disableUserSelect
 Type: `Boolean`<br />
 Required: `false`<br />
 Default: `true`<br />
@@ -347,7 +348,7 @@ By default, the component adds the style declaration `'user-select:none'` to its
 <draggable-resizable-vue :disable-user-select="false">
 ```
 
-#### enableNativeDrag
+## enableNativeDrag
 Type: `Boolean`<br />
 Required: `false`<br />
 Default: `false`<br />
@@ -358,8 +359,9 @@ By default, the browser's native drag and drop funcionality (usually used for im
 <draggable-resizable-vue :enable-native-drag="true">
 ```
 
+## Classes
 
-#### className
+### className
 Type: `String`<br />
 Required: `false`<br />
 Default: `drv`<br />
@@ -370,7 +372,7 @@ Used to set the custom `class` of a draggable-resizable component.
 <draggable-resizable-vue class-name="my-class">
 ```
 
-#### classNameDraggable
+### classNameDraggable
 Type: `String`<br />
 Required: `false`<br />
 Default: `drv-draggable`<br />
@@ -381,7 +383,7 @@ Used to set the custom `class` of a draggable-resizable component when `draggabl
 <draggable-resizable-vue class-name-draggable="my-draggable-class">
 ```
 
-#### classNameResizable
+### classNameResizable
 Type: `String`<br />
 Required: `false`<br />
 Default: `drv-resizable`<br />
@@ -392,7 +394,7 @@ Used to set the custom `class` of a draggable-resizable component when `resizabl
 <draggable-resizable-vue class-name-resizable="my-resizable-class">
 ```
 
-#### classNameDragging
+### classNameDragging
 Type: `String`<br />
 Required: `false`<br />
 Default: `drv-dragging`<br />
@@ -403,7 +405,7 @@ Used to set the custom `class` of a draggable-resizable component when is draggi
 <draggable-resizable-vue class-name-dragging="my-dragging-class">
 ```
 
-#### classNameResizing
+### classNameResizing
 Type: `String`<br />
 Required: `false`<br />
 Default: `drv-resizing`<br />
@@ -414,7 +416,7 @@ Used to set the custom `class` of a draggable-resizable component when is resizi
 <draggable-resizable-vue class-name-resizing="my-resizing-class">
 ```
 
-#### classNameActive
+### classNameActive
 Type: `String`<br />
 Required: `false`<br />
 Default: `drv-active`<br />
@@ -425,7 +427,7 @@ Used to set the custom `class` of a draggable-resizable component when is active
 <draggable-resizable-vue class-name-active="my-active-class">
 ```
 
-#### classNameHandle
+### classNameHandle
 Type: `String`<br />
 Required: `false`<br />
 Default: `drv-handle`<br />
@@ -450,7 +452,9 @@ renders the following:
 ```
 
 
-#### onDragStart
+## Functions
+
+### onDragStart
 Type: `Function`
 Required: `false`
 Default: `null`
@@ -468,7 +472,7 @@ function onDragStartCallback(ev){
 }
 ```
 
-#### onDrag
+### onDrag
 Type: `Function`
 Required: `false`
 Default: `null`
@@ -487,7 +491,7 @@ function onDragStartCallback(x, y){
 ```
 
 
-#### onResizeStart
+### onResizeStart
 Type: `Function`
 Required: `false`
 Default: `null`
@@ -506,7 +510,7 @@ function onResizeStartCallback(handle, ev){
 }
 ```
 
-#### onResize
+### onResize
 Type: `Function`
 Required: `false`
 Default: `null`
@@ -524,3 +528,5 @@ function onResizeStartCallback(handle, x, y, width, height){
    // return false; — for cancel
 }
 ```
+
+## Parent component props
