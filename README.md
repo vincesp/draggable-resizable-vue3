@@ -21,6 +21,7 @@ This is Vue 3 (Composition API) library for draggable and resizable elements wit
 - :white_check_mark: Create docs.
 - :black_square_button: Test all props, slots and events.
 - :black_square_button: Add as much as possible examples of usage to the docs.
+- :black_square_button: Rewrite to Typescript.
 - :black_square_button: Release the stable `1.1.0` version.
 
 
