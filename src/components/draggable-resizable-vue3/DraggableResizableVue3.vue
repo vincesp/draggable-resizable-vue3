@@ -62,6 +62,7 @@ import { ref, computed, onMounted, watch, useSlots, inject } from 'vue'
 export type Handle = 'tl' | 'tm' | 'tr' | 'mr' | 'br' | 'bm' | 'bl' | 'ml'
 export type HandlesType = 'handles' | 'borders' | 'custom'
 export type Axis = 'x' | 'y' | 'both'
+export type NumberOrAuto = number | 'auto'
 
 export interface Props {
   draggable?: boolean
@@ -69,10 +70,10 @@ export interface Props {
 
   x?: number
   y?: number
-  z?: number | 'auto'
+  z?: NumberOrAuto
 
-  w?: number | 'auto'
-  h?: number | 'auto'
+  w?: NumberOrAuto
+  h?: NumberOrAuto
 
   maxWidth?: number
   maxHeight?: number
@@ -80,40 +81,42 @@ export interface Props {
   minHeight?: number
 
   active?: boolean
-  preventDeactivation: boolean
-  activeOnHover: boolean
-  disableUserSelect: boolean
-  enableNativeDrag: boolean
-  lockAspectRatio: boolean
+  preventDeactivation?: boolean
+  activeOnHover?: boolean
+  disableUserSelect?: boolean
+  enableNativeDrag?: boolean
+  lockAspectRatio?: boolean
 
-  handlesType: HandlesType
-  handles: Handle[]
-  handlesSize: number
-  handlesBorder: string
+  handlesType?: HandlesType
+  handles?: Handle[]
+  handlesSize?: number
+  handlesBorder?: string
 
-  dragCancel: string
-  axis: Axis
-  grid: [number, number]
-  showGrid: boolean | Axis
-  gridColor: string
-  parent: boolean | string
-  scale: number | [number, number]
+  dragCancel?: string
+  axis?: Axis
+  grid?: [number, number]
+  showGrid?: boolean | Axis
+  gridColor?: string
+  parent?: boolean | string
+  scale?: number | [number, number]
 
-  className: string
-  classNameDraggable: string
-  classNameResizable: string
-  classNameDragging: string
-  classNameResizing: string
-  classNameActive: string
-  classNameHandle: string
+  className?: string
+  classNameDraggable?: string
+  classNameResizable?: string
+  classNameDragging?: string
+  classNameResizing?: string
+  classNameActive?: string
+  classNameHandle?: string
 
-  onDragStart: () => void
-  onDrag: () => void
-  onResizeStart: () => void
-  onResize: () => void
+  onDragStart?: () => void
+  onDrag?: () => void
+  onResizeStart?: () => void
+  onResize?: () => void
 }
 
-const props1 = withDefaults(defineProps<Props>(), {
+export type NoProps = Required<Pick<Props, 'h' | 'w' | 'active' | 'x' | 'y'>>
+
+const props = withDefaults(defineProps<Props>(), {
   draggable: true,
   resizable: true,
 
@@ -138,206 +141,35 @@ const props1 = withDefaults(defineProps<Props>(), {
   handles: () => ['tl', 'tm', 'tr', 'mr', 'br', 'bm', 'bl', 'ml'],
   handlesSize: 10,
   handlesBorder: '0.5px solid #bbb',
+
+  axis: 'both',
+
+  gridColor: 'rgba(0, 0, 0, 0.1)',
+
+  scale: 1,
+
+  className: 'drv',
+  classNameDraggable: 'drv-draggable',
+  classNameResizable: 'drv-resizable',
+  classNameDragging: 'drv-dragging',
+  classNameResizing: 'drv-resizing',
+  classNameActive: 'drv-active',
+  classNameHandle: 'drv-handle',
 })
 
-const props = definePropsq({
-  draggable: {
-    type: Boolean,
-    default: true,
-  },
-  resizable: {
-    type: Boolean,
-    default: true,
-  },
-  x: {
-    type: Number,
-    default: 0,
-  },
-  y: {
-    type: Number,
-    default: 0,
-  },
-  z: {
-    type: [String, Number],
-    default: 'auto',
-    validator: (val) => (typeof val === 'string' ? val === 'auto' : val >= 0),
-  },
-  w: {
-    type: [Number, String],
-    // default: 200,
-    validator: (val) => {
-      if (typeof val === 'number') {
-        return val > 0
-      }
-
-      return val === 'auto'
-    },
-  },
-  h: {
-    type: [Number, String],
-    // default: 200,
-    validator: (val) => {
-      if (typeof val === 'number') {
-        return val > 0
-      }
-      return val === 'auto'
-    },
-  },
-  minWidth: {
-    type: Number,
-    default: 0,
-    validator: (val) => val >= 0,
-  },
-  minHeight: {
-    type: Number,
-    default: 0,
-    validator: (val) => val >= 0,
-  },
-  maxWidth: {
-    type: Number,
-    default: null,
-    validator: (val) => val >= 0,
-  },
-  maxHeight: {
-    type: Number,
-    default: null,
-    validator: (val) => val >= 0,
-  },
-  active: {
-    type: Boolean,
-    default: false,
-  },
-  preventDeactivation: {
-    type: Boolean,
-    default: false,
-  },
-  activeOnHover: {
-    type: Boolean,
-    default: false,
-  },
-  disableUserSelect: {
-    type: Boolean,
-    default: true,
-  },
-  enableNativeDrag: {
-    type: Boolean,
-    default: false,
-  },
-  lockAspectRatio: {
-    type: Boolean,
-    default: false,
-  },
-  handlesType: {
-    type: String,
-    default: 'handles',
-    validator: (val) => ['handles', 'borders', 'custom'].includes(val),
-  },
-  handles: {
-    type: Array,
-    default: () => ['tl', 'tm', 'tr', 'mr', 'br', 'bm', 'bl', 'ml'],
-    validator: (val) => {
-      const s = new Set(['tl', 'tm', 'tr', 'mr', 'br', 'bm', 'bl', 'ml'])
-      return new Set(val.filter((h) => s.has(h))).size === val.length
-    },
-  },
-  handlesSize: {
-    type: Number,
-    default: 10,
-  },
-  handlesBorder: {
-    type: String,
-    default: '0.5px solid #bbb',
-  },
-  dragHandle: {
-    type: String,
-    default: null,
-  },
-  dragCancel: {
-    type: String,
-    default: null,
-  },
-  axis: {
-    type: String,
-    default: 'both',
-    validator: (val) => ['x', 'y', 'both'].includes(val),
-  },
-  grid: {
-    type: Array,
-    // default: () => [1, 1],
-    validator: (val) =>
-      Array.isArray(val) &&
-      typeof val[0] === 'number' &&
-      typeof val[1] === 'number',
-  },
-  showGrid: {
-    type: [Boolean, String],
-    default: false,
-    validator: (val) => [true, false, 'x', 'y', 'both'].includes(val),
-  },
-  gridColor: {
-    type: String,
-    default: 'rgba(0, 0, 0, 0.1)',
-  },
-  parent: {
-    type: [Boolean, String],
-    default: false,
-  },
-  scale: {
-    type: [Number, Array],
-    default: 1,
-    validator: (val) => {
-      if (typeof val === 'number') {
-        return val > 0
-      }
-
-      return val.length === 2 && val[0] > 0 && val[1] > 0
-    },
-  },
-  className: {
-    type: String,
-    default: 'drv',
-  },
-  classNameDraggable: {
-    type: String,
-    default: 'drv-draggable',
-  },
-  classNameResizable: {
-    type: String,
-    default: 'drv-resizable',
-  },
-  classNameDragging: {
-    type: String,
-    default: 'drv-dragging',
-  },
-  classNameResizing: {
-    type: String,
-    default: 'drv-resizing',
-  },
-  classNameActive: {
-    type: String,
-    default: 'drv-active',
-  },
-  classNameHandle: {
-    type: String,
-    default: 'drv-handle',
-  },
-  onDragStart: {
-    type: Function,
-    default: () => true,
-  },
-  onDrag: {
-    type: Function,
-    default: () => true,
-  },
-  onResizeStart: {
-    type: Function,
-    default: () => true,
-  },
-  onResize: {
-    type: Function,
-    default: () => true,
-  },
-})
+const emit = defineEmits([
+  'update:x',
+  'update:y',
+  'update:w',
+  'update:h',
+  'update:active',
+  'resizing',
+  'resizestop',
+  'dragging',
+  'dragstop',
+  'activated',
+  'deactivated',
+])
 
 const events = {
   mouse: {
@@ -369,23 +201,16 @@ const userSelectAuto = {
 
 let eventsFor = events.mouse
 
-const emit = defineEmits([
-  'update:x',
-  'update:y',
-  'update:w',
-  'update:h',
-  'update:active',
-  'resizing',
-  'resizestop',
-  'dragging',
-  'dragstop',
-  'activated',
-  'deactivated',
-])
+const el = ref<HTMLElement | null>(null)
+const parentEl = ref<HTMLElement | null>(null)
 
-const el = ref(null)
-const parentEl = ref(null)
-const noProps = ref({ h: 'auto', w: 'auto', active: false, x: 0, y: 0 })
+const noProps = ref<NoProps>({
+  h: 'auto',
+  w: 'auto',
+  x: 0,
+  y: 0,
+  active: false,
+})
 const slots = useSlots()
 
 const width = computed({
@@ -635,9 +460,9 @@ const elementDown = (e) => {
   const target = e.target || e.srcElement
 
   if (el.value.contains(target)) {
-    if (props.onDragStart(e) === false) {
-      return
-    }
+    // if (props.onDragStart(e) === false) {
+    //   return
+    // }
 
     if (
       (props.dragHandle &&
@@ -740,9 +565,9 @@ const handleDown = (handleEl, e) => {
     return
   }
 
-  if (props.onResizeStart(handleEl, e) === false) {
-    return
-  }
+  // if (props.onResizeStart(handleEl, e) === false) {
+  //   return
+  // }
 
   if (e.stopPropagation) e.stopPropagation()
 
@@ -935,9 +760,9 @@ const handleDrag = (e) => {
     bounds.value.maxTop,
   )
 
-  if (props.onDrag(left, top) === false) {
-    return
-  }
+  // if (props.onDrag(left, top) === false) {
+  //   return
+  // }
 
   const rightPx = restrictToBounds(
     mouseClickPosition.value.right + deltaX,
@@ -1068,11 +893,11 @@ const handleResize = (e) => {
 
   const heightPx = computeHeight(parentHeight.value, topPx, bottomPx)
 
-  if (
-    props.onResize(handle.value, leftPx, topPx, widthPx, heightPx) === false
-  ) {
-    return
-  }
+  // if (
+  //   props.onResize(handle.value, leftPx, topPx, widthPx, heightPx) === false
+  // ) {
+  //   return
+  // }
 
   left.value = leftPx
   top.value = topPx
