@@ -5,22 +5,27 @@ module.exports = {
   extends: [
     'plugin:vue/vue3-recommended',
     'eslint:recommended',
+    '@vue/eslint-config-typescript/recommended',
     '@vue/eslint-config-prettier',
   ],
   env: {
     'vue/setup-compiler-macros': true,
   },
+
   rules: {
+    'no-unused-vars': 'off',
     'no-prototype-builtins': 'off',
     'linebreak-style': ['error', 'windows'],
     'vue/require-default-prop': 'off',
     semi: ['error', 'never'],
     'global-require': 'off',
-    'no-plusplus': 'off',
-    'constructor-super': 'off',
-    'import/extensions': 'off',
-    'import/prefer-default-export': 'off',
-    'no-param-reassign': 'off',
+    // 'arrow-parens': ['error', 'as-needed'], // скобки в стрелочной функции.
+    'no-plusplus': 'off', // запрещает унарные операторы ++и --
+    'constructor-super': 'off', // конструкторы производных классов должны вызывать super(). Конструкторы не производных классов не должны вызывать super().
+    'no-mixed-operators': 'off',
+    'import/extensions': 'off', // обеспечить согласованное использование расширения файла в пути импорта
+    'import/prefer-default-export': 'off', // ESLint предпочитает экспорт по умолчанию импорт/предпочитает экспорт по умолчанию
+    'no-param-reassign': 'off', // без переназначения параметров
     'object-curly-newline': [
       'error',
       {
@@ -47,5 +52,5 @@ module.exports = {
     ecmaVersion: 'latest',
     sourceType: 'module',
   },
-  parser: 'vue-eslint-parser',
+  // parser: 'vue-eslint-parser',
 }

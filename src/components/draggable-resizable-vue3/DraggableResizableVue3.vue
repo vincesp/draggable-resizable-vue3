@@ -44,7 +44,7 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import {
   matchesSelectorToParentElements,
   getComputedSize,
@@ -59,37 +59,88 @@ import {
 } from './utils/fns'
 import { ref, computed, onMounted, watch, useSlots, inject } from 'vue'
 
-const events = {
-  mouse: {
-    start: 'mousedown',
-    move: 'mousemove',
-    stop: 'mouseup',
-  },
+export type Handle = 'tl' | 'tm' | 'tr' | 'mr' | 'br' | 'bm' | 'bl' | 'ml'
+export type HandlesType = 'handles' | 'borders' | 'custom'
+export type Axis = 'x' | 'y' | 'both'
 
-  touch: {
-    start: 'touchstart',
-    move: 'touchmove',
-    stop: 'touchend',
-  },
+export interface Props {
+  draggable?: boolean
+  resizable?: boolean
+
+  x?: number
+  y?: number
+  z?: number | 'auto'
+
+  w?: number | 'auto'
+  h?: number | 'auto'
+
+  maxWidth?: number
+  maxHeight?: number
+  minWidth?: number
+  minHeight?: number
+
+  active?: boolean
+  preventDeactivation: boolean
+  activeOnHover: boolean
+  disableUserSelect: boolean
+  enableNativeDrag: boolean
+  lockAspectRatio: boolean
+
+  handlesType: HandlesType
+  handles: Handle[]
+  handlesSize: number
+  handlesBorder: string
+
+  dragCancel: string
+  axis: Axis
+  grid: [number, number]
+  showGrid: boolean | Axis
+  gridColor: string
+  parent: boolean | string
+  scale: number | [number, number]
+
+  className: string
+  classNameDraggable: string
+  classNameResizable: string
+  classNameDragging: string
+  classNameResizing: string
+  classNameActive: string
+  classNameHandle: string
+
+  onDragStart: () => void
+  onDrag: () => void
+  onResizeStart: () => void
+  onResize: () => void
 }
 
-const userSelectNone = {
-  userSelect: 'none',
-  MozUserSelect: 'none',
-  WebkitUserSelect: 'none',
-  MsUserSelect: 'none',
-}
+const props1 = withDefaults(defineProps<Props>(), {
+  draggable: true,
+  resizable: true,
 
-const userSelectAuto = {
-  userSelect: 'auto',
-  MozUserSelect: 'auto',
-  WebkitUserSelect: 'auto',
-  MsUserSelect: 'auto',
-}
+  x: 0,
+  y: 0,
+  z: 'auto',
 
-let eventsFor = events.mouse
+  w: 'auto',
+  h: 'auto',
 
-const props = defineProps({
+  minHeight: 0,
+  minWidth: 0,
+
+  active: false,
+  preventDeactivation: false,
+  activeOnHover: false,
+  disableUserSelect: true,
+  enableNativeDrag: false,
+  lockAspectRatio: false,
+
+  handlesType: 'handles',
+  handles: () => ['tl', 'tm', 'tr', 'mr', 'br', 'bm', 'bl', 'ml'],
+  handlesSize: 10,
+  handlesBorder: '0.5px solid #bbb',
+})
+
+const props = definePropsq({
   draggable: {
     type: Boolean,
     default: true,
@@ -287,6 +338,36 @@ const props = defineProps({
     default: () => true,
   },
 })
+
+const events = {
+  mouse: {
+    start: 'mousedown',
+    move: 'mousemove',
+    stop: 'mouseup',
+  },
+
+  touch: {
+    start: 'touchstart',
+    move: 'touchmove',
+    stop: 'touchend',
+  },
+}
+
+const userSelectNone = {
+  userSelect: 'none',
+  MozUserSelect: 'none',
+  WebkitUserSelect: 'none',
+  MsUserSelect: 'none',
+}
+
+const userSelectAuto = {
+  userSelect: 'auto',
+  MozUserSelect: 'auto',
+  WebkitUserSelect: 'auto',
+  MsUserSelect: 'auto',
+}
+
+let eventsFor = events.mouse
 
 const emit = defineEmits([
   'update:x',
@@ -1010,7 +1091,7 @@ const changeWidth = (val) => {
 
   const [newWidth] = snapToGrid(grid.value, val, 0, 1)
 
-  let rightPx = restrictToBounds(
+  const rightPx = restrictToBounds(
     parentWidth.value - newWidth - left.value,
     bounds.value.minRight,
     bounds.value.maxRight,
@@ -1036,7 +1117,7 @@ const changeHeight = (val) => {
 
   const [, newHeight] = snapToGrid(grid.value, 0, val, 1)
 
-  let bottomPx = restrictToBounds(
+  const bottomPx = restrictToBounds(
     parentHeight.value - newHeight - top.value,
     bounds.value.minBottom,
     bounds.value.maxBottom,
