@@ -57,12 +57,24 @@ import {
   restrictToBounds,
   snapToGrid,
 } from './utils/fns'
-import { ref, computed, onMounted, watch, useSlots, inject } from 'vue'
-
-export type Handle = 'tl' | 'tm' | 'tr' | 'mr' | 'br' | 'bm' | 'bl' | 'ml'
-export type HandlesType = 'handles' | 'borders' | 'custom'
-export type Axis = 'x' | 'y' | 'both'
-export type NumberOrAuto = number | 'auto'
+import {
+  ref,
+  computed,
+  onMounted,
+  watch,
+  useSlots,
+  inject,
+  type StyleValue,
+  type ComputedRef,
+} from 'vue'
+import type {
+  Grid,
+  Scale,
+  Handle,
+  HandlesType,
+  Axis,
+  NumberOrAuto,
+} from './interfaces'
 
 export interface Props {
   draggable?: boolean
@@ -94,11 +106,11 @@ export interface Props {
 
   dragCancel?: string
   axis?: Axis
-  grid?: [number, number]
+  grid?: Grid
   showGrid?: boolean | Axis
   gridColor?: string
   parent?: boolean | string
-  scale?: number | [number, number]
+  scale?: Scale
 
   className?: string
   classNameDraggable?: string
@@ -185,18 +197,18 @@ const events = {
   },
 }
 
-const userSelectNone = {
+const userSelectNone: StyleValue = {
   userSelect: 'none',
   MozUserSelect: 'none',
   WebkitUserSelect: 'none',
-  MsUserSelect: 'none',
+  // MsUserSelect: 'none',
 }
 
-const userSelectAuto = {
+const userSelectAuto: StyleValue = {
   userSelect: 'auto',
   MozUserSelect: 'auto',
   WebkitUserSelect: 'auto',
-  MsUserSelect: 'auto',
+  // MsUserSelect: 'auto',
 }
 
 let eventsFor = events.mouse
@@ -254,8 +266,8 @@ const top = computed({
   },
 })
 
-const right = ref(null)
-const bottom = ref(null)
+const right = ref<number | null>(null)
+const bottom = ref<number | null>(null)
 
 const active = computed({
   get() {
@@ -273,20 +285,37 @@ const handlesBorder = computed(() => props.handlesBorder)
 const widthTouched = ref(false)
 const heightTouched = ref(false)
 
-const aspectFactor = ref(null)
+const aspectFactor = ref<number | null>(null)
 
-const parentWidth = ref(null)
-const parentHeight = ref(null)
+const parentWidth = ref<number | null>(null)
+const parentHeight = ref<number | null>(null)
 
-const handle = ref(null)
+const handle = ref<string | null>(null)
 const resizing = ref(false)
 const dragging = ref(false)
 const dragEnable = ref(false)
 const resizeEnable = ref(false)
-const mouseClickPosition = ref(null)
-const bounds = ref(null)
+const mouseClickPosition = ref({
+  mouseX: 0,
+  mouseY: 0,
+  x: 0,
+  y: 0,
+  w: 0,
+  h: 0,
+})
 
-const style = computed(() => {
+const bounds = ref({
+  minLeft: 0,
+  maxLeft: 0,
+  minRight: 0,
+  maxRight: 0,
+  minTop: 0,
+  maxTop: 0,
+  minBottom: 0,
+  maxBottom: 0,
+})
+
+const style = computed<StyleValue>(() => {
   return {
     transform: `translate(${left.value}px, ${top.value}px)`,
     width: computedWidth.value,
@@ -298,16 +327,22 @@ const style = computed(() => {
   }
 })
 
-const containerClass = inject('drvContainerClass', {})
+const containerClass = inject(
+  'drvContainerClass',
+  null as ComputedRef<string> | null,
+)
 
 const parent = computed(() => {
-  return containerClass.value ? '.' + containerClass.value : props.parent
+  return containerClass ? '.' + containerClass.value : props.parent
 })
 
-const containerGrid = inject('drvContainerGrid', {})
+const containerGrid = inject(
+  'drvContainerGrid',
+  null as ComputedRef<string> | null,
+)
 
 const grid = computed(() => {
-  if (!containerGrid || !containerGrid.value) {
+  if (!containerGrid) {
     return props.grid || [1, 1]
   }
   return props.grid ? props.grid : containerGrid.value
@@ -358,15 +393,13 @@ const maxH = ref(props.maxHeight)
 
 const resizingOnX = computed(() => {
   return (
-    Boolean(handle.value) &&
-    (handle.value.includes('l') || handle.value.includes('r'))
+    handle.value && (handle.value.includes('l') || handle.value.includes('r'))
   )
 })
 
 const resizingOnY = computed(() => {
   return (
-    Boolean(handle.value) &&
-    (handle.value.includes('t') || handle.value.includes('b'))
+    handle.value && (handle.value.includes('t') || handle.value.includes('b'))
   )
 })
 
@@ -388,14 +421,14 @@ const resetBoundsAndMouseState = () => {
   }
 
   bounds.value = {
-    minLeft: null,
-    maxLeft: null,
-    minRight: null,
-    maxRight: null,
-    minTop: null,
-    maxTop: null,
-    minBottom: null,
-    maxBottom: null,
+    minLeft: 0,
+    maxLeft: 0,
+    minRight: 0,
+    maxRight: 0,
+    minTop: 0,
+    maxTop: 0,
+    minBottom: 0,
+    maxBottom: 0,
   }
 }
 
@@ -417,8 +450,9 @@ const getParentSize = () => {
       typeof parent.value === 'string'
         ? el.value.closest(parent.value)
         : el.value.parentNode
-    parentEl.value = parentElement
-    const style = window.getComputedStyle(parentElement, null)
+    parentEl.value = parentElement as HTMLElement
+    if (!parentEl.value) return [null, null]
+    const style = window.getComputedStyle(parentEl.value, null)
     return [
       parseInt(style.getPropertyValue('width'), 10),
       parseInt(style.getPropertyValue('height'), 10),
@@ -429,37 +463,36 @@ const getParentSize = () => {
 }
 
 const showParentGrid = () => {
-  if (parent.value && props.showGrid) {
+  if (parent.value && props.showGrid && el.value) {
     if (!parentEl.value) {
-      const parent =
+      parentEl.value =
         typeof parent.value === 'string'
-          ? el.value.closest(parent.value)
-          : el.value.parentNode
-      parentEl.value = parent
+          ? (el.value.closest(parent.value) as HTMLElement)
+          : (el.value.parentNode as HTMLElement)
     }
 
-    parentEl.value.style.background = parentGridBackgroundStyle.value
+    parentEl.value.style.background = parentGridBackgroundStyle.value || ''
   }
 }
 
-const elementTouchDown = (e) => {
+const elementTouchDown = (e: TouchEvent) => {
   eventsFor = events.touch
   elementDown(e)
 }
 
-const elementMouseDown = (e) => {
+const elementMouseDown = (e: MouseEvent) => {
   eventsFor = events.mouse
   elementDown(e)
 }
 
-const elementDown = (e) => {
+const elementDown = (e: TouchEvent | MouseEvent) => {
   if (e instanceof MouseEvent && e.which !== 1) {
     return
   }
 
-  const target = e.target || e.srcElement
+  const target: Node | null = (e.target as Node) || e.srcElement
 
-  if (el.value.contains(target)) {
+  if (el.value && el.value.contains(target)) {
     // if (props.onDragStart(e) === false) {
     //   return
     // }
@@ -484,8 +517,10 @@ const elementDown = (e) => {
       dragEnable.value = true
     }
 
-    mouseClickPosition.value.mouseX = e.touches ? e.touches[0].pageX : e.pageX
-    mouseClickPosition.value.mouseY = e.touches ? e.touches[0].pageY : e.pageY
+    mouseClickPosition.value.mouseX =
+      e instanceof TouchEvent ? e.touches[0].pageX : e.pageX
+    mouseClickPosition.value.mouseY =
+      e instanceof TouchEvent ? e.touches[0].pageY : e.pageY
     mouseClickPosition.value.left = left.value
     mouseClickPosition.value.right = right.value
     mouseClickPosition.value.top = top.value
@@ -494,9 +529,10 @@ const elementDown = (e) => {
     if (parent.value) {
       bounds.value = calcDragLimits()
     }
-
-    addEvent(document.documentElement, eventsFor.move, move)
-    addEvent(document.documentElement, eventsFor.stop, handleUp)
+    document.documentElement.addEventListener(eventsFor.move, move, true)
+    document.documentElement.addEventListener(eventsFor.stop, handleUp, true)
+    // addEvent(document.documentElement, eventsFor.move, move)
+    // addEvent(document.documentElement, eventsFor.stop, handleUp)
   }
 }
 
@@ -591,7 +627,8 @@ const handleDown = (handleEl, e) => {
   mouseClickPosition.value.bottom = bottom.value
 
   bounds.value = calcResizeLimits()
-
+  // document.documentElement.addEventListener(eventsFor.move, handleResize)
+  // document.documentElement.addEventListener(eventsFor.stop, handleUp)
   addEvent(document.documentElement, eventsFor.move, handleResize)
   addEvent(document.documentElement, eventsFor.stop, handleUp)
 }
@@ -845,7 +882,7 @@ const handleResize = (e) => {
     props.scale,
   )
 
-  if (handle.value.includes('b')) {
+  if (handle.value && handle.value.includes('b')) {
     bottomPx = restrictToBounds(
       mouseClickPosition.value.bottom + deltaY,
       bounds.value.minBottom,
@@ -855,7 +892,7 @@ const handleResize = (e) => {
     if (props.lockAspectRatio && resizingOnY) {
       rightPx = right.value - (bottom.value - bottomPx) * aspectFactor.value
     }
-  } else if (handle.value.includes('t')) {
+  } else if (handle.value && handle.value.includes('t')) {
     topPx = restrictToBounds(
       mouseClickPosition.value.top - deltaY,
       bounds.value.minTop,
@@ -867,7 +904,7 @@ const handleResize = (e) => {
     }
   }
 
-  if (handle.value.includes('r')) {
+  if (handle.value && handle.value.includes('r')) {
     rightPx = restrictToBounds(
       mouseClickPosition.value.right + deltaX,
       bounds.value.minRight,
@@ -877,7 +914,7 @@ const handleResize = (e) => {
     if (props.lockAspectRatio && resizingOnX) {
       bottomPx = bottom.value - (right.value - rightPx) / aspectFactor.value
     }
-  } else if (handle.value.includes('l')) {
+  } else if (handle.value && handle.value.includes('l')) {
     leftPx = restrictToBounds(
       mouseClickPosition.value.left - deltaX,
       bounds.value.minLeft,
@@ -999,9 +1036,9 @@ const elementMouseLeave = () => {
 }
 
 onMounted(() => {
-  resetBoundsAndMouseState()
+  // resetBoundsAndMouseState()
 
-  if (!props.enableNativeDrag) {
+  if (!props.enableNativeDrag && el.value) {
     el.value.ondragstart = () => false
   }
 
@@ -1029,9 +1066,16 @@ onMounted(() => {
     showParentGrid()
   }
 
-  addEvent(document.documentElement, 'mousedown', deselect)
-  addEvent(document.documentElement, 'touchend touchcancel', deselect)
-  addEvent(window, 'resize', checkParentSize)
+  document.documentElement.addEventListener('mousedown', deselect, true)
+  document.documentElement.addEventListener(
+    'touchend touchcancel',
+    deselect,
+    true,
+  )
+  window.addEventListener('resize', checkParentSize, true)
+  // addEvent(document.documentElement, 'mousedown', deselect)
+  // addEvent(document.documentElement, 'touchend touchcancel', deselect)
+  // addEvent(window, 'resize', checkParentSize)
 })
 
 watch(

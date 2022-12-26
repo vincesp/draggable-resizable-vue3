@@ -45,7 +45,7 @@
   </draggable-resizable-container>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { ref } from 'vue'
 // import { DraggableResizableVue, DraggableResizableContainer } from './index'
 

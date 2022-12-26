@@ -4,31 +4,22 @@
   </div>
 </template>
 
-<script setup>
-import { ref, computed, provide } from 'vue'
+<script setup lang="ts">
+import { ref, computed, provide, type StyleValue, type ComputedRef } from 'vue'
+import type { Grid, ShowGrid } from './interfaces'
 
-const props = defineProps({
-  grid: {
-    type: Array,
-    default: () => [1, 1],
-    validator: (val) =>
-      Array.isArray(val) &&
-      typeof val[0] === 'number' &&
-      typeof val[1] === 'number',
-  },
-  showGrid: {
-    type: [Boolean, String],
-    default: false,
-    validator: (val) => [true, false, 'x', 'y', 'both'].includes(val),
-  },
-  gridColor: {
-    type: String,
-    default: 'rgba(0, 0, 0, 0.1)',
-  },
-  className: {
-    type: String,
-    default: 'drv-container',
-  },
+export interface Props {
+  grid?: Grid
+  showGrid?: ShowGrid
+  gridColor?: string
+  className?: string
+}
+
+const props = withDefaults(defineProps<Props>(), {
+  grid: () => [1, 1],
+  showGrid: false,
+  gridColor: 'rgba(0, 0, 0, 0.1)',
+  className: 'drv-container',
 })
 
 const grid = computed(() => {
@@ -39,14 +30,14 @@ const className = computed(() => {
   return props.className
 })
 
-provide('drvContainerClass', className)
-provide('drvContainerGrid', grid)
+provide<ComputedRef<string>>('drvContainerClass', className)
+provide<ComputedRef<Grid>>('drvContainerGrid', grid)
 
 // const emit = defineEmits(['dragging', 'dragstop', 'activated', 'deactivated'])
 
-const el = ref(null)
+const el = ref<HTMLElement | null>(null)
 
-const gridBackgroundStyle = computed(() => {
+const gridBackgroundStyle = computed<string>(() => {
   const axisBg = {
     x: `linear-gradient(-90deg, ${props.gridColor} 1px, transparent 1px) 0px 0px / ${props.grid[0]}px ${props.grid[0]}px`,
     y: `linear-gradient(0deg, ${props.gridColor} 1px, transparent 1px) 0px 0px / ${props.grid[1]}px ${props.grid[1]}px`,
@@ -56,11 +47,11 @@ const gridBackgroundStyle = computed(() => {
     return axisBg[props.showGrid]
   }
 
-  return props.showGrid ? `${axisBg.x}, ${axisBg.y}` : null
+  return props.showGrid ? `${axisBg.x}, ${axisBg.y}` : ''
 })
 
-const style = computed(() => {
-  const style = {
+const style = computed<StyleValue>(() => {
+  const style: StyleValue = {
     position: 'relative',
   }
 
