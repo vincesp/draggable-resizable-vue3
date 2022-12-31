@@ -104,6 +104,7 @@ export interface Props {
   handlesSize?: number
   handlesBorder?: string
 
+  dragHandle?: string
   dragCancel?: string
   axis?: Axis
   grid?: Grid
@@ -201,14 +202,12 @@ const userSelectNone: StyleValue = {
   userSelect: 'none',
   MozUserSelect: 'none',
   WebkitUserSelect: 'none',
-  // MsUserSelect: 'none',
 }
 
 const userSelectAuto: StyleValue = {
   userSelect: 'auto',
   MozUserSelect: 'auto',
   WebkitUserSelect: 'auto',
-  // MsUserSelect: 'auto',
 }
 
 let eventsFor = events.mouse
@@ -266,8 +265,8 @@ const top = computed({
   },
 })
 
-const right = ref<number | null>(null)
-const bottom = ref<number | null>(null)
+const right = ref<number>(0)
+const bottom = ref<number>(0)
 
 const active = computed({
   get() {
@@ -302,6 +301,10 @@ const mouseClickPosition = ref({
   y: 0,
   w: 0,
   h: 0,
+  left: 0,
+  right: 0,
+  top: 0,
+  bottom: 0,
 })
 
 const bounds = ref({
@@ -418,6 +421,10 @@ const resetBoundsAndMouseState = () => {
     y: 0,
     w: 0,
     h: 0,
+    left: 0,
+    right: 0,
+    top: 0,
+    bottom: 0,
   }
 
   bounds.value = {
@@ -436,8 +443,8 @@ const checkParentSize = () => {
   if (parent.value) {
     const [newParentWidth, newParentHeight] = getParentSize()
 
-    parentWidth.value = newParentWidth
-    parentHeight.value = newParentHeight
+    parentWidth.value = newParentWidth || 0
+    parentHeight.value = newParentHeight || 0
 
     right.value = parentWidth.value - width.value - left.value
     bottom.value = parentHeight.value - height.value - top.value
@@ -445,7 +452,7 @@ const checkParentSize = () => {
 }
 
 const getParentSize = () => {
-  if (parent.value) {
+  if (parent.value && el.value) {
     const parentElement =
       typeof parent.value === 'string'
         ? el.value.closest(parent.value)
@@ -486,11 +493,11 @@ const elementMouseDown = (e: MouseEvent) => {
 }
 
 const elementDown = (e: TouchEvent | MouseEvent) => {
-  if (e instanceof MouseEvent && e.which !== 1) {
-    return
-  }
+  // if (e instanceof MouseEvent && e.which !== 1) {
+  //   return
+  // }
 
-  const target: Node | null = (e.target as Node) || e.srcElement
+  const target: HTMLElement | null = e.target as HTMLElement
 
   if (el.value && el.value.contains(target)) {
     // if (props.onDragStart(e) === false) {
@@ -522,9 +529,9 @@ const elementDown = (e: TouchEvent | MouseEvent) => {
     mouseClickPosition.value.mouseY =
       e instanceof TouchEvent ? e.touches[0].pageY : e.pageY
     mouseClickPosition.value.left = left.value
-    mouseClickPosition.value.right = right.value
+    mouseClickPosition.value.right = right.value || 0
     mouseClickPosition.value.top = top.value
-    mouseClickPosition.value.bottom = bottom.value
+    mouseClickPosition.value.bottom = bottom.value || 0
 
     if (parent.value) {
       bounds.value = calcDragLimits()
@@ -657,14 +664,14 @@ const calcResizeLimits = () => {
   maxH.value = maxH.value - (maxH.value % gridY)
 
   const limits = {
-    minLeft: null,
-    maxLeft: null,
-    minTop: null,
-    maxTop: null,
-    minRight: null,
-    maxRight: null,
-    minBottom: null,
-    maxBottom: null,
+    minLeft: 0,
+    maxLeft: 0,
+    minTop: 0,
+    maxTop: 0,
+    minRight: 0,
+    maxRight: 0,
+    minBottom: 0,
+    maxBottom: 0,
   }
 
   if (parent.value) {
