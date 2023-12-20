@@ -116,7 +116,7 @@ const props = defineProps({
     // default: 200,
     validator: (val) => {
       if (typeof val === 'number') {
-        return val > 0
+        return val >= 0
       }
 
       return val === 'auto'
@@ -127,7 +127,7 @@ const props = defineProps({
     // default: 200,
     validator: (val) => {
       if (typeof val === 'number') {
-        return val > 0
+        return val >= 0
       }
       return val === 'auto'
     },
